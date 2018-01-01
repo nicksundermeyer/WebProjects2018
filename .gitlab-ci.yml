@@ -5,8 +5,8 @@ cache:
    - node_modules/
 
 before_script:
+  - npm install -g gulp
   - npm install
-  - npm -i -g gulp
 
 stages:
   - test
