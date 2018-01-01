@@ -1,0 +1,52 @@
+image: node:latest
+
+cache:
+  paths:
+   - node_modules/
+
+before_script:
+  - npm install
+  - npm -i -g gulp
+
+stages:
+  - test
+  - build
+  - develop
+  - production
+
+test:
+  stage: test
+  script:
+    - npm test
+
+build:
+  stage: build
+  script:
+    - gulp build
+  artifacts:
+    paths:
+      - dist/
+
+develop:
+  type: deploy
+  stage: develop
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=web-projects-winter-2018-devel --api-key=$HEROKU_API_KEY
+  only:
+    - develop
+
+production:
+  type: deploy
+  stage: production
+  image: ruby:latest
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=web-projects-winter-2018-prod --api-key=$HEROKU_API_KEY
+  only:
+    - master
