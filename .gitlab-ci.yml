@@ -24,7 +24,6 @@ test:
     MONGODB_URI: 'mongodb://mongo/webprojects-test'
     NODE_ENV: 'test'
 
-
 build:
   stage: build
   script:
