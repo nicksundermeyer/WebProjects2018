@@ -1,8 +1,10 @@
 image: node:8.9.3
 
 cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
   paths:
-   - node_modules/
+    - node_modules/
 
 stages:
   - test
@@ -28,6 +30,7 @@ build:
     - npm install
     - gulp build
   artifacts:
+    expire_in: 1 week
     paths:
       - dist/
 
@@ -36,6 +39,7 @@ develop:
   stage: develop
   image: ruby:latest
   script:
+    - cd dist
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
@@ -48,6 +52,7 @@ production:
   stage: production
   image: ruby:latest
   script:
+    - cd dist
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
