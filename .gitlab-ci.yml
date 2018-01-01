@@ -18,6 +18,12 @@ test:
   stage: test
   script:
     - npm test
+  services:
+    - mongo
+  variables:
+    MONGODB_URI: 'mongodb://mongo/webprojects-test'
+    NODE_ENV: 'test'
+
 
 build:
   stage: build
