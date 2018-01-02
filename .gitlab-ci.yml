@@ -39,10 +39,10 @@ develop:
   stage: develop
   image: ruby:latest
   script:
-    - cd dist
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
+    - cd dist
     - dpl --provider=heroku --app=web-projects-winter-2018-devel --api-key=$HEROKU_API_KEY
   only:
     - develop
@@ -52,10 +52,12 @@ production:
   stage: production
   image: ruby:latest
   script:
-    - cd dist
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
+    - ls
+    - cd dist
+    - ls
     - dpl --provider=heroku --app=web-projects-winter-2018-prod --api-key=$HEROKU_API_KEY
   only:
     - master
