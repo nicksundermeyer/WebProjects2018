@@ -43,7 +43,7 @@ develop:
     - git init
     - git config user.name "GitLab CI/CD"
     - git config user.email "daniel.pittman@du.edu"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-devel
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-devel.git
     - git add .
     - git commit -m "GitLab CI Build"
     - git push -f heroku master
@@ -59,7 +59,7 @@ production:
     - git init
     - git config user.name "GitLab CI/CD"
     - git config user.email "daniel.pittman@du.edu"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-prod
+    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-prod.git
     - git add .
     - git commit -m "GitLab CI Build"
     - git push -f heroku master
