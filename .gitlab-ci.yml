@@ -42,6 +42,7 @@ develop:
     - cd dist
     - git init
     - git add .
+    - git commit -m "GitLab CI Build"
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-devel
     - git push -f heroku master
   only:
@@ -55,6 +56,7 @@ production:
     - cd dist
     - git init
     - git add .
+    - git commit -m "GitLab CI Build"
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/web-projects-winter-2018-prod
     - git push -f heroku master
   only:
