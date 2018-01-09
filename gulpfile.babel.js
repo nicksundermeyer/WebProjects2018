@@ -473,6 +473,7 @@ gulp.task('build', cb => {
         'revReplaceWebpack',
         cb);
 });
+gulp.task('default', ['build']);
 
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], {dot: true}));
 
