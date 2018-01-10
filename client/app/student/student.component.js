@@ -33,10 +33,11 @@ export class StudentController {
   }
 }
 
-export default angular.module('webProjectsApp.main', [ngRoute])
+export default angular.module('webProjectsApp.student', [ngRoute])
   .config(routing)
   .component('student', {
     template: require('./student.html'),
-    controller: StudentController
+    controller: StudentController,
+    controllerAs: 'studentController'
   })
   .name;
