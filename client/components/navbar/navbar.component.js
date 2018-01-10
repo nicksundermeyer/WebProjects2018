@@ -17,6 +17,8 @@ export class NavbarComponent {
     this.$location = $location;
     this.isLoggedIn = Auth.isLoggedInSync;
     this.isAdmin = Auth.isAdminSync;
+    this.isStudent = Auth.isStudentSync; //TODO currently set to user role, should be set to student
+    this.isTeacher = Auth.isTeacherSync; //TODO currently set to user role, should be set to teacher
     this.getCurrentUser = Auth.getCurrentUserSync;
   }
 
