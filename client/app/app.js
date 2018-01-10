@@ -21,13 +21,14 @@ import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
+import student from './student/student.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
-  account, admin, 'validation.match', navbar, footer, main, constants, util
+  account, admin, 'validation.match', navbar, footer, main, constants, util, student
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

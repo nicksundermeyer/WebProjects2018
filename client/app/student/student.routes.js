@@ -3,7 +3,7 @@
 export default function routes($routeProvider) {
   'ngInject';
 
-  $routeProvider.when('/', {
-    template: '<stundent></stundent>'
+  $routeProvider.when('/student', {
+    template: '<student></student>'
   });
 }
