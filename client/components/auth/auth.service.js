@@ -211,7 +211,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Bool|Promise}
      */
     isStudent(...args) {
-      return Auth.hasRole(Reflect.apply([].concat, ['user'], args)); //TODO set to check for user, should check for student
+      return Auth.hasRole(Reflect.apply([].concat, ['student'], args));
     },
 
     /**
@@ -222,7 +222,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Bool|Promise}
      */
     isTeacher(...args) {
-      return Auth.hasRole(Reflect.apply([].concat, ['user'], args)); //TODO set to check for user, should check for teacher
+      return Auth.hasRole(Reflect.apply([].concat, ['teacher'], args));
     },
 
     /**
@@ -242,7 +242,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      */
     isStudentSync() {
       // eslint-disable-next-line no-sync
-      return Auth.hasRoleSync('user'); //TODO set to check for user, should check for student
+      return Auth.hasRoleSync('student');
     },
 
     /**
@@ -252,7 +252,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      */
     isTeacherSync() {
       // eslint-disable-next-line no-sync
-      return Auth.hasRoleSync('user'); //TODO set to check for user, should check for teacher
+      return Auth.hasRoleSync('teacher');
     },
 
     /**
