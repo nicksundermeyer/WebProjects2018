@@ -19,7 +19,7 @@ describe('Component: StudentComponent', function() {
       .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
 
     scope = $rootScope.$new();
-    studentComponent = $componentController('main', {
+    studentComponent = $componentController('student', {
       $http,
       $scope: scope
     });
