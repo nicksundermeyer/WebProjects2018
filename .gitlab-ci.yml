@@ -17,7 +17,6 @@ test:
   script:
     - npm install
     - npm test
-    - gulp build
   services:
     - mongo
   variables:
