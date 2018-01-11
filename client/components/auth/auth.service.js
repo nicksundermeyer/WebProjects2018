@@ -199,7 +199,30 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Bool|Promise}
      */
     isAdmin(...args) {
+      console.log('Admin called');
       return Auth.hasRole(Reflect.apply([].concat, ['admin'], args));
+    },
+
+    /**
+     * Check if a user is a student
+     *   (synchronous|asynchronous)
+     *
+     * @param  {Function|*} callback - optional, function(is)
+     * @return {Bool|Promise}
+     */
+    isStudent(...args) {
+      return Auth.hasRole(Reflect.apply([].concat, ['student'], args));
+    },
+
+    /**
+     * Check if a user is a teacher
+     *   (synchronous|asynchronous)
+     *
+     * @param  {Function|*} callback - optional, function(is)
+     * @return {Bool|Promise}
+     */
+    isTeacher(...args) {
+      return Auth.hasRole(Reflect.apply([].concat, ['teacher'], args));
     },
 
     /**
@@ -210,6 +233,26 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     isAdminSync() {
       // eslint-disable-next-line no-sync
       return Auth.hasRoleSync('admin');
+    },
+
+    /**
+     * Check if a user is a student
+     *
+     * @return {Bool}
+     */
+    isStudentSync() {
+      // eslint-disable-next-line no-sync
+      return Auth.hasRoleSync('student');
+    },
+
+    /**
+     * Check if a user is a teacher
+     *
+     * @return {Bool}
+     */
+    isTeacherSync() {
+      // eslint-disable-next-line no-sync
+      return Auth.hasRoleSync('teacher');
     },
 
     /**
