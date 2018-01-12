@@ -14,7 +14,6 @@ let nameSchema = Schema({
 
 
 var CourseSchema = new Schema({
-  name: nameSchema,
 
   category: {
     type: String,
@@ -22,8 +21,8 @@ var CourseSchema = new Schema({
   },
 
   teacher: {
-    type: String,
-    required: true
+    type: nameSchema, required: true,
+    //need to get teachers user id here
   },
 
   maxStudents: {
