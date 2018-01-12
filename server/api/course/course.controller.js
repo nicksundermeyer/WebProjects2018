@@ -27,9 +27,9 @@ export function show(req, res) {
       }
     })
     //Print errors
-    .catch(function(error){
+    .catch(function(err){
       res.status(404);
-      res.send(error.toString());
+      res.send(err.toString());
     });
 }
 
