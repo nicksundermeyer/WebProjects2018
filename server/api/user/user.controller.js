@@ -36,8 +36,7 @@ export function index(req, res) {
 export function create(req, res) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
-  if (newUser.role === 'student') {
-    newUser.save()
+  newUser.save()
       .then(function (user) {
         var token = jwt.sign({_id: user._id, role: user.role}, config.secrets.session, {
           expiresIn: 60 * 60 * 5
@@ -45,10 +44,8 @@ export function create(req, res) {
         return res.json({token});
       })
       .catch(validationError(res));
-  }
-  else {
-    return res.json('Not student role!');
-  }
+
+
 
 
 }
