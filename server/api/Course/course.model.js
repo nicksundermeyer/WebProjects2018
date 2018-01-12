@@ -21,8 +21,8 @@ var CourseSchema = new Schema({
   },
 
   teacher: {
-    type: nameSchema, required: true,
-    //need to get teachers user id here
+    name: {type: nameSchema, required: true},
+    teacherID: {type: mongoose.Schema.Types.ObjectId}
   },
 
   maxStudents: {
@@ -31,7 +31,7 @@ var CourseSchema = new Schema({
   },
 
   enrolledStudents: {
-    type: [Object.ID],
+    type: [mongoose.Schema.Types.ObjectId]
   }
 
 

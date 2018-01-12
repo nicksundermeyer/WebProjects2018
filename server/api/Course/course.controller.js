@@ -36,8 +36,11 @@ export function show(req, res) {
 
 export function create(req, res) {
   let course = req.body;
+  console.log(req.user._id);
   Course.create(course)
     .then(function(createdCourse) {
+      createdCourse.teacher.teacherID = req.user._id;
+      createdCourse.save();
       return res.status(201).json(createdCourse);
     })
     //Print errors
