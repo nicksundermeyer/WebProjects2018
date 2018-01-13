@@ -6,6 +6,7 @@
 'use strict';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
+import Course from '../api/course/course.model';
 import config from './environment/';
 
 export default function seedDatabaseIfNeeded() {
@@ -64,9 +65,16 @@ export default function seedDatabaseIfNeeded() {
           name: 'Test Student',
           email: 'student@example.com',
           password: 'student'
-        })
+        },{
+          provider: 'local',
+          role: 'teacher',
+          name: 'Test Teacher',
+          email: 'teacher@example.com',
+          password: 'teacher'
+         })
         .then(() => console.log('finished populating users'))
         .catch(err => console.log('error populating users', err));
       });
+
   }
 }

@@ -50,3 +50,26 @@ export function create(req, res) {
     });
 }
 
+/*
+* Add student id to enrolled students in course
+*/
+
+export function addStudent(req, res) {
+  Course.findById(req.params.id)
+    .exec()
+    .then(function(course) {
+      if(course) {
+        course.enrolledStudents.push(req.user._id);
+        course.save();
+        return res.status(201).json(course);
+      } else {
+        return res.status(204);
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+      res.status(400);
+      res.send(err);
+    });
+}
+

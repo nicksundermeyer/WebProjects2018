@@ -31,13 +31,14 @@ var CourseSchema = new Schema({
   },
 
   enrolledStudents: {
-    type: [mongoose.Schema.Types.ObjectId]
+    type: [mongoose.Schema.Types.ObjectId],
+
   }
 
 
   //assignment
 
-});
+},  { usePushEach: true } );
 
 
 registerEvents(CourseSchema);

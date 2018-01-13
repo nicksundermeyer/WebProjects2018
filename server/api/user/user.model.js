@@ -13,7 +13,7 @@ var UserSchema = new Schema({
     required: true
   },
   role: {
-    type: String, enum: ['guest', 'user', 'admin', 'student', 'researcher'],
+    type: String, enum: ['guest', 'user', 'admin', 'student', 'researcher', 'teacher'],
     default: 'student'
   },
   password: {
