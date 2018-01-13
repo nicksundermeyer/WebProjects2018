@@ -4,26 +4,13 @@ import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './course.events';
 
 
-let nameSchema = Schema({
-
-  firstName: {type: String, required: true},
-  lastName: {type: String, required: true}
-
-});
-
-
-
 var CourseSchema = new Schema({
 
-  category: {
+  subject: {
     type: String,
     required: true
   },
 
-  teacher: {
-    name: {type: nameSchema, required: true},
-    teacherID: {type: mongoose.Schema.Types.ObjectId}
-  },
 
   maxStudents: {
     type: Number,
@@ -33,12 +20,13 @@ var CourseSchema = new Schema({
   enrolledStudents: {
     type: [mongoose.Schema.Types.ObjectId],
 
-  }
+  },
 
+  teacherID: mongoose.Schema.Types.ObjectId
 
   //assignment
 
-},  { usePushEach: true } );
+}, { usePushEach: true });
 
 
 registerEvents(CourseSchema);

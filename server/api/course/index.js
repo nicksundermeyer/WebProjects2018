@@ -8,6 +8,8 @@ router.get('/', controller.index); //show all course
 router.get('/:id', controller.show);
 router.post('/', auth.hasRole('teacher'), controller.create);
 router.post('/:id',auth.hasRole('student'),controller.addStudent); // Add Student to course
-router.delete('/', auth.hasRole('admin'), controller.create);
+router.delete('/:id', auth.hasRole('admin'), controller.destroy);
+router.put('/:id', auth.hasRole('teacher'), controller.update);
+
 
 module.exports = router;
