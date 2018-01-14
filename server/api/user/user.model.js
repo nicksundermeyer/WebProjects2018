@@ -4,6 +4,7 @@ import crypto from 'crypto';
 mongoose.Promise = require('bluebird');
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './user.events';
+import userRoles from '../../config/environment/shared';
 
 var UserSchema = new Schema({
   name: String,
@@ -13,7 +14,8 @@ var UserSchema = new Schema({
     required: true
   },
   role: {
-    type: String, enum: ['guest', 'user', 'admin', 'student', 'researcher', 'teacher'],
+    //Role hierarchy: guest < user < student < teacher < researcher < admin
+    type: String, enum: userRoles,
     default: 'student'
   },
   password: {
