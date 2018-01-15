@@ -1,6 +1,7 @@
 'use strict';
 
 import Course from './course.model';
+import shared from './../../config/environment/shared';
 
 export function index(req, res) {
   Course.find()
@@ -53,17 +54,21 @@ export function update(req, res) {
   return Course.findById(req.params.id).exec()
     .then(course => {
       if(course) {
-        course.subject = req.body.subject;
-        course.maxStudents = req.body.maxStudents;
+        hasPermission(req, course).then(() => {
+          course.subject = req.body.subject;
+          course.maxStudents = req.body.maxStudents;
         //add more stuff to update as course metadata gets added
-        return course.save()
+          return course.save()
           .then(() => {
-            res.status(204).end();
+            return res.status(204).end();
           })
           .catch(function(err) {
             res.send(err);
             return res.status(404).end();
           });
+        }).catch(function(err) {
+          return res.status(403).end();
+        });
       } else {
         return res.status(403).end();
       }
@@ -93,13 +98,22 @@ export function addStudent(req, res) {
         course.save();
         return res.status(201).json(course);
       } else {
-        return res.status(204);
+        return res.status(204).end();
       }
     })
     .catch(function(err) {
-      console.log(err);
       res.status(400);
       res.send(err);
     });
 }
 
+//only allow the course teacher or role greater than teacher permission
+export function hasPermission(req, course) {
+  return new Promise(function(resolve, reject) {
+    if(!course.teacherID.equals(req.user._id) && shared.userRoles.indexOf(req.user.role) < shared.userRoles.indexOf('teacher') + 1) {
+      reject();
+    } else {
+      resolve();
+    }
+  });
+}

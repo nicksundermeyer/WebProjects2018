@@ -17,9 +17,7 @@ var CourseSchema = new Schema({
     required: true
   },
 
-  enrolledStudents: {
-    type: [mongoose.Schema.Types.ObjectId]
-  },
+  enrolledStudents: [mongoose.Schema.Types.ObjectId],
 
   teacherID: mongoose.Schema.Types.ObjectId
 
