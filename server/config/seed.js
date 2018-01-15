@@ -65,38 +65,37 @@ export default function seedDatabaseIfNeeded() {
           name: 'Test Student',
           email: 'student@example.com',
           password: 'student'
-        },{
+        }, {
           provider: 'local',
           role: 'teacher',
           name: 'Test Teacher',
           email: 'teacher@example.com',
           password: 'teacher'
-         })
+        })
         .then(() => console.log('finished populating users'))
         .catch(err => console.log('error populating users', err));
       });
 
-      Course.find({}).remove()
+    Course.find({}).remove()
       .then(() => {
         Course.create({
-          subject: "Calculus of several variables",
+          subject: 'Calculus of several variables',
           maxStudents: 30
-        },{
-          subject: "Biology",
+        }, {
+          subject: 'Biology',
           maxStudents: 50
-        },{
-          subject: "Bio Chemistry",
+        }, {
+          subject: 'Bio Chemistry',
           maxStudents: 30
-        },{
-          subject: "Thinking",
+        }, {
+          subject: 'Thinking',
           maxStudents: 15
-        },{
-          subject: "Algebra",
+        }, {
+          subject: 'Algebra',
           maxStudents: 30
         })
         .then(() => console.log('finished populating courses'))
         .catch(err => console.log('error populating courses', err));
       });
-
   }
 }
