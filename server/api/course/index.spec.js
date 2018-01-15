@@ -1,7 +1,5 @@
 'use strict';
 
-/* globals sinon, describe, expect, it */
-
 var proxyquire = require('proxyquire').noPreserveCache();
 
 var courseCtrlStub = {
@@ -16,6 +14,7 @@ var courseCtrlStub = {
 var routerStub = {
   get: sinon.spy(),
   put: sinon.spy(),
+  patch: sinon.spy(),
   post: sinon.spy(),
   delete: sinon.spy()
 };
