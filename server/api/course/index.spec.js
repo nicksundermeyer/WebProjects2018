@@ -17,8 +17,7 @@ var routerStub = {
   get: sinon.spy(),
   put: sinon.spy(),
   post: sinon.spy(),
-  delete: sinon.spy(),
-  addStudent: sinon.spy()
+  delete: sinon.spy()
 };
 
 // require the index with our stubbed out modules
