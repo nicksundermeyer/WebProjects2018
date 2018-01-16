@@ -2,7 +2,7 @@
 
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './assignment.events';
-import Problem from './course.model';
+import Problem from '../problem/problem.model';
 
 
 var AssignmentSchema = new Schema({
