@@ -5,6 +5,11 @@ export default function routes($routeProvider) {
 
   $routeProvider.when('/student', {
     template: '<student></student>',
-    authenticate: 'student' //assuming there is a student role
+    authenticate: 'student'
+  });
+
+  $routeProvider.when('/student/courseDiscovery', {
+    template: '<course-discovery></course-discovery>',
+    authenticate: 'student'
   });
 }

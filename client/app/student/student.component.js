@@ -4,33 +4,12 @@ import routing from './student.routes';
 
 export class StudentController {
 
-  courses = [];
-  newCourse = '';
-
   /*@ngInject*/
   constructor($http) {
     this.$http = $http;
   }
 
   $onInit() {
-    this.$http.get('/api/courses')
-      .then(response => {
-        this.courses = response.data;
-      });
-  }
-
-  addTestCourse() {
-    if(this.newCourse) {
-      this.$http.post('/api/courses', {
-        subject: 'Mathematics',
-        maxStudents: 100
-      });
-      this.newCourse = '';
-    }
-  }
-
-  deleteThing(thing) {
-    this.$http.delete(`/api/things/${thing._id}`);
   }
 }
 
