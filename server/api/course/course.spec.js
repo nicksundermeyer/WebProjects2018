@@ -9,8 +9,7 @@ import User from '../user/user.model';
 //grab test use
 let testUser = User.find({"name" : "Test User"});
 
-//create test user
-userCtrl.create();
+console.log(testUser.role);
 
 var courseCtrlStub = {
     index: 'courseCtrl.index',
