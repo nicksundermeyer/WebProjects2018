@@ -11,7 +11,7 @@ var courseCtrlStub = {
     update: 'courseCtrl.upsert',
     destroy: 'courseCtrl.destroy'
   };
-  
+
 
 var routerStub = {
     get: sinon.spy(),
@@ -44,5 +44,13 @@ var courseIndex = proxyquire('./index.js', {
                 ).to.have.been.calledOnce;
         });
     });
+
+    describe('GET api/courses/:id', function() {
+      it('should route to course.controller.show', function(){
+        expect(routerStub.get
+          .withArgs('/', 'courseCtrl.show')
+        ).to.have.been.calledOnce;
+      })
+    })
 
   });//end router tests
