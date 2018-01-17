@@ -1,4 +1,8 @@
+'use strict';
 
+/* globals sinon, describe, expect, it */
+
+var proxyquire = require('proxyquire').noPreserveCache();
 
 var routerStub = {
     get: sinon.spy(),
