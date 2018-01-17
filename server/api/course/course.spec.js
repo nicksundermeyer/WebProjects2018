@@ -31,8 +31,6 @@ var courseIndex = proxyquire('./index.js', {
     './course.controller': courseCtrlStub
   });
 
-/**
- * 
 describe('GET api/courses', function(){
     it('should route to course.controller', function(){
         expect(routerStub.get
@@ -40,4 +38,3 @@ describe('GET api/courses', function(){
             ).to.have.been.calledOnce;
     });
 });
- */
