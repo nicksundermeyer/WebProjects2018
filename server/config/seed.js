@@ -49,35 +49,35 @@ export default function seedDatabaseIfNeeded() {
     User.find({}).remove()
       .then(() => {
         User.create({
-            provider: 'local',
-            role: 'user',
-            name: 'Test User',
-            email: 'test@example.com',
-            password: 'test'
-          }, {
-            provider: 'local',
-            role: 'admin',
-            name: 'Admin',
-            email: 'admin@example.com',
-            password: 'admin'
-          }, {
-            provider: 'local',
-            name: 'Test Student',
-            email: 'student@example.com',
-            password: 'student'
-          }, {
-            provider: 'local',
-            role: 'teacher',
-            name: 'Test Teacher',
-            email: 'teacher@example.com',
-            password: 'teacher'
-          }, {
-            provider: 'local',
-            role: 'teacher',
-            name: 'Second Teacher',
-            email: 'teacher2@example.com',
-            password: 'teacher'
-          })
+          provider: 'local',
+          role: 'user',
+          name: 'Test User',
+          email: 'test@example.com',
+          password: 'test'
+        }, {
+          provider: 'local',
+          role: 'admin',
+          name: 'Admin',
+          email: 'admin@example.com',
+          password: 'admin'
+        }, {
+          provider: 'local',
+          name: 'Test Student',
+          email: 'student@example.com',
+          password: 'student'
+        }, {
+          provider: 'local',
+          role: 'teacher',
+          name: 'Test Teacher',
+          email: 'teacher@example.com',
+          password: 'teacher'
+        }, {
+          provider: 'local',
+          role: 'teacher',
+          name: 'Second Teacher',
+          email: 'teacher2@example.com',
+          password: 'teacher'
+        })
           .then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
