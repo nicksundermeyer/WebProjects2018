@@ -5,6 +5,7 @@ import routing from './student.routes';
 export class CourseDiscoveryController {
 
   courses = [];
+  courseNames = [];
 
   /*@ngInject*/
   constructor($http) {
@@ -15,6 +16,10 @@ export class CourseDiscoveryController {
     this.$http.get('/api/courses')
       .then(response => {
         this.courses = response.data;
+        this.courses.forEach(course => {
+          this.courseNames.push(course.subject);
+        });
+        console.log(this.courseNames);
       });
   }
 
