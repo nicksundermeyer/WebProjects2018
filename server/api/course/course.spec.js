@@ -3,6 +3,14 @@
 /* globals sinon, describe, expect, it */
 
 var proxyquire = require('proxyquire').noPreserveCache();
+import * as auth from '../../auth/auth.service';
+import User from '../user/user.model';
+
+//grab test use
+let testUser = User.find({"name" : "Test User"});
+
+//create test user
+userCtrl.create();
 
 var courseCtrlStub = {
     index: 'courseCtrl.index',
@@ -52,5 +60,15 @@ var courseIndex = proxyquire('./index.js', {
         ).to.have.been.calledOnce;
       })
     })
+
+    describe('POST /api/courses', function() {
+        it('should route to course.controller.create', function() {
+          expect(routerStub.post
+            .withArgs('/'+auth.hasRole(testUser.role), 'courseCtrl.create')
+            ).to.have.been.calledOnce;
+        });
+    });
+
+
 
   });//end router tests
