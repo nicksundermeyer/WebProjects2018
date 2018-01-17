@@ -4,8 +4,8 @@ import routing from './student.routes';
 
 export class StudentController {
 
-  awesomeThings = [];
-  newThing = '';
+  courses = [];
+  newCourse = '';
 
   /*@ngInject*/
   constructor($http) {
@@ -13,18 +13,19 @@ export class StudentController {
   }
 
   $onInit() {
-    this.$http.get('/api/things')
+    this.$http.get('/api/courses')
       .then(response => {
-        this.awesomeThings = response.data;
+        this.courses = response.data;
       });
   }
 
-  addThing() {
-    if(this.newThing) {
-      this.$http.post('/api/things', {
-        name: this.newThing
+  addTestCourse() {
+    if(this.newCourse) {
+      this.$http.post('/api/courses', {
+        subject: 'Mathematics',
+        maxStudents: 100
       });
-      this.newThing = '';
+      this.newCourse = '';
     }
   }
 
