@@ -31,6 +31,11 @@ var courseIndex = proxyquire('./index.js', {
     './course.controller': courseCtrlStub
   });
 
+describe('Course API Router:', function() {
+it('should return an express router instance', function() {
+    expect(courseIndex).to.equal(routerStub);
+});
+
 describe('GET api/courses', function(){
     it('should route to course.controller', function(){
         expect(routerStub.get
