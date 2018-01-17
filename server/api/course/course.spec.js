@@ -15,9 +15,9 @@ var courseCtrlStub = {
 
 var routerStub = {
     get: sinon.spy(),
+    post: sinon.spy(),
     put: sinon.spy(),
     patch: sinon.spy(),
-    post: sinon.spy(),
     delete: sinon.spy()
   };
 
@@ -55,9 +55,9 @@ var courseIndex = proxyquire('./index.js', {
 
     describe('POST /api/courses', function() {
         it('should route to course.controller.create', function() {
-          expect(routerStub.post
-            .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
-            ).to.have.been.calledOnce;
+            expect(routerStub.post
+                .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
+                ).to.have.been.calledOnce;
         });
     });
 
