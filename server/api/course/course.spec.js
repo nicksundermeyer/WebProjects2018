@@ -53,14 +53,23 @@ var courseIndex = proxyquire('./index.js', {
       })
     })
 
-    describe('POST /api/courses', function() {
+    describe('GET api/courses/:id', function() {
+        it('should route to course.controller.show', function(){
+          expect(routerStub.get
+            .withArgs('/:id', 'authService.isAuthenticated' , 'courseCtrl.show')
+          ).to.have.been.calledOnce;
+        })
+      })
+
+
+    /*describe('POST /api/courses', function() {
         it('should route to course.controller.create', function() {
             expect(routerStub.post
                 .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
                 ).to.have.been.calledOnce;
         });
     });
-
+ */
 
 
   });//end router tests
