@@ -48,7 +48,7 @@ var courseIndex = proxyquire('./index.js', {
     describe('GET api/courses/:id', function() {
       it('should route to course.controller.show', function(){
         expect(routerStub.get
-          .withArgs('/', 'courseCtrl.show')
+          .withArgs('/:id', 'courseCtrl.show')
         ).to.have.been.calledOnce;
       })
     })
