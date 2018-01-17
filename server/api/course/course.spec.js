@@ -4,6 +4,15 @@
 
 var proxyquire = require('proxyquire').noPreserveCache();
 
+var authServiceStub = {
+    isAuthenticated() {
+      return 'authService.isAuthenticated';
+    },
+    hasRole(role) {
+      return `authService.hasRole.${role}`;
+    }
+  };
+
 var courseCtrlStub = {
     index: 'courseCtrl.index',
     show: 'courseCtrl.show',
@@ -28,7 +37,8 @@ var courseIndex = proxyquire('./index.js', {
         return routerStub;
       }
     },
-    './course.controller': courseCtrlStub
+    './course.controller': courseCtrlStub,
+    '../../auth/auth.service': authServiceStub
   });
 
   describe('Course API Router:', function() {
