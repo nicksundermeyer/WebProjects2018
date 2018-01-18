@@ -50,7 +50,15 @@ var courseIndex = proxyquire('./index.js', {
         expect(routerStub.get
           .withArgs('/:id', 'courseCtrl.show')
         ).to.have.been.calledOnce;
-      })
-    })
+      });
+    });
+
+    describe('POST /api/courses', function() {
+      it('should route to course.controller.create', function() {
+        expect(routerStub.post
+          .withArgs('/', 'courseCtrl.create')
+        ).to.have.been.calledOnce;
+      });
+    });
 
   });//end router tests
