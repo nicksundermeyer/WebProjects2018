@@ -4,6 +4,23 @@
 
 var proxyquire = require('proxyquire').noPreserveCache();
 
+var routerStub = {
+    get: sinon.spy(),
+    post: sinon.spy(),
+    put: sinon.spy(),
+    patch: sinon.spy(),
+    delete: sinon.spy()
+  };
+
+var authServiceStub = {
+    isAuthenticated() {
+      return 'authService.isAuthenticated';
+    },
+    hasRole(role) {
+      return `authService.hasRole.${role}`;
+    }
+  };
+
 var courseCtrlStub = {
     index: 'courseCtrl.index',
     show: 'courseCtrl.show',
@@ -13,14 +30,6 @@ var courseCtrlStub = {
   };
 
 
-var routerStub = {
-    get: sinon.spy(),
-    put: sinon.spy(),
-    patch: sinon.spy(),
-    post: sinon.spy(),
-    delete: sinon.spy()
-  };
-
 // require the index with our stubbed out modules
 var courseIndex = proxyquire('./index.js', {
     express: {
@@ -28,7 +37,8 @@ var courseIndex = proxyquire('./index.js', {
         return routerStub;
       }
     },
-    './course.controller': courseCtrlStub
+    './course.controller': courseCtrlStub,
+    '../../auth/auth.service': authServiceStub
   });
 
   describe('Course API Router:', function() {
@@ -60,5 +70,16 @@ var courseIndex = proxyquire('./index.js', {
         ).to.have.been.calledOnce;
       });
     });
+
+
+    describe('POST /api/courses', function() {
+        it('should route to course.controller.create', function() {
+            expect(routerStub.post
+                .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
+                ).to.have.been.calledOnce;
+        });
+    });
+
+
 
   });//end router tests
