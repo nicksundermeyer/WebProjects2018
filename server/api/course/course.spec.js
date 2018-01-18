@@ -25,7 +25,7 @@ var courseCtrlStub = {
     index: 'courseCtrl.index',
     show: 'courseCtrl.show',
     create: 'courseCtrl.create',
-    update: 'courseCtrl.upsert',
+    update: 'courseCtrl.update',
     destroy: 'courseCtrl.destroy'
   };
 
@@ -81,9 +81,9 @@ var courseIndex = proxyquire('./index.js', {
     });
 
     describe('POST /api/courses', function() {
-      it('should route to course.controller.create', function() {
-        expect(routerStub.post
-          .withArgs('/','authService.hasRole.student', 'courseCtrl.addStudent')
+      it('should route to course.controller.update', function() {
+        expect(routerStub.put
+          .withArgs('/','authService.hasRole.teacher', 'courseCtrl.update')
         ).to.have.been.calledOnce;
       });
     });
