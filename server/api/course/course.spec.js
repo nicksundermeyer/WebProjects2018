@@ -64,15 +64,6 @@ var courseIndex = proxyquire('./index.js', {
     });
 
     describe('POST /api/courses', function() {
-      it('should route to course.controller.create', function() {
-        expect(routerStub.post
-          .withArgs('/', 'courseCtrl.create')
-        ).to.have.been.calledOnce;
-      });
-    });
-
-
-    describe('POST /api/courses', function() {
         it('should route to course.controller.create', function() {
             expect(routerStub.post
                 .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
