@@ -4,6 +4,14 @@
 
 var proxyquire = require('proxyquire').noPreserveCache();
 
+var routerStub = {
+    get: sinon.spy(),
+    post: sinon.spy(),
+    put: sinon.spy(),
+    patch: sinon.spy(),
+    delete: sinon.spy()
+  };
+
 var authServiceStub = {
     isAuthenticated() {
       return 'authService.isAuthenticated';
@@ -21,14 +29,6 @@ var courseCtrlStub = {
     destroy: 'courseCtrl.destroy'
   };
 
-
-var routerStub = {
-    get: sinon.spy(),
-    post: sinon.spy(),
-    put: sinon.spy(),
-    patch: sinon.spy(),
-    delete: sinon.spy()
-  };
 
 // require the index with our stubbed out modules
 var courseIndex = proxyquire('./index.js', {
@@ -63,23 +63,15 @@ var courseIndex = proxyquire('./index.js', {
       })
     })
 
-    describe('GET api/courses/:id', function() {
-        it('should route to course.controller.show', function(){
-          expect(routerStub.get
-            .withArgs('/:id', 'authService.isAuthenticated' , 'courseCtrl.show')
-          ).to.have.been.calledOnce;
-        })
-      })
 
-
-    /*describe('POST /api/courses', function() {
+    describe('POST /api/courses', function() {
         it('should route to course.controller.create', function() {
             expect(routerStub.post
                 .withArgs('/','authService.hasRole.teacher', 'courseCtrl.create')
                 ).to.have.been.calledOnce;
         });
     });
- */
+
 
 
   });//end router tests
