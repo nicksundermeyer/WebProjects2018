@@ -80,6 +80,14 @@ var courseIndex = proxyquire('./index.js', {
         });
     });
 
+    describe('POST /api/courses', function() {
+      it('should route to course.controller.create', function() {
+        expect(routerStub.post
+          .withArgs('/','authService.hasRole.student', 'courseCtrl.addStudent')
+        ).to.have.been.calledOnce;
+      });
+    });
+
 
 
   });//end router tests
