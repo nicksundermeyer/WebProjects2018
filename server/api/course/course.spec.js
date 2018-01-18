@@ -72,6 +72,16 @@ var courseIndex = proxyquire('./index.js', {
         });
     });
 
+    describe('DELETE /api/courses/:id', function() {
+      it('should route to course.controller.destroy', function() {
+        expect(routerStub.delete
+          .withArgs('/:id', 'authService.hasRole.teacher','courseCtrl.destroy')
+        ).to.have.been.calledOnce;
+      });
+    });
+
+
+
 
 
   });//end router tests
