@@ -25,14 +25,8 @@ var courseCtrlStub = {
     index: 'courseCtrl.index',
     show: 'courseCtrl.show',
     create: 'courseCtrl.create',
-<<<<<<< HEAD
-    update: 'courseCtrl.upsert',
-    destroy: 'courseCtrl.destroy',
-
-=======
     update: 'courseCtrl.update',
     destroy: 'courseCtrl.destroy'
->>>>>>> d331e92dfef12db445f8ad854d45df813b399aab
   };
 
 
@@ -77,26 +71,20 @@ var courseIndex = proxyquire('./index.js', {
         });
     });
 
-<<<<<<< HEAD
     describe('DELETE /api/courses/:id', function() {
       it('should route to course.controller.destroy', function() {
         expect(routerStub.delete
-          .withArgs('/:id', 'authService.hasRole.teacher','courseCtrl.destroy')
-=======
-    describe('POST /api/courses', function() {
+          .withArgs('/:id', 'authService.hasRole.admin','courseCtrl.destroy')
+        ).to.have.been.calledOnce;
+    });
+    });
+
+    describe('POST /api/courses/:id', function() {
       it('should route to course.controller.update', function() {
         expect(routerStub.put
-          .withArgs('/','authService.hasRole.teacher', 'courseCtrl.update')
->>>>>>> 81d7579001464b704ea3b528f2f6706fb7538176
+          .withArgs('/:id','authService.hasRole.teacher', 'courseCtrl.update')
         ).to.have.been.calledOnce;
       });
     });
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 81d7579001464b704ea3b528f2f6706fb7538176
-
 
   });//end router tests
