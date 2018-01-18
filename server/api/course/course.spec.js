@@ -26,7 +26,8 @@ var courseCtrlStub = {
     show: 'courseCtrl.show',
     create: 'courseCtrl.create',
     update: 'courseCtrl.upsert',
-    destroy: 'courseCtrl.destroy'
+    destroy: 'courseCtrl.destroy',
+
   };
 
 
