@@ -8,7 +8,7 @@ export default function routes($routeProvider) {
     authenticate: 'student'
   });
 
-  $routeProvider.when('/student/courseDiscovery', {
+  $routeProvider.when('/student/courses', {
     template: '<course-discovery></course-discovery>',
     authenticate: 'student'
   });
