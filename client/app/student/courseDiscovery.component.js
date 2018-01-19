@@ -6,6 +6,7 @@ export class CourseDiscoveryController {
 
   courses = [];
   courseNames = [];
+  selectedCourses = [];
 
   /*@ngInject*/
   constructor($http) {
@@ -19,12 +20,20 @@ export class CourseDiscoveryController {
         this.courses.forEach(course => {
           this.courseNames.push(course.subject);
         });
-        console.log(this.courseNames);
+        this.selectedCourses = this.courses;
       });
   }
 
   deleteThing(thing) {
     this.$http.delete(`/api/things/${thing._id}`);
+  }
+
+  filterCourse(courseName) {
+    this.selectedCourses = this.courses;
+    let temp = this.selectedCourses.filter(course => course.subject.includes(courseName));
+    if(temp.length > 0) {
+      this.selectedCourses = temp;
+    }
   }
 }
 

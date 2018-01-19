@@ -5,9 +5,9 @@
 </header>
 <br>
 <div class="container">
-  <typeahead values="courseDiscoveryController.courseNames"></typeahead>
+  <typeahead submit="courseDiscoveryController.filterCourse(value)" values="courseDiscoveryController.courseNames"></typeahead>
 </div>
 
-<div ng-repeat="aCourse in courseDiscoveryController.courses">
+<div ng-repeat="aCourse in courseDiscoveryController.selectedCourses">
   <course-card course="aCourse"></course-card>
 </div>
