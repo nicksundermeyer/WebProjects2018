@@ -20,7 +20,22 @@ var CourseSchema = new Schema({
   },
   enrolledStudents: [mongoose.Schema.Types.ObjectId],
 
-  teacherID: mongoose.Schema.Types.ObjectId
+  teacherID: mongoose.Schema.Types.ObjectId,
+
+  assignments: [{
+    minNumProblems: Number,
+    maxNumProblems: {
+      type: Number,
+      required: true
+    },
+    //new problems will be fetched from problem engine
+    //existing problems will be fetched from local DB from problem table
+    newProblemPercentage: {
+      type: Number,
+      required: true
+    },
+    problems: [mongoose.Schema.Types.ObjectId]
+  }]
 
 }, { usePushEach: true });
 
