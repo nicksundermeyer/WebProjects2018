@@ -11,12 +11,12 @@ var CourseSchema = new Schema({
     required: true
   },
   description: String,
-  subjects: [mongoose.Schema.Types.ObjectId],
-  categories: String, enum: shared.subject,
-  assignments: String, enum: shared.categories,
+  subjects: String, enum: shared.subject,
+  categories: String, enum: shared.categories,
   maxStudents: {
     type: Number,
-    required: true
+    required: true,
+    default: -1 //default is -1 for unlimeted number of students
   },
   enrolledStudents: [mongoose.Schema.Types.ObjectId],
 
