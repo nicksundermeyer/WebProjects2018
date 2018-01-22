@@ -4,6 +4,7 @@ import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './problem.events';
 
 
+
 var ProblemSchema = new Schema({
 
   protocol: {
@@ -19,12 +20,14 @@ var ProblemSchema = new Schema({
   },
 
   problem: {
-    subject: {type: String, required: true, default: null},
-    category: {type: String, required: true, default: null},
+    subject: {type: String, default: null},
+    category: {type: String, default: null},
     depth: {type: Number, required: true, default: 1},
-    'problem id': {type: String, required: true, default: null}
+    problemId: {type: String, required: true, default: null},
+    description: {type: Object, default: null},
+    solution: {type: Object, required: true, default: null}
   }
-});
+}, { minimize: false });
 
 
 registerEvents(ProblemSchema);
