@@ -81,27 +81,6 @@ export default function seedDatabaseIfNeeded() {
           .then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
-
-    Course.find({}).remove()
-      .then(() => {
-        Course.create({
-          subject: 'Calculus of several variables',
-          maxStudents: 30
-        }, {
-          subject: 'Biology',
-          maxStudents: 50
-        }, {
-          subject: 'Bio Chemistry',
-          maxStudents: 30
-        }, {
-          subject: 'Thinking',
-          maxStudents: 15
-        }, {
-          subject: 'Algebra',
-          maxStudents: 30
-        })
-          .then(() => console.log('finished populating courses'))
-          .catch(err => console.log('error populating courses', err));
-      });
+      //add course seed
   }
 }
