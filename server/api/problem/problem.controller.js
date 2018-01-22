@@ -46,7 +46,7 @@ export function create(req, res) {
       problem.problem.depth = response.data.problem.depth;
       problem.problem.problemId = response.data.problem.problemId;
       problem.save();
-      return res.json(problem).status(204).end();
+      return res.json(problem).status(204);
     })
     .catch(function () {
       return res.status(400).end();

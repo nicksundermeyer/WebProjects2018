@@ -2,14 +2,13 @@
 
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './assignment.events';
-import Problem from '../problem/problem.model';
 
 
 var AssignmentSchema = new Schema({
   problems: {
     subject: String,
     category: [String],
-    content: [Problem]
+    content: [mongoose.Schema.Types.ObjectId]
   }
 }, {usePushEach: true});
 
