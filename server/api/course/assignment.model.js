@@ -5,7 +5,6 @@ import {registerEvents} from './assignment.events';
 
 
 var AssignmentSchema = new Schema({
-  
 }, {usePushEach: true});
 
 
