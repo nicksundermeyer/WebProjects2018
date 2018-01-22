@@ -3,7 +3,11 @@
     <h1>Course Discovery Page</h1>
   </div>
 </header>
+<br>
+<div class="container">
+  <typeahead submit="courseDiscoveryController.filterCourse(value)" values="courseDiscoveryController.courseNames"></typeahead>
+</div>
 
-<div ng-repeat="aCourse in courseDiscoveryController.courses">
+<div ng-repeat="aCourse in courseDiscoveryController.selectedCourses">
   <course-card course="aCourse"></course-card>
 </div>
