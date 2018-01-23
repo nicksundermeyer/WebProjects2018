@@ -32,9 +32,7 @@ var CourseSchema = new Schema({
     newProblemPercentage: {
       type: Number,
       required: true
-    },
-
-    problems: [mongoose.Schema.Types.ObjectId]
+    }
   }]
 
 }, { usePushEach: true });
