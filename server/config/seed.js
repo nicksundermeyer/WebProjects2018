@@ -81,6 +81,39 @@ export default function seedDatabaseIfNeeded() {
           .then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
-      //add course seed
+      
+    Course.find({}).remove()
+      .then(() => {
+        Course.create({
+          name: "Biology",
+          description: "Biology is the topic.",
+          maxStudents: 30,
+          assignments: [{
+            minNumProblems: 2,
+            maxNumProblems: 12,
+            newProblemPercentage: 15
+          }]
+        }, {
+          name: "Algebra",
+          description: "Algebra is the topic.",
+          maxStudents: 50,
+          assignments: [{
+            minNumProblems: 5,
+            maxNumProblems: 20,
+            newProblemPercentage: 25
+          }]
+        }, {
+          name: "Chemistry",
+          description: "Chemistry is the topic.",
+          maxStudents: 25,
+          assignments: [{
+            minNumProblems: 2,
+            maxNumProblems: 12,
+            newProblemPercentage: 15
+          }]
+        })
+          .then(() => console.log('finished populating courses'))
+          .catch(err => console.log('error populating courses', err));
+      });
   }
 }
