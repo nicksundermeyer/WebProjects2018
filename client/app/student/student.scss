@@ -22,6 +22,27 @@
   background: #4393B9;
 }
 
-.navbar-text {
-  margin-left: 15px;
+.navbar-fixed-left {
+  width: 140px;
+  border-radius: 10px;
+  height: 600px;
+  overflow: auto;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
+}
+
+.problem-container {
+  border-radius: 10px;
+  height: 600px;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
+  margin-left: 10px;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;
+  width: 100%;
+  text-align: left;
 }
