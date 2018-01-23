@@ -6,6 +6,8 @@ export class AssignmentController {
 
   assignment;
   course;
+  selectedProblem;
+  problems;
 
   /*@ngInject*/
   constructor($http, $routeParams) {
@@ -17,10 +19,17 @@ export class AssignmentController {
     this.$http.get('/api/courses/' + this.$routeParams.courseId)
       .then(response => {
         this.course = response.data;
-        this.assignment = this.course.assignments[this.$routeParams.assignmentId];
-        console.log(this.assignment);
+        this.assignment = this.course.assignments.find(asmt => {
+          return asmt._id === this.$routeParams.assignmentId;
+        });
+        this.problems = this.assinment.problems;
+        if(this.$routeParams.problemId === null) {
+          this.selectedProblem = this.problems[0];
+        }
+        else {
+          this.selectedProblem = this.problems[this.$routeParams.problemId];
+        }
       });
-
   }
 }
 
