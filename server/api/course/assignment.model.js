@@ -16,3 +16,20 @@ var AssignmentSchema = new Schema({
 
 registerEvents(AssignmentSchema);
 export default mongoose.model('Assignment', AssignmentSchema);
+
+AssignmentSchema.methods = {
+
+    /**
+    * Populate Assignments with the assignments from the AbstractCourse
+    *
+    * @param {AbstractCourse} abstractCourse
+    */
+    populateProblems() {
+
+
+    }
+
+
+}
+
+

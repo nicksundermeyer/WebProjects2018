@@ -1,6 +1,7 @@
 'use strict';
 
 import Course from './course.model';
+import TailoredCourse from './tailoredCourse.model';
 import shared from './../../config/environment/shared';
 
 export function index(req, res) {
@@ -96,6 +97,7 @@ export function addStudent(req, res) {
       if (course) {
         course.enrolledStudents.push(req.user._id);
         course.save();
+        createCourseAndAddToStudent(req.user, course);
         return res.status(201).json(course);
       } else {
         return res.status(204).end();
@@ -105,6 +107,43 @@ export function addStudent(req, res) {
       res.status(400);
       res.send(err);
     });
+}
+
+function createCourseAndAddToStudent(user, course) {
+  // Using predefined assignment information from course, create a new tailored Course
+
+  // Create Assignments for TailoredCourse
+  var tailoredAssignments = [];
+  for (var assignment in course.assignments) {
+     var newAssignment = generateAssignmentsWith(assignment);
+     tailoredAssignments.push(tailoredAssignments)
+  }
+
+  // Create TailoredCourse
+  var newTailoredCourse = TailoredCourse.create({
+            subject: course.subject,
+            assignments: tailoredAssignments
+           })
+
+    // Add course to user object
+    user.courses.push(newTailoredCourse);
+    user.save();
+}
+
+function generateAssignmentWith(assignment) {
+  // Generate problems with parameters
+  var problems = [];
+
+
+  // Create Assignment with problems
+  var newAssignment = Assignment.create({
+
+    //Assignment Parameters and add problems
+
+  })
+
+  return newAssignment
+
 }
 
 //only allow the course teacher or role greater than teacher permission
