@@ -4,13 +4,13 @@
       <h3 class="card-title">{{courseCardController.course.name}}</h3>
     </div>
     <div class="card-body">
-      <h6 class="card-text">{{courseCardController.course.description}}</h6>
+      <h5 class="card-text">{{courseCardController.course.description}}</h5>
     </div>
     <div class="card-footer">
       <p>Subjects: </p><p ng-repeat="subject in courseCardController.course.subjects">{{subject}}, </p>
       <p>Categories: </p><p ng-repeat="category in courseCardController.course.categories">{{category}}, </p>
   </div>
-    <a href="/student/courses/{{courseCardController.course._id}}" class="btn btn-primary infoButton">More Info</a>
+    <a href="/student/course/{{courseCardController.course._id}}" class="btn btn-primary infoButton">More Info</a>
   </div>
 </div>
 
