@@ -21,4 +21,10 @@ export default function routes($routeProvider) {
     template: '<assignment></assignment>',
     authenticate: 'student'
   });
+
+  $routeProvider.when('/student/course/:courseId/assignment/:assignmentId/problem/:problemId', {
+    template: '<assignment></assignment>',
+    authenticate: 'student'
+  });
+
 }

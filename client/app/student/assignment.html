@@ -4,21 +4,18 @@
   </div>
 </header>
 <br>
-<div class="container">
-  <div class="navbar navbar-inverse navbar-fixed-left col-lg-2">
-    <ul class="nav navbar-nav">
-      <li><a href="#"><h3><i class="glyphicon glyphicon-ok-circle"></i> 1</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-remove-circle"></i> 2</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-unchecked"></i> 3</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-ok-circle"></i> 4</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-ok-circle"></i> 5</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-remove-circle"></i> 6</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-unchecked"></i> 7</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-remove-circle"></i> 8</h3></a></li>
-      <li><a href="#"><h3><i class="glyphicon glyphicon-unchecked"></i> 9</h3></a></li>
-    </ul>
-  </div>
-  <div class="problem-container container col-lg-10">
-    <problem ></problem>
+<div class = "container">
+  <div class="row">
+    <div class="navbar navbar-inverse navbar-fixed-left col-lg-2 col-md-2" col-sm-2 col-xs-1>
+      <ul class="nav navbar-nav">
+        <li ng-repeat="aProblem in assignmentController.problems">
+          <a href="/student/course/{{assignmentController.course._id}}/assignment/{{assignmentController.assignment._id}}/problem/{{aProblem._id}}">
+            <h3><i class="glyphicon glyphicon-ok-circle"></i></h3></a>
+        </li>
+      </ul>
+    </div>
+    <div class="problem-container container col-lg-8 col-md-8 col-sm-8 col-xs-6">
+      <problem myProblem="assignmentController.selectedProblem"></problem>
+    </div>
   </div>
 </div>
