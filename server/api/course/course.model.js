@@ -16,10 +16,9 @@ var CourseSchema = new Schema({
   maxStudents: {
     type: Number,
     required: true,
-    default: -1 //default is -1 for unlimeted number of students
+    default: -1 //default is -1 for unlimited number of students
   },
   enrolledStudents: [mongoose.Schema.Types.ObjectId],
-
   teacherID: mongoose.Schema.Types.ObjectId,
 
   assignments: [{
@@ -28,13 +27,12 @@ var CourseSchema = new Schema({
       type: Number,
       required: true
     },
-    //new problems will be fetched from problem engine
+    //New problems will be fetched from problem engine
     //existing problems will be fetched from local DB from problem table
     newProblemPercentage: {
       type: Number,
       required: true
-    },
-    problems: [mongoose.Schema.Types.ObjectId]
+    }
   }]
 
 }, { usePushEach: true });
