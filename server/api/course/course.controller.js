@@ -4,7 +4,8 @@ import Course from './course.model';
 import * as controller from './../problem/';
 import shared from './../../config/environment/shared';
 import Assignment from './assignment.model';
-import Problem from './../problem/problem.model'
+import Problem from './../problem/problem.model';
+import TailoredCourse from './tailoredCourse.model';
 
 export function index(req, res) {
   Course.find()
@@ -131,14 +132,14 @@ function createCourseAndAddToStudent(user, course) {
   console.log(course.assignments);
   for (var assignment in course.assignments) {
     console.log("Loop over assignments");
-    console.log(assignment);
-     var newAssignment = generateAssignmentsWith(course, assignment);
+    console.log(course.assignments[assignment]);
+     var newAssignment = generateAssignmentsWith(course, course.assignments[assignment]);
      tailoredAssignments.push(tailoredAssignments)
   }
 
   // Create TailoredCourse
   console.log("--Create TailoredCourse To add--");
-  var newTailoredCourse = TailoredCourse.create({
+  var newTailoredCourse = new TailoredCourse({
     name: course.name,
     description: course.description,
     subjects: course.subjects,
@@ -149,6 +150,7 @@ function createCourseAndAddToStudent(user, course) {
 
     // Add course to user object
     console.log("--Add TailoredCourse--");
+    console.log(newTailoredCourse);
     user.courses.push(newTailoredCourse);
     user.save();
 }
@@ -163,45 +165,45 @@ function createCourseAndAddToStudent(user, course) {
 * @params {Assignment} assignment
 * @return {Assignment}
 */
-function generateAssignmentWith(course,assignment) {
+function generateAssignmentsWith(course,assignment) {
   console.log("--Generate Problems--");
   // Generate problems with parameters
   var problems = [];
   var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-  var numberOfNew = Math.floor(numberOfProblems*(newProblemPercentage/100));
+  var numberOfNew = Math.floor(numberOfProblems*(assignment.newProblemPercentage/100));
 
   //Get old problems
   console.log("--Get Old Problems--");
-  Problem.find({ "problem.subject": course.subjects[0], "problem.category": course.categories[0]})
-    .limit(numberOfProblems - numberOfNew)
-    .exec(function(err, fetchedProblems) {
-      if(err) {
-        console.log(err);
-        return
-      } else {
-        console.log(fetchedProblems)
-      }
-    });
 
-  var req = {
-    "protocol" : "dpg",
-      "version" : "0.1",
-      "problem" :
-      {
-        "subject" : "algebra",
-        "category" : "multiplication",
-        "depth" : 1
-      }
-  }
-  console.log("--Request New Problems--");
-  var response;
-  var newProblems = controller.create(req,response);
-  console.log(response);
+//  Problem.find({ "problem.subject": course.subjects[0], "problem.category": course.categories[0]})
+//    .limit(numberOfProblems - numberOfNew)
+//    .exec(function(err, fetchedProblems) {
+//      if(err) {
+//        console.log(err);
+//        return
+//      } else {
+//        console.log(fetchedProblems)
+//      }
+//    });
+//
+//  var req = {
+//    "protocol" : "dpg",
+//      "version" : "0.1",
+//      "problem" :
+//      {
+//        "subject" : "algebra",
+//        "category" : "multiplication",
+//        "depth" : 1
+//      }
+//  }
+//  console.log("--Request New Problems--");
+//  var response;
+//  var newProblems = controller.create(req,response);
+//  console.log(response);
 
   console.log("--Create Assignment--");
   // Create Assignment with problems
-  var newAssignment = Assignment.create({
-
+  var newAssignment = new Assignment({
     minNumProblems: assignment.minNumProblems,
     maxNumProblems: assignment.maxNumProblems,
     newProblemPercentage: assignment.maxNumProblems,
