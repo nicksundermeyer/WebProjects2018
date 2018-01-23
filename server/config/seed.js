@@ -10,7 +10,7 @@ import Course from '../api/course/course.model';
 import config from './environment/';
 
 export default function seedDatabaseIfNeeded() {
-  if (config.seedDB) {
+  if(config.seedDB) {
     Thing.find({}).remove()
       .then(() => {
         let thing = Thing.create({
@@ -81,12 +81,11 @@ export default function seedDatabaseIfNeeded() {
           .then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
-      
     Course.find({}).remove()
       .then(() => {
         Course.create({
-          name: "Biology",
-          description: "Biology is the topic.",
+          name: 'Biology',
+          description: 'Biology is the topic.',
           maxStudents: 30,
           assignments: [{
             minNumProblems: 2,
@@ -94,8 +93,8 @@ export default function seedDatabaseIfNeeded() {
             newProblemPercentage: 15
           }]
         }, {
-          name: "Algebra",
-          description: "Algebra is the topic.",
+          name: 'Algebra',
+          description: 'Algebra is the topic.',
           maxStudents: 50,
           assignments: [{
             minNumProblems: 5,
@@ -103,8 +102,8 @@ export default function seedDatabaseIfNeeded() {
             newProblemPercentage: 25
           }]
         }, {
-          name: "Chemistry",
-          description: "Chemistry is the topic.",
+          name: 'Chemistry',
+          description: 'Chemistry is the topic.',
           maxStudents: 25,
           assignments: [{
             minNumProblems: 2,

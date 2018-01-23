@@ -3,22 +3,17 @@
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './problem.events';
 
-
-
 var ProblemSchema = new Schema({
-
   protocol: {
     type: String,
     required: true,
     default: 'dpg'
   },
-
   version: {
     type: String,
     required: true,
     default: '.01'
   },
-
   problem: {
     subject: {type: String, default: null},
     category: {type: String, default: null},

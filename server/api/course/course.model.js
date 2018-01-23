@@ -5,7 +5,6 @@ import {registerEvents} from './course.events';
 import shared from './../../config/environment/shared';
 
 var CourseSchema = new Schema({
-
   name: {
     type: String,
     required: true
@@ -20,7 +19,6 @@ var CourseSchema = new Schema({
   },
   enrolledStudents: [mongoose.Schema.Types.ObjectId],
   teacherID: mongoose.Schema.Types.ObjectId,
-
   assignments: [{
     minNumProblems: Number,
     maxNumProblems: {

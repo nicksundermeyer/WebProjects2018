@@ -1,38 +1,21 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './course.events';
-import Assignment from './assignments.model';
+import Assignment from './assignment.model';
+import shared from './../../config/environment/shared';
 
 
 var TailoredCourseSchema = new Schema({
-
-  subject: {
+  name: {
     type: String,
     required: true
   },
-
+  description: String,
+  subjects: String, enum: shared.subject,
+  categories: String, enum: shared.categories,
   teacherID: mongoose.Schema.Types.ObjectId,
-
-  assignments: [Assignment]
+  assignments: [Assignment.schema]
 
 }, { usePushEach: true });
 
-
-
-
-TailoredCourseSchema.methods = {
-    /**
-    * Populate Assignments with the assignments from the AbstractCourse
-    *
-    * @param {AbstractCourse} abstractCourse
-    */
-    populateAssignments(courseAssignments) {
-
-
-
-    }
- }
-
-registerEvents(TailoredCourseSchema);
 export default mongoose.model('TailoredCourse', TailoredCourseSchema);
