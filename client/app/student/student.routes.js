@@ -16,4 +16,9 @@ export default function routes($routeProvider) {
   $routeProvider.when('/student/course/:id', {
     // an example route for course detail page
   });
+
+  $routeProvider.when('/student/course/:courseId/assignment/:assignmentId', {
+    template: '<assignment></assignment>',
+    authenticate: 'student'
+  });
 }
