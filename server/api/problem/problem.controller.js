@@ -1,6 +1,7 @@
 'use strict';
 
 import Problem from './problem.model';
+import shared from './../../config/environment/shared';
 
 export function index(req, res) {
   Problem.find()
@@ -33,10 +34,8 @@ export function show(req, res) {
 
 export function create(req, res) {
   const axios = require('axios');
-  const url =
-    'https://problem-engine.herokuapp.com/problems';
   axios
-    .post(url, req.body)
+    .post(shared.problemEngineUrl, req.body)
     .then(function (response) {
       var problem = new Problem();
       problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
