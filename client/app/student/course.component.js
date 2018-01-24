@@ -18,6 +18,7 @@ export class CourseController {
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
+        console.log(this.assignments);
       });
   }
 }

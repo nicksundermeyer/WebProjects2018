@@ -39,7 +39,7 @@ import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
 
-  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
+  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, assignmentCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

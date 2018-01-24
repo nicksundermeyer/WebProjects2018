@@ -24,11 +24,4 @@ describe('Component: CourseComponent', function() {
       $scope: scope
     });
   }));
-
-  it('should attach a list of things to the controller', function() {
-    courseComponent.$onInit();
-    $httpBackend.flush();
-    expect(courseComponent.awesomeThings.length)
-      .to.equal(4);
-  });
 });
