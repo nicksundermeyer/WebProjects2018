@@ -8,12 +8,24 @@ export default function routes($routeProvider) {
     authenticate: 'student'
   });
 
-  $routeProvider.when('/student/courses', {
+  $routeProvider.when('/student/course', {
     template: '<course-discovery></course-discovery>',
     authenticate: 'student'
   });
 
-  $routeProvider.when('/student/courses/:id', {
-    // an example route for course detail page
+  $routeProvider.when('/student/course/:id', {
+    template: '<course></course>',
+    authenticate: 'student'
   });
+
+  $routeProvider.when('/student/course/:courseId/assignment/:assignmentId', {
+    template: '<assignment></assignment>',
+    authenticate: 'student'
+  });
+
+  $routeProvider.when('/student/course/:courseId/assignment/:assignmentId/problem/:problemId', {
+    template: '<assignment></assignment>',
+    authenticate: 'student'
+  });
+
 }

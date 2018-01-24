@@ -1,15 +1,16 @@
 'use strict';
 
 import Problem from './problem.model';
+import shared from './../../config/environment/shared';
 
 export function index(req, res) {
   Problem.find()
     .exec()
-    .then(function (problems) {
+    .then(function(problems) {
       return res.status(200).json(problems);
     })
     //Print errors
-    .catch(function (err) {
+    .catch(function(err) {
       res.status(500);
       res.send(err);
     });
@@ -19,25 +20,23 @@ export function index(req, res) {
 export function show(req, res) {
   Problem.findById(req.params.id)
     .exec()
-    .then(function (problem) {
-      if (problem) {
+    .then(function(problem) {
+      if(problem) {
         return res.status(200).json(problem);
       } else {
         return res.status(204).end();
       }
     })
-    .catch(function () {
+    .catch(function() {
       return res.status(404).end();
     });
 }
 
 export function create(req, res) {
   const axios = require('axios');
-  const url =
-    'https://problem-engine.herokuapp.com/problems';
   axios
-    .post(url, req.body)
-    .then(function (response) {
+    .post(shared.problemEngineUrl, req.body)
+    .then(function(response) {
       var problem = new Problem();
       problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
       problem.problem.solution = JSON.parse(JSON.stringify(response.data.problem.solution));
@@ -48,9 +47,8 @@ export function create(req, res) {
       problem.save();
       return res.json(problem).status(204);
     })
-    .catch(function () {
+    .catch(function() {
       return res.status(400).end();
     });
-
 }
 

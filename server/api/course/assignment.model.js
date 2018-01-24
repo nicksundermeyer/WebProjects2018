@@ -1,17 +1,22 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './assignment.events';
-
+import shared from './../../config/environment/shared';
+import Problem from './../problem/problem.model'
 
 var AssignmentSchema = new Schema({
-  problems: {
-    subject: String,
-    category: [String],
-    content: [mongoose.Schema.Types.ObjectId]
-  }
-}, {usePushEach: true});
+  minNumProblems: Number,
+  maxNumProblems: {
+    type: Number,
+    required: true
+  },
+  newProblemPercentage: {
+    type: Number,
+    required: true
+  },
+  problems: [Problem.schema]
 
 
-registerEvents(AssignmentSchema);
+}, { usePushEach: true });
+
 export default mongoose.model('Assignment', AssignmentSchema);

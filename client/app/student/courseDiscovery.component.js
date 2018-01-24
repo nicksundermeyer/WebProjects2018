@@ -18,7 +18,7 @@ export class CourseDiscoveryController {
       .then(response => {
         this.courses = response.data;
         this.courses.forEach(course => {
-          this.courseNames.push(course.subject);
+          this.courseNames.push(course.name);
         });
         this.selectedCourses = this.courses;
       });
