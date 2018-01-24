@@ -31,11 +31,13 @@ import student from './student/student.component';
 import teacher from './teacher/teacher.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
+import problemCard from '../components/problemCard/problemCard.component';
+
 
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
-  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, courseDiscovery, typeahead, main, constants, util, student, teacher
+  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
