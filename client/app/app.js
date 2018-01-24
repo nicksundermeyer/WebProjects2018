@@ -38,11 +38,8 @@ import problemCard from '../components/problemCard/problemCard.component';
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
-<<<<<<< HEAD
+
   account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
-=======
-  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, courseDiscovery, typeahead, main, constants, util, student, teacher, assignmentCard
->>>>>>> upstream/sprint-01
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
