@@ -26,7 +26,7 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   courses: [TailoredCourse.schema]
-});
+}, { usePushEach: true });
 
 /**
  * Virtuals

@@ -118,7 +118,7 @@ console.log("--Add Student to Course--");
 * Generate a TailoredCourse that is specific to the student
 * include unique assignments and problems
 *
-* TODO: Make function a promise so that it will return resolved and avoid the addStudent function from timming out. I am not sure how to go about doing this.
+* TODO: Error handling.
 *
 * @params {User} user - Student that is getting the tailoredCourse
 * @params {Course} - The abstractCourse with details on for creating the tailored Course
@@ -129,12 +129,11 @@ function createCourseAndAddToStudent(user, course) {
   // Create Assignments for TailoredCourse
   console.log("--Create Assignments--");
   var tailoredAssignments = [];
-  console.log(course.assignments);
-  for (var assignment in course.assignments) {
+  for(var i = 0; i < course.assignments.length; i++) {
     console.log("Loop over assignments");
-    console.log(course.assignments[assignment]);
-     var newAssignment = generateAssignmentsWith(course, course.assignments[assignment]);
-     tailoredAssignments.push(tailoredAssignments)
+    console.log(course.assignments[i]);
+     var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
+     tailoredAssignments.push(newAssignment)
   }
 
   // Create TailoredCourse
@@ -160,6 +159,7 @@ function createCourseAndAddToStudent(user, course) {
 * parameters from a AbstractCourse and AbstractCourse.assignment
 *
 * TODO: Improve the question requesting process and ensure that new are added to the DB and old are properly queried
+* TODO: Some of the attributes are not being copied into the new objects
 *
 * @params {Course} course
 * @params {Assignment} assignment
@@ -206,7 +206,7 @@ function generateAssignmentsWith(course,assignment) {
   var newAssignment = new Assignment({
     minNumProblems: assignment.minNumProblems,
     maxNumProblems: assignment.maxNumProblems,
-    newProblemPercentage: assignment.maxNumProblems,
+    newProblemPercentage: assignment.newProblemPercentage,
     problems: problems
 
    });
