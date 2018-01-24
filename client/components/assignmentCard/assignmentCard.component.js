@@ -3,7 +3,7 @@
 import angular from 'angular';
 
 export class AssignmentCardComponent {
-  test = 100;
+
   /*@ngInject*/
   constructor($location) {
     'ngInject';
