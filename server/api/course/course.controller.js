@@ -11,7 +11,7 @@ export function index(req, res) {
   Course.find()
     .exec()
     .then(function(courses) {
-       res.status(200).json(courses);
+       return res.status(200).json(courses);
     })
     //Print errors
     .catch(function(err) {
@@ -63,10 +63,7 @@ export function update(req, res) {
           course.name = req.body.name;
           course.description = req.body.description;
           course.maxStudents = req.body.maxStudents;
-          // course.assignments.minNumProblems = req.body.assignments.minNumProblems;
-          // course.assignments.maxNumProblems = req.body.assignments.maxNumProblems;
-          // course.assignments.newProblemPercentage = req.body.assignments.newProblemPercentage;
-
+          
           return course.save()
             .then(() => {
               return res.status(204).end();

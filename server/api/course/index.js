@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import * as controller from './course.controller';
+import * as problemEngine from '../problem/problem.controller';
 import * as auth from '../../auth/auth.service';
 
 var router = new Router();
@@ -10,6 +11,6 @@ router.post('/', auth.hasRole('teacher'), controller.create);
 router.post('/:id', auth.hasRole('student'), controller.addStudent); // Add Student to course
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.put('/:id', auth.hasRole('teacher'), controller.update);
-
+router.post('/assignment/problems', auth.hasRole('admin'), problemEngine.create);
 
 module.exports = router;

@@ -16,7 +16,6 @@ export function index(req, res) {
     });
 }
 
-
 export function show(req, res) {
   Problem.findById(req.params.id)
     .exec()
