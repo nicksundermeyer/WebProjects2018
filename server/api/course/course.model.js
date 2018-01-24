@@ -10,8 +10,14 @@ var CourseSchema = new Schema({
     required: true
   },
   description: String,
-  subjects: String, enum: shared.subject,
-  categories: String, enum: shared.categories,
+  subjects: {
+    type: String,
+    enum: shared.subject
+  },
+  categories: {
+    type: String,
+    enum: shared.categories
+  },
   maxStudents: {
     type: Number,
     required: true,
