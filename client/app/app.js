@@ -24,6 +24,7 @@ import course from './student/course.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import courseDiscovery from './student/courseDiscovery.component';
+import assignmentCard from '../components/assignmentCard/assignmentCard.component';
 import courseCard from '../components/courseCard/courseCard.component';
 import typeahead from '../components/typeahead/typeahead.component';
 import main from './main/main.component';
@@ -37,7 +38,11 @@ import problemCard from '../components/problemCard/problemCard.component';
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
+<<<<<<< HEAD
   account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
+=======
+  account, admin, 'validation.match', navbar, footer, assignment, course, courseCard, courseDiscovery, typeahead, main, constants, util, student, teacher, assignmentCard
+>>>>>>> upstream/sprint-01
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
