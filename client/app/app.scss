@@ -22,6 +22,7 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 @import 'main/main';
 @import 'student/student';
 @import 'teacher/teacher';
+@import '../components/assignmentCard/assignmentCard';
 @import '../components/courseCard/courseCard';
 @import '../components/footer/footer';
 @import '../components/modal/modal';

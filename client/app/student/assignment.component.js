@@ -19,6 +19,7 @@ export class AssignmentController {
     this.$http.get('/api/courses/' + this.$routeParams.courseId)
       .then(response => {
         this.course = response.data;
+        console.log(this.course);
         this.assignment = this.course.assignments.find(asmt => {
           return asmt._id === this.$routeParams.assignmentId;
         });
