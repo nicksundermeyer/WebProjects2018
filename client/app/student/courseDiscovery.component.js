@@ -29,8 +29,9 @@ export class CourseDiscoveryController {
   }
 
   filterCourse(courseName) {
+    console.log('test');
     this.selectedCourses = this.courses;
-    let temp = this.selectedCourses.filter(course => course.subject.includes(courseName));
+    let temp = this.selectedCourses.filter(course => course.name.includes(courseName));
     if(temp.length > 0) {
       this.selectedCourses = temp;
     }
