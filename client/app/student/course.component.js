@@ -7,6 +7,7 @@ export class CourseController {
   assignments = [];
   course;
 
+  /*@ngInject*/
   constructor($http, $routeParams) {
     this.$http = $http;
     this.$routeParams = $routeParams;
@@ -27,9 +28,6 @@ export default angular.module('webProjectsApp.course', [ngRoute])
     template: require('./course.html'),
     controller: CourseController,
     controllerAs: 'courseController',
-    bindings: {
-      course: '='
-    }
   })
   .name;
 

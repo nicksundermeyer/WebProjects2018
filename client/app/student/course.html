@@ -4,15 +4,7 @@
   </div>
 </header>
 <br>
-<div class="wrapper">
-  <div class="one">photo</div>
-  <div class="two"> <div ng-repeat="anAssignment in courseController.courese.assignment._id">
-    <course-card course="aCourse"></course-card>
-  </div>
-  </div>
+<div ng-repeat="anAssignment in courseController.assignments">
+  <assignment-card assignment="anAssignment" courseid="courseController.course._id"></assignment-card>
 </div>
-  <div class="content">
-  <div class="contentPosition">
-  </div>
-  </div>
 

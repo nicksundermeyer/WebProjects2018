@@ -3,6 +3,7 @@
 import angular from 'angular';
 
 export class AssignmentCardComponent {
+  test = 100;
   /*@ngInject*/
   constructor($location) {
     'ngInject';
@@ -17,7 +18,8 @@ export default angular.module('directives.assignmentCard', [])
     controller: AssignmentCardComponent,
     controllerAs: 'assignmentCardController',
     bindings: {
-      assignment: '='
+      assignment: '=',
+      courseid: '='
     }
   })
   .name;
