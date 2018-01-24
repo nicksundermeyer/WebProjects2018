@@ -63,7 +63,9 @@ export function update(req, res) {
           course.name = req.body.name;
           course.description = req.body.description;
           course.maxStudents = req.body.maxStudents;
-          course.newProblemPercentage = course.newProblemPercentage;
+          course.assignments.minNumProblems = req.body.assignments.minNumProblems;
+          course.assignments.maxNumProblems = req.body.assignments.maxNumProblems;
+          course.assignments.newProblemPercentage = req.body.assignments.newProblemPercentage;
 
           return course.save()
             .then(() => {
