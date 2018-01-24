@@ -59,9 +59,12 @@ export function update(req, res) {
     .then(course => {
       if(course) {
         hasPermission(req, course).then(() => {
-          course.subject = req.body.subject;
+          //update abstract course
+          course.name = req.body.name;
+          course.description = req.body.description;
           course.maxStudents = req.body.maxStudents;
-          //add more stuff to update as course metadata gets added
+          course.newProblemPercentage = course.newProblemPercentage;
+
           return course.save()
             .then(() => {
               return res.status(204).end();
@@ -92,16 +95,15 @@ export function destroy(req, res) {
 /*
  * Add student id to enrolled students in course
  */
-
 export function addStudent(req, res) {
-console.log("--Add Student to Course--");
   Course.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {
         course.enrolledStudents.push(req.user._id);
         course.save();
-        console.log("--Create TailoredCourse--");
+        //after a new student is added to the course
+        //create a Tailored Course for the student
         createCourseAndAddToStudent(req.user, course);
         return res.status(201).json(course);
       } else {
@@ -127,7 +129,6 @@ function createCourseAndAddToStudent(user, course) {
   // Using predefined assignment information from course, create a new tailored Course
 
   // Create Assignments for TailoredCourse
-  console.log("--Create Assignments--");
   var tailoredAssignments = [];
   for(var i = 0; i < course.assignments.length; i++) {
     console.log("Loop over assignments");
@@ -137,7 +138,6 @@ function createCourseAndAddToStudent(user, course) {
   }
 
   // Create TailoredCourse
-  console.log("--Create TailoredCourse To add--");
   var newTailoredCourse = new TailoredCourse({
     name: course.name,
     description: course.description,
@@ -148,11 +148,9 @@ function createCourseAndAddToStudent(user, course) {
    });
 
     // Add course to user object
-    console.log("--Add TailoredCourse--");
-    console.log(newTailoredCourse);
     user.courses.push(newTailoredCourse);
     user.save();
-}
+}//end create tailored course
 
 /**
 * Generate a new assignment with problems based on the pre-defined
@@ -166,55 +164,23 @@ function createCourseAndAddToStudent(user, course) {
 * @return {Assignment}
 */
 function generateAssignmentsWith(course,assignment) {
-  console.log("--Generate Problems--");
   // Generate problems with parameters
   var problems = [];
   var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
   var numberOfNew = Math.floor(numberOfProblems*(assignment.newProblemPercentage/100));
 
-  //Get old problems
-  console.log("--Get Old Problems--");
-
-//  Problem.find({ "problem.subject": course.subjects[0], "problem.category": course.categories[0]})
-//    .limit(numberOfProblems - numberOfNew)
-//    .exec(function(err, fetchedProblems) {
-//      if(err) {
-//        console.log(err);
-//        return
-//      } else {
-//        console.log(fetchedProblems)
-//      }
-//    });
-//
-//  var req = {
-//    "protocol" : "dpg",
-//      "version" : "0.1",
-//      "problem" :
-//      {
-//        "subject" : "algebra",
-//        "category" : "multiplication",
-//        "depth" : 1
-//      }
-//  }
-//  console.log("--Request New Problems--");
-//  var response;
-//  var newProblems = controller.create(req,response);
-//  console.log(response);
-
-  console.log("--Create Assignment--");
   // Create Assignment with problems
   var newAssignment = new Assignment({
     minNumProblems: assignment.minNumProblems,
     maxNumProblems: assignment.maxNumProblems,
     newProblemPercentage: assignment.newProblemPercentage,
     problems: problems
-
    });
-  console.log(newAssignment);
-  // Return assignment to be added to the TailoredCourse
-  return newAssignment
 
-}
+  // Return assignment to be added to the TailoredCourse
+  return newAssignment;
+
+}//end generate assignments
 
 //only allow the course teacher or role greater than teacher permission
 export function hasPermission(req, course) {
