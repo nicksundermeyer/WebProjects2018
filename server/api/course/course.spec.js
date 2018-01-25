@@ -30,9 +30,9 @@ var courseCtrlStub = {
   };
 
 var problemCtrlStub = {
-    index: 'courseCtrl.index',
-    show: 'courseCtrl.show',
-    create: 'courseCtrl.create'
+    index: 'problemCtrl.index',
+    show: 'problemCtrl.show',
+    create: 'problemCtrl.create'
   };
 
 
@@ -102,10 +102,11 @@ var courseIndex = proxyquire('./index.js', {
       });
     });
 
-    describe('POST to Problem Engine', function() {
+    //TESTS FOR THE PROBLEM ENGINE
+    describe('POST to the Problem Engine API', function() {
       it('should route to problem.controller.create', function() {
-        expect(routerStub.put
-          .withArgs('/:id','authService.hasRole.admin', 'problemCtrlStub.create')
+        expect(routerStub.post
+          .withArgs('/', 'problemCtrl.create')
         ).to.have.been.calledOnce;
       });
     });
