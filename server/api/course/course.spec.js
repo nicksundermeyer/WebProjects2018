@@ -94,6 +94,7 @@ var courseIndex = proxyquire('./index.js', {
     });
     });
 
+    /*
     describe('PUT /api/courses/:id', function() {
       it('should route to course.controller.update', function() {
         expect(routerStub.put
@@ -110,5 +111,6 @@ var courseIndex = proxyquire('./index.js', {
         ).to.have.been.calledOnce;
       });
     });
+    */
 
   });//end router tests
