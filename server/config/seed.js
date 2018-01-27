@@ -6,7 +6,8 @@
 'use strict';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
-import Course from '../api/course/course.model';
+import AbstractCourse from '../api/course/AbstractCourse.model';
+import TailoredCourse from '../api/course/TailoredCourse.model';
 import config from './environment/';
 
 export default function seedDatabaseIfNeeded() {
@@ -81,11 +82,12 @@ export default function seedDatabaseIfNeeded() {
           .then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
-    Course.find({}).remove()
+      AbstractCourse.find({}).remove()
       .then(() => {
-        Course.create({
+        AbstractCourse.create({
           name: 'Biology',
-          description: 'Biology is the topic.',
+          description: `Biology is about the body? I just know people say men
+          and women are different because of their biology. Dont kno wat dat means.`,
           maxStudents: 30,
           assignments: [{
             minNumProblems: 2,
@@ -94,7 +96,7 @@ export default function seedDatabaseIfNeeded() {
           }]
         }, {
           name: 'Algebra',
-          description: 'Algebra is the topic.',
+          description: 'Algebra is worth studying? I guess.',
           maxStudents: 50,
           assignments: [{
             minNumProblems: 5,
@@ -103,7 +105,7 @@ export default function seedDatabaseIfNeeded() {
           }]
         }, {
           name: 'Chemistry',
-          description: 'Chemistry is the topic.',
+          description: 'Chemistry is cool! cause METH.',
           maxStudents: 25,
           assignments: [{
             minNumProblems: 2,
@@ -111,8 +113,106 @@ export default function seedDatabaseIfNeeded() {
             newProblemPercentage: 15
           }]
         })
-          .then(() => console.log('finished populating courses'))
-          .catch(err => console.log('error populating courses', err));
+          .then(() => console.log('finished populating AbstractCourses'))
+          .catch(err => console.log('error populating AbstractCourses', err));
+      });
+
+      TailoredCourse.find({}).remove()
+      .then(() => {
+        TailoredCourse.create({
+          name: 'Biology',
+          description: `Biology is about the body? I just know people say men
+          and women are different because of their biology. Dont kno wat dat means.`,
+          assignments: [{
+            minNumProblems: 2,
+            maxNumProblems: 12,
+            newProblemPercentage: 15,
+            problems: [{
+              problem: {
+                subject: 'Biology',
+                category: 'bio stuff',
+                description: [
+                  "+",
+                  [
+                    "var",
+                    "99"
+                  ],
+                  1
+                ],
+                solution: [
+                  "=",
+                  [
+                    "var",
+                    "66"
+                  ],
+                  -1
+                ]
+              }
+            }]//end problem
+          }]//end assignment
+        }, {
+          name: 'Algebra',
+          description: 'Algebra is worth studying? I guess.',
+          assignments: [{
+            minNumProblems: 5,
+            maxNumProblems: 20,
+            newProblemPercentage: 25,
+            problems: [{
+              problem: {
+                subject: 'Algebra',
+                category: 'algebra stuff',
+                description: [
+                  "+",
+                  [
+                    "var",
+                    "39"
+                  ],
+                  1
+                ],
+                solution: [
+                  "=",
+                  [
+                    "var",
+                    "30"
+                  ],
+                  -1
+                ]
+              }
+            }]//end problem
+          }]//end assignment
+        }, {
+          name: 'Chemistry',
+          description: 'Chemistry is cool! cause METH.',
+          assignments: [{
+            minNumProblems: 2,
+            maxNumProblems: 12,
+            newProblemPercentage: 15,
+            problems: [{
+              problem: {
+                subject: 'Chemistry',
+                category: 'chem stuff',
+                description: [
+                  "+",
+                  [
+                    "var",
+                    "H2"
+                  ],
+                  1
+                ],
+                solution: [
+                  "=",
+                  [
+                    "var",
+                    "O"
+                  ],
+                  -1
+                ]
+              }
+            }]//end problem
+          }]//end assignment
+        })
+          .then(() => console.log('finished populating TailoredCourses'))
+          .catch(err => console.log('error populating TailoredCourses', err));
       });
   }
 }

@@ -1,14 +1,14 @@
 'use strict';
 
-import Course from './course.model';
+import AbstractCourse from './AbstractCourse.model';
 import * as controller from './../problem/';
 import shared from './../../config/environment/shared';
 import Assignment from './assignment.model';
 import Problem from './../problem/problem.model';
-import TailoredCourse from './tailoredCourse.model';
+import TailoredCourse from './TailoredCourse.model';
 
 export function index(req, res) {
-  Course.find()
+  AbstractCourse.find()
     .exec()
     .then(function(courses) {
        return res.status(200).json(courses);
@@ -22,7 +22,7 @@ export function index(req, res) {
 
 
 export function show(req, res) {
-  Course.findById(req.params.id)
+  AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {
@@ -41,7 +41,7 @@ export function show(req, res) {
 
 export function create(req, res) {
   let course = req.body;
-  Course.create(course)
+  AbstractCourse.create(course)
     .then(function(createdCourse) {
       createdCourse.teacherID = req.user._id;
       createdCourse.save();
@@ -55,7 +55,7 @@ export function create(req, res) {
 }
 
 export function update(req, res) {
-  return Course.findById(req.params.id).exec()
+  return AbstractCourse.findById(req.params.id).exec()
     .then(course => {
       if(course) {
         hasPermission(req, course).then(() => {
@@ -82,7 +82,7 @@ export function update(req, res) {
 }
 
 export function destroy(req, res) {
-  Course.findByIdAndRemove(req.params.id).exec()
+  AbstractCourse.findByIdAndRemove(req.params.id).exec()
     .then(function() {
       return res.status(204).end();
     })
@@ -95,7 +95,7 @@ export function destroy(req, res) {
  * Add student id to enrolled students in course
  */
 export function addStudent(req, res) {
-  Course.findById(req.params.id)
+  AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {

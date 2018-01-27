@@ -4,7 +4,7 @@ import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './course.events';
 import shared from './../../config/environment/shared';
 
-var CourseSchema = new Schema({
+var AbstractCourseSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -12,11 +12,11 @@ var CourseSchema = new Schema({
   description: String,
   subjects: {
     type: String,
-    enum: shared.subject
+    default: shared.subject
   },
   categories: {
     type: String,
-    enum: shared.categories
+    default: shared.categories
   },
   maxStudents: {
     type: Number,
@@ -42,5 +42,5 @@ var CourseSchema = new Schema({
 }, { usePushEach: true });
 
 
-registerEvents(CourseSchema);
-export default mongoose.model('Course', CourseSchema);
+registerEvents(AbstractCourseSchema);
+export default mongoose.model('AbstractCourse', AbstractCourseSchema);

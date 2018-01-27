@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import * as controller from './course.controller';
+import * as controller from './AbstractCourse.controller';
 import * as auth from '../../auth/auth.service';
 
 var router = new Router();

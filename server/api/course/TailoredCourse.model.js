@@ -11,8 +11,8 @@ var TailoredCourseSchema = new Schema({
     required: true
   },
   description: String,
-  subjects: String, enum: shared.subject,
-  categories: String, enum: shared.categories,
+  subjects: String, default: shared.subject,
+  categories: String, default: shared.categories,
   teacherID: mongoose.Schema.Types.ObjectId,
   assignments: [Assignment.schema]
 

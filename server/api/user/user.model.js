@@ -5,7 +5,6 @@ mongoose.Promise = require('bluebird');
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './user.events';
 import shared from './../../config/environment/shared';
-import TailoredCourse from './../course/tailoredCourse.model';
 
 var UserSchema = new Schema({
   name: String,
@@ -24,8 +23,8 @@ var UserSchema = new Schema({
     required: true
   },
   provider: String,
-  salt: String,
-  courses: [TailoredCourse.schema]
+  salt: String
+
 }, { usePushEach: true });
 
 /**
