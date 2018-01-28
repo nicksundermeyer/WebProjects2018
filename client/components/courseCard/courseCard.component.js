@@ -17,7 +17,7 @@ export default angular.module('directives.courseCard', [])
     controller: CourseCardComponent,
     controllerAs: 'courseCardController',
     bindings: {
-      course: '='
+      mycourse: '='
     }
   })
   .name;

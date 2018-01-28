@@ -21,6 +21,7 @@ export class CourseDiscoveryController {
           this.courseNames.push(course.name);
         });
         this.selectedCourses = this.courses;
+        console.log(this.courses);
       });
   }
 
