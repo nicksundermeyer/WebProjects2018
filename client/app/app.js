@@ -19,11 +19,11 @@ import {
 import _Auth from '../components/auth/auth.module';
 import account from './account';
 import admin from './admin';
-import assignment from './student/assignment.component';
-import course from './student/course.component';
+import assignment from './student/assignment/assignment.component';
+import course from './student/course/course.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
-import courseDiscovery from './student/courseDiscovery.component';
+import courseDiscovery from './student/courseDiscovery/courseDiscovery.component';
 import assignmentCard from '../components/assignmentCard/assignmentCard.component';
 import courseCard from '../components/courseCard/courseCard.component';
 import typeahead from '../components/typeahead/typeahead.component';

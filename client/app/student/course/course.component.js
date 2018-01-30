@@ -1,6 +1,6 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
-import routing from './student.routes';
+import routing from '../student.routes';
 
 export class CourseController {
 
