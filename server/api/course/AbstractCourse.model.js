@@ -25,6 +25,7 @@ var AbstractCourseSchema = new Schema({
   },
   enrolledStudents: [mongoose.Schema.Types.ObjectId],
   teacherID: mongoose.Schema.Types.ObjectId,
+  teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
   assignments: [{
     minNumProblems: Number,
     maxNumProblems: {

@@ -12,6 +12,7 @@ export function index(req, res) {
     .exec()
     .then(function(courses) {
        return res.status(200).json(courses);
+      return res.status(200).json(courses);
     })
     //Print errors
     .catch(function(err) {
@@ -63,6 +64,7 @@ export function update(req, res) {
           course.name = req.body.name;
           course.description = req.body.description;
           course.maxStudents = req.body.maxStudents;
+          
 
           return course.save()
             .then(() => {
@@ -90,7 +92,21 @@ export function destroy(req, res) {
       res.status(400);
       res.send(err);
     });
+  AbstractCourse.findById(req.params.id).then(course => {
+    if(course) {
+      hasPermission(req, course).then(() => {
+        course.remove();
+        return res.status(204).end();
+      }).catch(() => {
+        return res.status(403).end();
+      });
+    }
+  }
+  ).catch(() => {
+    return res.status(400).end();
+  });
 }
+
 /*
  * Add student id to enrolled students in course
  */
@@ -119,6 +135,14 @@ export function addStudent(req, res) {
 * @params {User} user - Student that is getting the tailoredCourse
 * @params {Course} - The abstractCourse with details on for creating the tailored Course
 */
+ * Generate a TailoredCourse that is specific to the student
+ * include unique assignments and problems
+ *
+ * TODO: Error handling.
+ *
+ * @params {User} user - Student that is getting the tailoredCourse
+ * @params {Course} - The abstractCourse with details on for creating the tailored Course
+ */
 function createCourseAndAddToStudent(user, course) {
   // Using predefined assignment information from course, create a new tailored Course
 
@@ -126,9 +150,12 @@ function createCourseAndAddToStudent(user, course) {
   var tailoredAssignments = [];
   for(var i = 0; i < course.assignments.length; i++) {
     console.log("Loop over assignments");
+    console.log('Loop over assignments');
     console.log(course.assignments[i]);
      var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
      tailoredAssignments.push(newAssignment)
+    var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
+    tailoredAssignments.push(newAssignment);
   }
 
   // Create TailoredCourse
@@ -138,6 +165,7 @@ function createCourseAndAddToStudent(user, course) {
     subjects: course.subjects,
     categories: course.categories,
     assignments: tailoredAssignments
+<<<<<<< HEAD
    });
     console.log(newTailoredCourse);
     // Add course to user object
@@ -157,10 +185,32 @@ function createCourseAndAddToStudent(user, course) {
 * @return {Assignment}
 */
 function generateAssignmentsWith(course,assignment) {
+=======
+  });
+
+  // Add course to user object
+  user.courses.push(newTailoredCourse);
+  user.save();
+}//end create tailored course
+
+/**
+ * Generate a new assignment with problems based on the pre-defined
+ * parameters from a AbstractCourse and AbstractCourse.assignment
+ *
+ * TODO: Improve the question requesting process and ensure that new are added to the DB and old are properly queried
+ * TODO: Some of the attributes are not being copied into the new objects
+ *
+ * @params {Course} course
+ * @params {Assignment} assignment
+ * @return {Assignment}
+ */
+function generateAssignmentsWith(course, assignment) {
+>>>>>>> 3f52e61a80856244ffdac9dc402998379d2d3e0f
   // Generate problems with parameters
   var problems = [];
   var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
   var numberOfNew = Math.floor(numberOfProblems*(assignment.newProblemPercentage/100));
+  var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
 
   // TODO: 1) Generate new problems and fetch old ones
   // 1. Using numberOfNew, query problems from problems.controller using params in assignment
@@ -175,6 +225,8 @@ function generateAssignmentsWith(course,assignment) {
     newProblemPercentage: assignment.newProblemPercentage,
     problems: problems
    });
+    problems
+  });
 
   // Return assignment to be added to the TailoredCourse
   return newAssignment;
@@ -187,7 +239,10 @@ export function hasPermission(req, course) {
     if(!course.teacherID.equals(req.user._id) && shared.userRoles.indexOf(req.user.role) < shared.userRoles.indexOf('teacher') + 1) {
       reject();
     } else {
+    if(shared.userRoles.indexOf(req.user.role) > shared.userRoles.indexOf('teacher') || course.teacherID.equals(req.user._id)) {
       resolve();
+    } else {
+      reject();
     }
   });
 }
