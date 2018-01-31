@@ -42,6 +42,7 @@ export function create(req, res) {
       problem.problem.subject = response.data.problem.subject;
       problem.problem.category = response.data.problem.category;
       problem.problem.depth = response.data.problem.depth;
+      problem.problem.instructions = response.data.problem.instructions;
       problem.problem.problemId = response.data.problem.problemId;
       problem.save();
       return res.json(problem).status(204);

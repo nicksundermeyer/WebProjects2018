@@ -18,6 +18,7 @@ var ProblemSchema = new Schema({
     subject: {type: String, default: null},
     category: {type: String, default: null},
     depth: {type: Number, required: true, default: 1},
+    instructions: {type: String, required: true, default: null},
     problemId: {type: String, required: true, default: null},
     description: {type: Object, default: null},
     solution: {type: Object, required: true, default: null}
