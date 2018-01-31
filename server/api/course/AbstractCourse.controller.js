@@ -63,7 +63,7 @@ export function update(req, res) {
           course.name = req.body.name;
           course.description = req.body.description;
           course.maxStudents = req.body.maxStudents;
-          
+
           return course.save()
             .then(() => {
               return res.status(204).end();
@@ -99,12 +99,7 @@ export function addStudent(req, res) {
     .exec()
     .then(function(course) {
       if(course) {
-        course.enrolledStudents.push(req.user._id);
-        course.save();
-        //after a new student is added to the course
-        //create a Tailored Course for the student
-        createCourseAndAddToStudent(req.user, course);
-        return res.status(201).json(course);
+        return res.status(201).json(createCourseAndAddToStudent(req.user, course));
       } else {
         return res.status(204).end();
       }
@@ -138,25 +133,24 @@ function createCourseAndAddToStudent(user, course) {
 
   // Create TailoredCourse
   var newTailoredCourse = new TailoredCourse({
-    name: course.name,
-    description: course.description,
+    abstractCourseID: course._id,
+    studentID: user._id,
     subjects: course.subjects,
     categories: course.categories,
-    teacherID: course.teacherID,
     assignments: tailoredAssignments
    });
-
+    console.log(newTailoredCourse);
     // Add course to user object
-    user.courses.push(newTailoredCourse);
-    user.save();
+    newTailoredCourse.save();
+
+    return newTailoredCourse;
 }//end create tailored course
 
 /**
 * Generate a new assignment with problems based on the pre-defined
 * parameters from a AbstractCourse and AbstractCourse.assignment
 *
-* TODO: Improve the question requesting process and ensure that new are added to the DB and old are properly queried
-* TODO: Some of the attributes are not being copied into the new objects
+* TODO: Question requesting process
 *
 * @params {Course} course
 * @params {Assignment} assignment
@@ -167,6 +161,12 @@ function generateAssignmentsWith(course,assignment) {
   var problems = [];
   var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
   var numberOfNew = Math.floor(numberOfProblems*(assignment.newProblemPercentage/100));
+
+  // TODO: 1) Generate new problems and fetch old ones
+  // 1. Using numberOfNew, query problems from problems.controller using params in assignment
+  // 2. Store new problems in Problems Mongo Collection
+  // 3. Using numberOfProblems - numberOfNew, query problems from Problems Mongo Collection  \
+  // TODO: 2) Store in problems[]
 
   // Create Assignment with problems
   var newAssignment = new Assignment({

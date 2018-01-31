@@ -6,14 +6,10 @@ import shared from './../../config/environment/shared';
 
 
 var TailoredCourseSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  description: String,
+  abstractCourseID: { type: Schema.Types.ObjectId, ref: 'AbstractCourse' },
+  studentID: { type: Schema.Types.ObjectId, ref: 'User'},
   subjects: String, default: shared.subject,
   categories: String, default: shared.categories,
-  teacherID: mongoose.Schema.Types.ObjectId,
   assignments: [Assignment.schema]
 
 }, { usePushEach: true });
