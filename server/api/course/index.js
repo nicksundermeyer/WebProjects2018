@@ -8,7 +8,6 @@ router.get('/', controller.index); //show all courses
 router.get('/:id', controller.show);
 router.post('/', auth.hasRole('teacher'), controller.create);
 router.post('/:id', auth.hasRole('student'), controller.addStudent); // Add Student to course
-router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.delete('/:id', auth.hasRole('teacher'), controller.destroy);
 router.put('/:id', auth.hasRole('teacher'), controller.update);
 
