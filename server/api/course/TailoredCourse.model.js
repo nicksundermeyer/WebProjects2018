@@ -8,23 +8,39 @@ import shared from './../../config/environment/shared';
 var TailoredCourseSchema = new Schema({
   //grabs information from abstract course
   //such as name and description
-  abstractCourseID: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'AbstractCourse' 
+  abstractCourseID: {
+    type: Schema.Types.ObjectId,
+    ref: 'AbstractCourse',
+    required:true
   },
 
   //identifies a student enrolled in this course
-  studentID: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'User'
+  studentID: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required:true
   },
-  
+
   //subjects and categories must match the enums defined below
-  subjects: String, enum: shared.subject,
-  categories: String, enum: shared.categories,
+
+  subjects:{
+    type: String,
+    enum: shared.subject,
+    required: true
+  },
+  categories:{
+    type: String,
+    enum: shared.subject,
+    required: true
+  },
+
 
   //grabs the assignments written for this course
-  assignments: [Assignment.schema]
+  assignments:{
+    type:[Assignment.schema],
+    required:true
+  }
+
 
 }, { usePushEach: true });
 
