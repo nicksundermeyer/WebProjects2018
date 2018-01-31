@@ -20,7 +20,6 @@ export function index(req, res) {
     });
 }
 
-
 export function show(req, res) {
   AbstractCourse.findById(req.params.id)
     .exec()
@@ -37,7 +36,6 @@ export function show(req, res) {
       return res.status(404).end();
     });
 }
-
 
 export function create(req, res) {
   let course = req.body;
@@ -62,7 +60,10 @@ export function update(req, res) {
           //update abstract course
           course.name = req.body.name;
           course.description = req.body.description;
+          course.subjects = req.body.subjects;
+          course.categories = req.body.categories;
           course.maxStudents = req.body.maxStudents;
+          course.assignments = req.body.assignments;
           
           return course.save()
             .then(() => {
@@ -71,7 +72,7 @@ export function update(req, res) {
             .catch(function() {
               return res.status(404).end();
             });
-        })
+          })
           .catch(function() {
             return res.status(403).end();
           });

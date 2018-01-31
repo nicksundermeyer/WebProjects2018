@@ -3,19 +3,16 @@
 import mongoose, {Schema} from 'mongoose';
 import shared from './../../config/environment/shared';
 import Problem from './../problem/problem.model'
+import AbstractCourse from './AbstractCourse.model';
 
 var AssignmentSchema = new Schema({
-  minNumProblems: Number,
-  maxNumProblems: {
-    type: Number,
-    required: true
-  },
-  newProblemPercentage: {
-    type: Number,
-    required: true
+  //abstract assignment id
+  AbstractAssignmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AbstractCourse.assignments',
+    //required: true
   },
   problems: [Problem.schema]
-
 
 }, { usePushEach: true });
 
