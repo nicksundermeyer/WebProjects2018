@@ -12,6 +12,8 @@ var AssignmentSchema = new Schema({
     ref: 'AbstractCourse.assignments',
     //required: true
   },
+  //grabs problems written for this assignment
+  //from the problems model
   problems: [Problem.schema]
 
 }, { usePushEach: true });

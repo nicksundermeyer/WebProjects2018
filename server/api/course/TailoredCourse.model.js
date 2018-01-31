@@ -6,28 +6,23 @@ import shared from './../../config/environment/shared';
 
 
 var TailoredCourseSchema = new Schema({
-  
   //grabs information from abstract course
   //such as name and description
-  AbstractCourseId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'AbstractCourse',
-    required: true
+  abstractCourseID: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'AbstractCourse' 
   },
-  subjects: {
-    type: String,
-    enum: shared.subjects
-  },
-  categories: {
-    type: String,
-    enum: shared.categories
-  },
-  
+
   //identifies a student enrolled in this course
-  studentID: {
-    type: mongoose.Schema.Types.ObjectId,
+  studentID: { 
+    type: Schema.Types.ObjectId, 
     ref: 'User'
   },
+  
+  //subjects and categories must match the enums defined below
+  subjects: String, enum: shared.subject,
+  categories: String, enum: shared.categories,
+
   //grabs the assignments written for this course
   assignments: [Assignment.schema]
 

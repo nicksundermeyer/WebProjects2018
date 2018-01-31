@@ -1,0 +1,13 @@
+<div class="container col-md-offset-3 col-lg-6 col-sm-12">
+  <div class="card">
+    <div class="card-header text-white" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+      <h3 class="card-title">{{assignmentCardAbstractController.assignment._id}}</h3>
+    </div>
+
+    <div class="card-footer">
+      <p>Min: </p><p ng-repeat="min in assignmentCardAbstractController.assignment.minNumProblems">{{min}}</p>
+    </div>
+
+  </div>
+</div>
+

@@ -1,11 +1,11 @@
 'use strict';
 
-import course from './course.component';
+import course from './courseAbstract.component';
 import {
   CourseController
-} from './course.component';
+} from './courseAbstract.component';
 
-describe('Component: CourseComponent', function() {
+describe('Component: CourseAbstractComponent', function() {
   beforeEach(angular.mock.module(course));
 
   var scope;
@@ -17,7 +17,7 @@ describe('Component: CourseComponent', function() {
     $httpBackend = _$httpBackend_;
 
     scope = $rootScope.$new();
-    courseComponent = $componentController('course', {
+    courseComponent = $componentController('courseAbstract', {
       $http,
       $scope: scope
     });

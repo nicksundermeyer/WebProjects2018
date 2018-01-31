@@ -63,7 +63,7 @@ for (let subject of shared.subjects)
 
 //Tailored Course
 //Random numbers for numbers and percentages
-//makes title informative - for problems and assignments
+//makes title informative, for problems and assignments
 
 //not related to app data - could be deleted
 export default function seedDatabaseIfNeeded() {

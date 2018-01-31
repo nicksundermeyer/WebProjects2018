@@ -78,17 +78,6 @@ var courseIndex = proxyquire('./index.js', {
         });
     });
 
-    /*
-
-    describe('POST /api/courses/id', function() {
-      it('should route to course.controller.addStudent', function() {
-          expect(routerStub.post
-              .withArgs('/','authService.hasRole.student', 'absCourseCtrl.addStudent')
-              ).to.have.been.calledOnce;
-      });
-    });
-    */
-
     describe('DELETE /api/courses/:id', function() {
       it('should route to course.controller.destroy', function() {
         expect(routerStub.delete
@@ -104,16 +93,5 @@ var courseIndex = proxyquire('./index.js', {
         ).to.have.been.calledOnce;
       });
     });
-
-    /*
-    //TESTS FOR THE PROBLEM ENGINE
-    describe('POST to the Problem Engine API', function() {
-      it('should route to problem.controller.create', function() {
-        expect(routerStub.post
-          .withArgs('/', 'problemCtrl.create')
-        ).to.have.been.calledOnce;
-      });
-    });
-    */
 
   });//end router tests
