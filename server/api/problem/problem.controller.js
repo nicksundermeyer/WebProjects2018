@@ -31,23 +31,30 @@ export function show(req, res) {
     });
 }
 
-export function create(req, res) {
+export function create(req) {
   const axios = require('axios');
-  axios
-    .post(shared.problemEngineUrl, req.body)
-    .then(function(response) {
-      var problem = new Problem();
-      problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
-      problem.problem.solution = JSON.parse(JSON.stringify(response.data.problem.solution));
-      problem.problem.subject = response.data.problem.subject;
-      problem.problem.category = response.data.problem.category;
-      problem.problem.depth = response.data.problem.depth;
-      problem.problem.problemId = response.data.problem.problemId;
-      problem.save();
-      return res.json(problem).status(204);
-    })
-    .catch(function() {
-      return res.status(400).end();
-    });
+
+  return new Promise(function(resolve, reject) {
+    axios
+      .post(shared.problemEngineUrl, req)
+      .then(function(response) {
+        var problem = new Problem();
+        problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
+        problem.problem.solution = JSON.parse(JSON.stringify(response.data.problem.solution));
+
+        // Problem ID malformed. Need generator to fix before we can assign.
+        //  console.log(response.data.problem.problemId); // undefined
+        //  problem.problem.problemId = JSON.parse(JSON.stringify(response.data.problem.problemId));
+        problem.problem.instructions = response.data.instructions;
+        problem.problem.subject = response.data.problem.subject;
+        problem.problem.category = response.data.problem.category;
+        problem.problem.depth = response.data.problem.depth;
+        problem.save();
+        resolve(problem);
+      })
+      .catch(function() {
+        reject();
+      });
+  });
 }
 

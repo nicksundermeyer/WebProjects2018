@@ -1,10 +1,10 @@
 'use strict';
 
 import AbstractCourse from './AbstractCourse.model';
-import * as controller from './../problem/';
+import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
 import Assignment from './assignment.model';
-import Problem from './../problem/problem.model';
+import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 
 export function index(req, res) {
@@ -19,6 +19,7 @@ export function index(req, res) {
       res.send(err);
     });
 }
+
 
 export function show(req, res) {
   AbstractCourse.findById(req.params.id)
@@ -36,6 +37,7 @@ export function show(req, res) {
       return res.status(404).end();
     });
 }
+
 
 export function create(req, res) {
   let course = req.body;
@@ -60,8 +62,6 @@ export function update(req, res) {
           //update abstract course
           course.name = req.body.name;
           course.description = req.body.description;
-          course.subjects = req.body.subjects;
-          course.categories = req.body.categories;
           course.maxStudents = req.body.maxStudents;
 
           return course.save()
@@ -71,7 +71,7 @@ export function update(req, res) {
             .catch(function() {
               return res.status(404).end();
             });
-          })
+        })
           .catch(function() {
             return res.status(403).end();
           });
@@ -83,15 +83,15 @@ export function update(req, res) {
 
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).then(course => {
-    if(course) {
-      hasPermission(req, course).then(() => {
-        course.remove();
-        return res.status(204).end();
-      }).catch(() => {
-        return res.status(403).end();
-      });
+      if(course) {
+        hasPermission(req, course).then(() => {
+          course.remove();
+          return res.status(204).end();
+        }).catch(() => {
+          return res.status(403).end();
+        });
+      }
     }
-  }
   ).catch(() => {
     return res.status(400).end();
   });
@@ -117,22 +117,23 @@ export function addStudent(req, res) {
 }
 
 /**
-* Generate a TailoredCourse that is specific to the student
-* include unique assignments and problems
-*
-* TODO: Error handling.
-*
-* @params {User} user - Student that is getting the tailoredCourse
-* @params {Course} - The abstractCourse with details on for creating the tailored Course
-*/
+ * Generate a TailoredCourse that is specific to the student
+ * include unique assignments and problems
+ *
+ * TODO: Error handling.
+ *
+ * @params {User} user - Student that is getting the tailoredCourse
+ * @params {Course} - The abstractCourse with details on for creating the tailored Course
+ */
 function createCourseAndAddToStudent(user, course) {
   // Using predefined assignment information from course, create a new tailored Course
-
+  console.log(course.assignments.length);
   // Create Assignments for TailoredCourse
   var tailoredAssignments = [];
   for(var i = 0; i < course.assignments.length; i++) {
-    console.log("Loop over assignments");
-    console.log(course.assignments[i]);
+    console.log('Loop over assignments');
+    //  console.log(course.assignments[i]);
+
     var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
     tailoredAssignments.push(newAssignment);
   }
@@ -144,20 +145,22 @@ function createCourseAndAddToStudent(user, course) {
     subjects: course.subjects,
     categories: course.categories,
     assignments: tailoredAssignments
-   });
-    console.log(newTailoredCourse);
-    // Add course to user object
-    newTailoredCourse.save();
+  });
+  // console.log(newTailoredCourse);
+  // Add course to user object
 
-    return newTailoredCourse;
-  }//end create tailored course
+  //this line gives error :(
+  newTailoredCourse.save();
+
+  return newTailoredCourse;
+}//end create tailored course
+
 
 /**
  * Generate a new assignment with problems based on the pre-defined
  * parameters from a AbstractCourse and AbstractCourse.assignment
  *
- * TODO: Improve the question requesting process and ensure that new are added to the DB and old are properly queried
- * TODO: Some of the attributes are not being copied into the new objects
+ * TODO: Question requesting process
  *
  * @params {Course} course
  * @params {Assignment} assignment
@@ -165,28 +168,50 @@ function createCourseAndAddToStudent(user, course) {
  */
 function generateAssignmentsWith(course, assignment) {
   // Generate problems with parameters
-  var problems = [];
   var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
   var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
+  var newProblems = [];
+  var currentProblems = [];
+  //assuming that there are enough matching problems in the DB when querying. We will seed enough.
 
-  // TODO: 1) Generate new problems and fetch old ones
-  // 1. Using numberOfNew, query problems from problems.controller using params in assignment
-  // 2. Store new problems in Problems Mongo Collection
-  // 3. Using numberOfProblems - numberOfNew, query problems from Problems Mongo Collection  \
-  // TODO: 2) Store in problems[]
+  Problem.aggregate(
+    [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
+  ).then(results => {
+    results.forEach(function(item) {
+      currentProblems.push(item);
+    });
+  }).catch(err => {
+    console.log(err);
+  });
 
-  // Create Assignment with problems
-  var newAssignment = new Assignment({
-    minNumProblems: assignment.minNumProblems,
-    maxNumProblems: assignment.maxNumProblems,
-    newProblemPercentage: assignment.newProblemPercentage,
-    problems: problems
-   });
 
-  // Return assignment to be added to the TailoredCourse
-  return newAssignment;
+  for(let i = 0; i < numberOfNew; i++) {
+    newProblems.push(problemController.create({
+      'protocol': 'dpg',
+      'version': '0.1',
+      'problem': {
+        'subject': course.subjects,
+        'category': course.categories,
+        'depth': 1
+      }
+    }));
+  }
 
+
+  return Promise.all(newProblems).then(probs => {
+    // Create Assignment with problems
+    return new Assignment({
+      minNumProblems: assignment.minNumProblems,
+      maxNumProblems: assignment.maxNumProblems,
+      newProblemPercentage: assignment.newProblemPercentage,
+      problems: currentProblems.concat(probs)
+    });
+
+  }).catch((err) => {
+    console.log(err);
+  });
 }//end generate assignments
+
 
 //only allow the course teacher or role greater than teacher permission
 export function hasPermission(req, course) {
