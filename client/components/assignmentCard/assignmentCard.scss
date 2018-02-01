@@ -1,0 +1,28 @@
+.card {
+  height: 300px;
+  margin: 10px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.card-header {
+  background-color: #4393B9;
+  border-color: #4393B9;
+}
+
+.infoButton {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.card-footer {
+  text-align: left;
+  position: absolute;
+  bottom: 10%;
+  width: 100%;
+}

@@ -24,11 +24,4 @@ describe('Component: StudentComponent', function() {
       $scope: scope
     });
   }));
-
-  it('should attach a list of things to the controller', function() {
-    studentComponent.$onInit();
-    $httpBackend.flush();
-    expect(studentComponent.awesomeThings.length)
-      .to.equal(4);
-  });
 });

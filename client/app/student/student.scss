@@ -22,6 +22,58 @@
   background: #4393B9;
 }
 
-.navbar-text {
-  margin-left: 15px;
+.navbar-fixed-left {
+  width: 140px;
+  border-radius: 10px;
+  height: 600px;
+  overflow: auto;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
 }
+
+.problem-container {
+  border-radius: 10px;
+  height: 600px;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
+  margin-left: 10px;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;
+  width: 100%;
+  text-align: left;
+}
+
+.courseTeacher{
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 27px;
+line-height: 33px;
+  Align: Left;
+  Fill: Solid;
+  color:#C4C4C4;
+}
+
+.courseData{
+  font-family: Roboto;
+  font-size: 27px;
+  line-height: 33px;
+  Align: Left;
+  Fill: Solid;
+  color:#C4C4C4;
+
+}
+
+.description{
+  font-family: Roboto;
+  font-size: 15px;
+  line-height: 18px;
+  Align: Left;
+  color:#C4C4C4;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+

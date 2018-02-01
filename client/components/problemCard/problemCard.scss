@@ -1,0 +1,46 @@
+.problem-card {
+  font-size: 12px;
+  width: 700px;
+  position: absolute;
+  top: 200px;
+  left: 30px;
+  text-align:center;
+}
+
+.problem {
+  background-color: white;
+  border-color: #4393B9;
+  top:0px;
+  width:650px;
+  height:200px;
+  line-height:200px;
+}
+
+.text-box{
+  position: absolute;
+  left:270px;
+  bottom: -30px;
+}
+
+.submit-button{
+  position: absolute;
+  bottom:-55px;
+  left:300px;
+}
+//
+//.infoButton {
+//  position: absolute;
+//  bottom: 0;
+//  width: 100%;
+//  border-bottom-left-radius: 20px;
+//  border-bottom-right-radius: 20px;
+//  border-top-left-radius: 0px;
+//  border-top-right-radius: 0px;
+//}
+//
+//.card-footer {
+//  text-align: left;
+//  position: absolute;
+//  bottom: 10%;
+//  width: 100%;
+//}
