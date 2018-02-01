@@ -8,7 +8,6 @@ import ngSanitize from 'angular-sanitize';
 
 const ngRoute = require('angular-route');
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import uiBootstrap from 'angular-ui-bootstrap';
 import 'angular-validation-match';
 
