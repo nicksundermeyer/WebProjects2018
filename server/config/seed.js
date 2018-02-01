@@ -51,7 +51,7 @@ export default function seedDatabaseIfNeeded() {
     .catch(err => console.log('error populating things', err));
 
 
-    //for every role create a user for that role
+    //for every role on shared user roles, create a user for that role.
     for (let role of shared.userRoles)
     {
       User.find({}).remove()
@@ -95,17 +95,28 @@ export default function seedDatabaseIfNeeded() {
             })
             .catch(err => console.log('error populating Abstract Courses', err));
           });
-        }//end for of
-    }//end creating courses
+        }//end for of.
+      }//end seeding Abstract courses.
 
     //Tailored Course
     //Random numbers for numbers and percentages
     //makes title informative, for problems and assignments
 
-
   }//end config seedDB
 }//end export
 
 function createTailoredCourse(abstractCourse) {
-  console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
-}
+  //console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
+  TailoredCourse.find({}).remove()
+    .then(() => {
+      TailoredCourse.create({
+        abstractCourseID: abstractCourse._id,
+        studentID: null,
+        subjects: abstractCourse.subjects,
+        categories: abstractCourse.categories,
+        assignments: []
+      }).then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
+      .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));
+  });
+
+}//end create Tailored Course

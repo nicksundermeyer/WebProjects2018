@@ -35,11 +35,14 @@ var subjects = [{
 
 var allCategories = [];
 var allSubjects = [];
+
+//for each subjects save all of its categories to one array.
 subjects.forEach(function (subject) {
   allCategories.concat(subject.allowedCategories);
   allSubjects.push(subject.subject);
 });
 
+//eliminate duplicates
 allCategories = arrayUnique(allCategories);
 
 exports = module.exports = {
