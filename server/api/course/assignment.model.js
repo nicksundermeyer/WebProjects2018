@@ -10,11 +10,16 @@ var AssignmentSchema = new Schema({
   AbstractAssignmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'AbstractCourse.assignments',
-    //required: true
+    required: true
   },
   //grabs problems written for this assignment
   //from the problems model
-  problems: [Problem.schema]
+  //problems: [Problem.schema]
+
+  problems: {
+    type: [Problem.schema],
+    required: true
+  }
 
 }, { usePushEach: true });
 

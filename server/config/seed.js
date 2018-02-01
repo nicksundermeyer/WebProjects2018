@@ -12,7 +12,7 @@ import config from './environment/';
 import shared from './environment/shared';
 
 export default function seedDatabaseIfNeeded() {
-  if(config.seedDB) 
+  if(config.seedDB)
   {
     //not related to app data - could be deleted
     Thing.find({}).remove()
@@ -71,31 +71,28 @@ export default function seedDatabaseIfNeeded() {
     //of categories and subjects
     for (let subject of shared.subjects)
     {
-      //grab the specific categories for each subject
-      let categories = shared.categories[shared.subjects.indexOf(subject)]
-        .map(cats => {
-          return cats;
-        });
-
         //for each specific category for this subject
         //create a course
-        for(let category of categories)
+        for(let category of subject.allowedCategories)
         {
           AbstractCourse.find({}).remove()
           .then(() => {
             AbstractCourse.create({
-              name: subject+'-about-'+category,
-              description: subject+'focusing on the '+category+' topic',
-              subjects: [subject],
+              name: subject.subject+'-about-'+category,
+              description: subject.subject+'focusing on the '+category+' topic',
+              subjects: [subject.subject],
               categories: [category],
               assignments: [{
-                  title: 'Assignment 1',
-                  description: 'this focuses on '+category+'operations',
-                  minNumProblems: 3,
-                  maxNumProblems: 9,
-                  newProblemPercentage: 18
-                }]
-              }).then(() => console.log('finished populating Abstract Courses'))
+                title: 'Assignment 1',
+                description: 'this focuses on '+category+'operations',
+                minNumProblems: 3,
+                maxNumProblems: 9,
+                newProblemPercentage: 18
+              }]
+            }).then((createdCourse) => {
+              console.log('finished populating Abstract Courses');
+              createTailoredCourse(createdCourse);
+            })
             .catch(err => console.log('error populating Abstract Courses', err));
           });
         }//end for of.
@@ -129,3 +126,7 @@ export default function seedDatabaseIfNeeded() {
 
   }//end config seedDB
 }//end export
+
+function createTailoredCourse(abstractCourse) {
+  console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
+}
