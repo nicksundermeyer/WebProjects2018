@@ -51,7 +51,7 @@ export default function seedDatabaseIfNeeded() {
     .catch(err => console.log('error populating things', err));
 
 
-    //for every role create a user for that role
+    //for every role on shared user roles, create a user for that role.
     for (let role of shared.userRoles)
     {
       User.find({}).remove()
@@ -86,24 +86,45 @@ export default function seedDatabaseIfNeeded() {
             AbstractCourse.create({
               name: subject+'-about-'+category,
               description: subject+'focusing on the '+category+' topic',
-              subjects: subject,
-              categories: categories,
+              subjects: [subject],
+              categories: [category],
               assignments: [{
-                title: 'Assignment 1',
-                description: 'this focuses on '+category+'operations',
-                minNumProblems: 3,
-                maxNumProblems: 9,
-                newProblemPercentage: 18
-              }]
-            }).then(() => console.log('finished populating Abstract Courses'))
+                  title: 'Assignment 1',
+                  description: 'this focuses on '+category+'operations',
+                  minNumProblems: 3,
+                  maxNumProblems: 9,
+                  newProblemPercentage: 18
+                }]
+              }).then(() => console.log('finished populating Abstract Courses'))
             .catch(err => console.log('error populating Abstract Courses', err));
           });
-        }//end for of
-    }//end creating courses
+        }//end for of.
+      }//end seeding Abstract courses.
 
     //Tailored Course
     //Random numbers for numbers and percentages
     //makes title informative, for problems and assignments
+    for(let subject of shared.subjects){
+      //grab the specific categories for each subject
+      let categories = shared.categories[shared.subjects.indexOf(subject)]
+      .map(cats => {
+        return cats;
+      });
+
+      //for each specific category for this subject
+        //create a course
+        for(let category of categories)
+        {
+          TailoredCourse.find({}).remove()
+          .then(() => {
+            TailoredCourse.create({
+              
+            }).then(() => console.log('finished populating Abstract Courses'))
+            .catch(err => console.log('error populating Abstract Courses', err));
+          });
+        }//end for of.
+
+    }//end seeding Tailored courses.
 
 
   }//end config seedDB

@@ -8,14 +8,14 @@ import shared from './../../config/environment/shared';
 var TailoredCourseSchema = new Schema({
   //grabs information from abstract course
   //such as name and description
-  abstractCourseID: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'AbstractCourse' 
+  abstractCourseID: {
+    type: Schema.Types.ObjectId,
+    ref: 'AbstractCourse'
   },
 
   //identifies a student enrolled in this course
-  studentID: { 
-    type: Schema.Types.ObjectId, 
+  studentID: {
+    type: Schema.Types.ObjectId,
     ref: 'User'
   },
   
