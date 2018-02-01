@@ -23,8 +23,7 @@ var AbstractCourseSchema = new Schema({
     enum: shared.allCategories,
     required: true
   },
-
-  enrolledStudents: [mongoose.Schema.Types.ObjectId],
+  
   teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
 
   //embeded assignments

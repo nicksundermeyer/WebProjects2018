@@ -18,7 +18,7 @@ var TailoredCourseSchema = new Schema({
   studentID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required:true
+    //required:true
   },
 
   //subjects and categories must match the enums defined below
@@ -37,7 +37,7 @@ var TailoredCourseSchema = new Schema({
   //grabs the assignments written for this course
   assignments:{
     type:[Assignment.schema],
-    required:true
+    //required:true
   }
 
 

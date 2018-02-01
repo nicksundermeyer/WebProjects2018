@@ -101,32 +101,22 @@ export default function seedDatabaseIfNeeded() {
     //Tailored Course
     //Random numbers for numbers and percentages
     //makes title informative, for problems and assignments
-    for(let subject of shared.subjects){
-      //grab the specific categories for each subject
-      let categories = shared.categories[shared.subjects.indexOf(subject)]
-      .map(cats => {
-        return cats;
-      });
-
-      //for each specific category for this subject
-        //create a course
-        for(let category of categories)
-        {
-          TailoredCourse.find({}).remove()
-          .then(() => {
-            TailoredCourse.create({
-              
-            }).then(() => console.log('finished populating Abstract Courses'))
-            .catch(err => console.log('error populating Abstract Courses', err));
-          });
-        }//end for of.
-
-    }//end seeding Tailored courses.
-
 
   }//end config seedDB
 }//end export
 
 function createTailoredCourse(abstractCourse) {
-  console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
-}
+  //console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
+  TailoredCourse.find({}).remove()
+    .then(() => {
+      TailoredCourse.create({
+        abstractCourseID: abstractCourse._id,
+        studentID: null,
+        subjects: abstractCourse.subjects,
+        categories: abstractCourse.categories,
+        assignments: []
+      }).then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
+      .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));
+  });
+
+}//end create Tailored Course
