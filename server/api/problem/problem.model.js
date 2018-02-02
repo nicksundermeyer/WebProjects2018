@@ -15,48 +15,60 @@ var ProblemSchema = new Schema({
     default: '.01'
   },
   problem: {
-    problemId: {
-      type: Number,
-      required: true
-    },
 
-    title:{
+
+    problemId: {
       type: String,
+      default: null,
       required: true
     },
 
     description:{
-      type: String,
+      type: Object,
+      default: null,
       required:true
     },
 
     depth:{
       type: Number,
+      default: 1,
       required: true
     },
 
     subject:{
       type:String,
+      default: null,
       required:true
     },
 
     category:{
       type:String,
+      default: null,
+      required: true
+    },
+
+    solution: {
+      type: Object,
+      default: null,
       required: true
     },
 
     instructions:{
       type:String,
+      default: null,
       required:true
     },
-    attempts:{
-      type:[{
-        date: String,
-        attempt: String,
-        correct: Boolean
-      }],
-      required:true
-    }
+
+    //Can add this when we implement the functionality
+    // attempts:{
+    //   type:[{
+    //     date: String,
+    //     attempt: String,
+    //     correct: Boolean
+    //   }],
+    //   required:true
+    // }
+
   }
 }, { minimize: false });
 

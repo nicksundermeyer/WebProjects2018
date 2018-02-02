@@ -10,6 +10,8 @@ import AbstractCourse from '../api/course/AbstractCourse.model';
 import TailoredCourse from '../api/course/TailoredCourse.model';
 import config from './environment/';
 import shared from './environment/shared';
+import Problem from '../api/problem/problem.model';
+import * as problemController from '../api/problem/problem.controller';
 
 export default function seedDatabaseIfNeeded() {
   if(config.seedDB)
@@ -66,35 +68,54 @@ export default function seedDatabaseIfNeeded() {
           .catch(err => console.log('error populating users', err));
       });
     }//end creating users
+    for(let i = 0; i < 25; i++) {
+      for (let subject of shared.subjects) {
+        for (let category of subject.allowedCategories) {
+          Problem.find({}).remove()
+            .then(() => {
+              problemController.create({
+                'protocol': 'dpg',
+                'version': '0.1',
+                'problem': {
+                  'subject': subject.subject,
+                  'category': category,
+                  'depth': 1
+                }
+              });
+            })
+            .catch(err => console.log('error populating Problems', err));
+        }
+
+        console.log("Finished populating a problem set");
+      }//end for of.
+    }
 
     //create a course with a every combination
     //of categories and subjects
-    for (let subject of shared.subjects)
-    {
+      for (let subject of shared.subjects) {
         //for each specific category for this subject
         //create a course
-        for(let category of subject.allowedCategories)
-        {
+        for (let category of subject.allowedCategories) {
           AbstractCourse.find({}).remove()
-          .then(() => {
-            AbstractCourse.create({
-              name: subject.subject+'-about-'+category,
-              description: subject.subject+'focusing on the '+category+' topic',
-              subjects: [subject.subject],
-              categories: [category],
-              assignments: [{
-                title: 'Assignment 1',
-                description: 'this focuses on '+category+'operations',
-                minNumProblems: 3,
-                maxNumProblems: 9,
-                newProblemPercentage: 18
-              }]
-            }).then((createdCourse) => {
-              console.log('finished populating Abstract Courses');
-              createTailoredCourse(createdCourse);
-            })
-            .catch(err => console.log('error populating Abstract Courses', err));
-          });
+            .then(() => {
+              AbstractCourse.create({
+                name: subject.subject + '-about-' + category,
+                description: subject.subject + 'focusing on the ' + category + ' topic',
+                subjects: [subject.subject],
+                categories: [category],
+                assignments: [{
+                  title: 'Assignment 1',
+                  description: 'this focuses on ' + category + 'operations',
+                  minNumProblems: 5,
+                  maxNumProblems: 15,
+                  newProblemPercentage: 25
+                }]
+              }).then((createdCourse) => {
+                console.log('finished populating Abstract Courses');
+                createTailoredCourse(createdCourse);
+              })
+                .catch(err => console.log('error populating Abstract Courses', err));
+            });
         }//end for of.
       }//end seeding Abstract courses.
 
