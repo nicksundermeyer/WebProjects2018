@@ -182,24 +182,25 @@ function generateAssignmentsWith(course, assignment) {
       currentProblems.push(item);
     });
   }).catch(err => {
-    console.log(err);
+    console.log('Error fetching existing problems', err);
   });
 
 
   for(let i = 0; i < numberOfNew; i++) {
     newProblems.push(problemController.create({
-      'protocol': 'dpg',
-      'version': '0.1',
-      'problem': {
-        'subject': course.subjects,
-        'category': course.categories,
-        'depth': 1
+      protocol: 'dpg',
+      version: '0.1',
+      problem: {
+        subject: course.subjects,
+        category: course.categories,
+        depth: 1
       }
     }));
   }
 
 
   return Promise.all(newProblems).then(probs => {
+    console.log(probs);
     // Create Assignment with problems
     return new Assignment({
       minNumProblems: assignment.minNumProblems,
@@ -209,7 +210,7 @@ function generateAssignmentsWith(course, assignment) {
     });
 
   }).catch((err) => {
-    console.log(err);
+    console.log('Error resolving promises', err);
   });
 }//end generate assignments
 

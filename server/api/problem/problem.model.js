@@ -17,12 +17,11 @@ var ProblemSchema = new Schema({
   problem: {
 
 
-    //Can add this back when problemId is fixed on gen
-    // problemId: {
-    //   type: String,
-    //   default: null,
-    //   required: true
-    // },
+    problemId: {
+      type: String,
+      default: null,
+      required: true
+    },
 
     description:{
       type: Object,
