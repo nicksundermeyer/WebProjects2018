@@ -18,6 +18,7 @@ var TailoredCourseSchema = new Schema({
   studentID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    default: null
     //required:true
   },
 
@@ -37,6 +38,7 @@ var TailoredCourseSchema = new Schema({
   //grabs the assignments written for this course
   assignments:{
     type:[Assignment.schema],
+    default: null
     //required:true
   }
 

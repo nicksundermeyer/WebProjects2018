@@ -109,6 +109,12 @@ export default function seedDatabaseIfNeeded() {
                   minNumProblems: 5,
                   maxNumProblems: 15,
                   newProblemPercentage: 25
+                }, {
+                  title: 'Assignment 2',
+                  description: 'this focuses on ' + category + 'operations',
+                  minNumProblems: 10,
+                  maxNumProblems: 35,
+                  newProblemPercentage: 35
                 }]
               }).then((createdCourse) => {
                 console.log('finished populating Abstract Courses');

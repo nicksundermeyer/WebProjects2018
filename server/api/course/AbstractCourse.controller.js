@@ -127,33 +127,29 @@ export function addStudent(req, res) {
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddToStudent(user, course) {
-  // Using predefined assignment information from course, create a new tailored Course
-  console.log(course.assignments.length);
-  // Create Assignments for TailoredCourse
-  var tailoredAssignments = [];
-  for(var i = 0; i < course.assignments.length; i++) {
-    console.log('Loop over assignments');
-    //  console.log(course.assignments[i]);
 
-    var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
-    tailoredAssignments.push(newAssignment);
+  var tailoredAssignments = [];
+
+  for(var i = 0; i < course.assignments.length; i++) {
+    tailoredAssignments.push(generateAssignmentsWith(course,course.assignments[i]));
   }
 
-  // Create TailoredCourse
-  var newTailoredCourse = new TailoredCourse({
-    abstractCourseID: course._id,
-    studentID: user._id,
-    subjects: course.subjects,
-    categories: course.categories,
-    assignments: tailoredAssignments
+  return Promise.all(tailoredAssignments).then(ta => {
+    var tailoredCourse = new TailoredCourse();
+    tailoredCourse.abstractCourseID = course._id;
+    tailoredCourse.studentID = user._id;
+    tailoredCourse.subjects = course.subjects;
+    tailoredCourse.categories = course.categories;
+
+    ta.forEach(function(item) {
+      tailoredCourse.assignments = item;
+    });
+
+    return tailoredCourse.save();
+  }).catch( err => {
+    console.log('Error creating tailored assignment', err);
   });
-  // console.log(newTailoredCourse);
-  // Add course to user object
 
-  //this line gives error :(
-  newTailoredCourse.save();
-
-  return newTailoredCourse;
 }//end create tailored course
 
 
@@ -168,51 +164,41 @@ function createCourseAndAddToStudent(user, course) {
  * @return {Assignment}
  */
 function generateAssignmentsWith(course, assignment) {
-  // Generate problems with parameters
-  var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-  var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
-  var newProblems = [];
-  var currentProblems = [];
-  //assuming that there are enough matching problems in the DB when querying. We will seed enough.
 
-  Problem.aggregate(
-    [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
-  ).then(results => {
-    results.forEach(function(item) {
-      currentProblems.push(item);
-    });
-  }).catch(err => {
-    console.log('Error fetching existing problems', err);
-  });
+  return new Promise(function(resolve, reject) {
+      // Generate problems with parameters
+      var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
+      var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
 
+      Problem.aggregate(
+        [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
+      ).then(results => {
+        for (let i = 0; i < numberOfNew; i++) {
+          results.push(problemController.create({
+            protocol: 'dpg',
+            version: '0.1',
+            problem: {
+              subject: course.subjects,
+              category: course.categories,
+              depth: 1
+            }
+          }));
+        }
 
-  for(let i = 0; i < numberOfNew; i++) {
-    newProblems.push(problemController.create({
-      protocol: 'dpg',
-      version: '0.1',
-      problem: {
-        subject: course.subjects,
-        category: course.categories,
-        depth: 1
-      }
-    }));
-  }
-
-
-  return Promise.all(newProblems).then(probs => {
-    console.log(probs);
-    // Create Assignment with problems
-    return new Assignment({
-      minNumProblems: assignment.minNumProblems,
-      maxNumProblems: assignment.maxNumProblems,
-      newProblemPercentage: assignment.newProblemPercentage,
-      problems: currentProblems.concat(probs)
-    });
-
-  }).catch((err) => {
-    console.log('Error resolving promises', err);
-  });
-}//end generate assignments
+        return results;
+      }).then(promises => {
+        Promise.all(promises).then(finalProblems => {
+          resolve(new Assignment({
+            AbstractAssignmentId: course._id,
+            problems: finalProblems
+          }));
+        });
+      }).catch(err => {
+        reject('Error getting problems', err);
+      });
+    }
+  )
+}
 
 
 //only allow the course teacher or role greater than teacher permission
