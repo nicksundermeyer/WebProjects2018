@@ -142,7 +142,7 @@ function createCourseAndAddToStudent(user, course) {
     tailoredCourse.categories = course.categories;
 
     ta.forEach(function(item) {
-      tailoredCourse.assignments = item;
+      tailoredCourse.assignments.push(item);
     });
 
     return tailoredCourse.save();
