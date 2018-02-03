@@ -119,10 +119,7 @@ export function addStudent(req, res) {
 
 /**
  * Generate a TailoredCourse that is specific to the student
- * include unique assignments and problems
- *
- * TODO: Error handling.
- *
+ * include unique assignments and problems*
  * @params {User} user - Student that is getting the tailoredCourse
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
@@ -156,10 +153,7 @@ function createCourseAndAddToStudent(user, course) {
 /**
  * Generate a new assignment with problems based on the pre-defined
  * parameters from a AbstractCourse and AbstractCourse.assignment
- *
- * TODO: Question requesting process
- *
- * @params {Course} course
+  * @params {Course} course
  * @params {Assignment} assignment
  * @return {Assignment}
  */
