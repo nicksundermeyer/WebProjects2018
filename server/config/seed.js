@@ -63,7 +63,8 @@ export default function seedDatabaseIfNeeded() {
             role: role,
             name: 'Test '+role.charAt(0).toUpperCase() + role.slice(1),
             email: role+'@example.com',
-            password: 'ps-'+role
+            password: 'ps-'+role,
+            courses: []
           }).then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
@@ -107,14 +108,14 @@ export default function seedDatabaseIfNeeded() {
                   title: 'Assignment 1',
                   description: 'this focuses on ' + category + 'operations',
                   minNumProblems: 5,
-                  maxNumProblems: 15,
-                  newProblemPercentage: 25
+                  maxNumProblems: 10,
+                  newProblemPercentage: 15
                 }, {
                   title: 'Assignment 2',
                   description: 'this focuses on ' + category + 'operations',
-                  minNumProblems: 10,
-                  maxNumProblems: 35,
-                  newProblemPercentage: 35
+                  minNumProblems: 3,
+                  maxNumProblems: 15,
+                  newProblemPercentage: 25
                 }]
               }).then((createdCourse) => {
                 console.log('finished populating Abstract Courses');

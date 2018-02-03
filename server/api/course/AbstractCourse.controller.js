@@ -6,6 +6,8 @@ import shared from './../../config/environment/shared';
 import Assignment from './assignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
+import User from '../user/user.model';
+
 
 export function index(req, res) {
   AbstractCourse.find()
@@ -142,7 +144,14 @@ function createCourseAndAddToStudent(user, course) {
       tailoredCourse.assignments.push(item);
     });
 
-    return tailoredCourse.save();
+    return tailoredCourse.save().then( tc => {
+      return User.update(
+        { _id: user._id},
+        { $push: { courses: tc } }
+      );
+    });
+
+    //return tailoredCourse.save();
   }).catch( err => {
     console.log('Error creating tailored assignment', err);
   });
