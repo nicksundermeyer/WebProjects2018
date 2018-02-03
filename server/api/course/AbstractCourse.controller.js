@@ -190,6 +190,8 @@ function generateAssignmentsWith(course, assignment) {
         Promise.all(promises).then(finalProblems => {
           resolve(new Assignment({
             AbstractAssignmentId: course._id,
+            title: assignment.title,
+            description: assignment.description,
             problems: finalProblems
           }));
         });
