@@ -10,7 +10,7 @@ router.get('/', controller.index);
 router.get('/:id', controller.show);
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
-router.post('/:id', auth.hasRole('student'), controller.addStudent); // Add Student to course
+router.post('/:id/students', auth.hasRole('student'), controller.addStudent); // Add Student to course
 router.delete('/:id', auth.hasRole('teacher'), controller.destroy);
 router.put('/:id', auth.hasRole('teacher'), controller.update);
 

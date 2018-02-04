@@ -23,7 +23,6 @@ export function index(req, res) {
 }
 
 
-
 export function show(req, res) {
   AbstractCourse.findById(req.params.id)
     .exec()
@@ -86,15 +85,15 @@ export function update(req, res) {
 
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).then(course => {
-      if(course) {
-        hasPermission(req, course).then(() => {
-          course.remove();
-          return res.status(204).end();
-        }).catch(() => {
-          return res.status(403).end();
-        });
-      }
+    if(course) {
+      hasPermission(req, course).then(() => {
+        course.remove();
+        return res.status(204).end();
+      }).catch(() => {
+        return res.status(403).end();
+      });
     }
+  }
   ).catch(() => {
     return res.status(400).end();
   });
@@ -104,16 +103,26 @@ export function destroy(req, res) {
  * Add student id to enrolled students in course
  */
 export function addStudent(req, res) {
-  AbstractCourse.findById(req.params.id)
+  return AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {
-        return res.status(201).json(createCourseAndAddToStudent(req.user, course));
+        return createCourseAndAddToStudent(req.user, course).then(() => {
+          return User.findOne({_id: req.user._id}, '-salt -password -courses.assignments.problems.problem.solution').exec()
+            .then(user => {
+              if(!user) {
+                return res.status(401).end();
+              }
+              return res.json(user).status(201);
+            })
+            .catch(err => console.log('err in add student', err));
+        });
       } else {
         return res.status(204).end();
       }
     })
     .catch(function(err) {
+      console.log('err in finding course', err);
       res.status(400);
       res.send(err);
     });
@@ -126,11 +135,10 @@ export function addStudent(req, res) {
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddToStudent(user, course) {
-
   var tailoredAssignments = [];
 
   for(var i = 0; i < course.assignments.length; i++) {
-    tailoredAssignments.push(generateAssignmentsWith(course,course.assignments[i]));
+    tailoredAssignments.push(generateAssignmentsWith(course, course.assignments[i]));
   }
 
   return Promise.all(tailoredAssignments).then(ta => {
@@ -144,18 +152,15 @@ function createCourseAndAddToStudent(user, course) {
       tailoredCourse.assignments.push(item);
     });
 
-    return tailoredCourse.save().then( tc => {
+    return tailoredCourse.save().then(tc => {
       return User.update(
         { _id: user._id},
         { $push: { courses: tc } }
       );
     });
-
-    //return tailoredCourse.save();
-  }).catch( err => {
+  }).catch(err => {
     console.log('Error creating tailored assignment', err);
   });
-
 }//end create tailored course
 
 
@@ -167,16 +172,15 @@ function createCourseAndAddToStudent(user, course) {
  * @return {Assignment}
  */
 function generateAssignmentsWith(course, assignment) {
-
   return new Promise(function(resolve, reject) {
       // Generate problems with parameters
-      var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-      var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
+    var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
+    var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
 
-      Problem.aggregate(
+    Problem.aggregate(
         [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
       ).then(results => {
-        for (let i = 0; i < numberOfNew; i++) {
+        for(let i = 0; i < numberOfNew; i++) {
           results.push(problemController.create({
             protocol: 'dpg',
             version: '0.1',
@@ -201,8 +205,8 @@ function generateAssignmentsWith(course, assignment) {
       }).catch(err => {
         reject('Error getting problems', err);
       });
-    }
-  )
+  }
+  );
 }
 
 
