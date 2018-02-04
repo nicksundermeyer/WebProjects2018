@@ -9,6 +9,30 @@ import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
 
 
+export function getTailoredCourse(req, res) {
+  return TailoredCourse.findById(req.params.id).exec().then( tc => {
+    if(tc) {
+      return res.json(tc).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
+
+export function getAssignment(req, res) {
+  return Assignment.findById(req.params.id).exec().then( assignment => {
+    if(assignment) {
+      return res.json(assignment).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
+
 export function index(req, res) {
   AbstractCourse.find()
     .exec()
@@ -113,7 +137,18 @@ export function addStudent(req, res) {
               if(!user) {
                 return res.status(401).end();
               }
-              return res.json(user).status(201);
+
+              var courseIds = []
+              for(let i = 0; i < user.courses.length; i++){
+                courseIds.push(user.courses[i]._id);
+              }
+
+              return res.json({
+                name: user.name,
+                email: user.email,
+                courses: courseIds
+              }).status(201);
+             // return res.json(user).status(201);
             })
             .catch(err => console.log('err in add student', err));
         });
@@ -198,7 +233,7 @@ function generateAssignmentsWith(course, assignment) {
             title: assignment.title,
             description: assignment.description,
             problems: finalProblems
-          }));
+          }).save());
         });
       }).catch(err => {
         reject('Error getting problems', err);

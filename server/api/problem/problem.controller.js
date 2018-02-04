@@ -49,8 +49,8 @@ export function create(req) {
         problem.save();
         resolve(problem);
       })
-      .catch(function(err) {
-        reject('Axios status code: '.concat(err.response.status));
+      .catch(function() {
+        reject('Axios is so tilting');
       });
   });
 
