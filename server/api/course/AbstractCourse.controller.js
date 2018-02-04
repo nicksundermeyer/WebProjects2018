@@ -121,10 +121,8 @@ export function addStudent(req, res) {
         return res.status(204).end();
       }
     })
-    .catch(function(err) {
-      console.log('err in finding course', err);
-      res.status(400);
-      res.send(err);
+    .catch(function() {
+      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
     });
 }
 
