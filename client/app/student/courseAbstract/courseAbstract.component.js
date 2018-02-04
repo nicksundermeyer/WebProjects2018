@@ -6,12 +6,14 @@ export class CourseAbstractController {
 
   assignments = [];
   course;
+  courseId;
   teacher;
 
   /*@ngInject*/
   constructor($http, $routeParams) {
     this.$http = $http;
     this.$routeParams = $routeParams;
+    this.courseId = this.$routeParams.id;
   }
 
   $onInit() {
@@ -25,6 +27,14 @@ export class CourseAbstractController {
       .then(response => {
         this.teacher = response.data;
         console.log(this.teacher);
+      });
+  }
+
+
+  register() {
+    this.$http.post('/api/courses/' + this.courseId + '/students')
+      .then(response => {
+        console.log(response);
       });
   }
 
