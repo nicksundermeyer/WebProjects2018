@@ -82,6 +82,8 @@ export default function seedDatabaseIfNeeded() {
                   'category': category,
                   'depth': 1
                 }
+              }).catch( erro => {
+                console.log(erro);
               });
             })
             .catch(err => console.log('error populating Problems', err));
@@ -119,7 +121,7 @@ export default function seedDatabaseIfNeeded() {
                 }]
               }).then((createdCourse) => {
                 console.log('finished populating Abstract Courses');
-                createTailoredCourse(createdCourse);
+                return createTailoredCourse(createdCourse);
               })
                 .catch(err => console.log('error populating Abstract Courses', err));
             });
@@ -135,9 +137,9 @@ export default function seedDatabaseIfNeeded() {
 
 function createTailoredCourse(abstractCourse) {
   //console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
-  TailoredCourse.find({}).remove()
+  return TailoredCourse.find({}).remove()
     .then(() => {
-      TailoredCourse.create({
+      return TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,

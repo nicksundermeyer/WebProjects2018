@@ -46,13 +46,13 @@ export function create(req) {
         problem.problem.subject = response.data.problem.subject;
         problem.problem.category = response.data.problem.category;
         problem.problem.depth = response.data.problem.depth;
-        problem.save();
-        resolve(problem);
+        return problem.save();
+      }).then(p => {
+        resolve(p);
       })
       .catch(function() {
-        reject();
+        reject('Could not POST to problem engine. Most likely invalid POST body.');
       });
   });
-
 }
 
