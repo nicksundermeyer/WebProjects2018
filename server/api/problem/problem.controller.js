@@ -46,13 +46,13 @@ export function create(req) {
         problem.problem.subject = response.data.problem.subject;
         problem.problem.category = response.data.problem.category;
         problem.problem.depth = response.data.problem.depth;
-        return problem.save();
-      }).then(p => {
-        resolve(p);
+        problem.save();
+        resolve(problem);
       })
-      .catch(function() {
-        reject('Could not POST to problem engine. Most likely invalid POST body.');
+      .catch(function(err) {
+        reject('Axios status code: '.concat(err.response.status));
       });
   });
+
 }
 
