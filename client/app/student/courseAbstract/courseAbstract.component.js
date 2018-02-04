@@ -21,7 +21,13 @@ export class CourseAbstractController {
         this.assignments = this.course.assignments;
         console.log(this.course);
       });
+    this.$http.get('/api/users/' + this.course.teacherID)
+      .then(response => {
+        this.teacher = response.data;
+        console.log(this.teacher);
+      });
   }
+
 }
 
 export default angular.module('webProjectsApp.courseAbstract', [ngRoute])
