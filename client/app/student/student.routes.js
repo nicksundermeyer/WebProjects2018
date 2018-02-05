@@ -14,7 +14,7 @@ export default function routes($routeProvider) {
   });
 
   $routeProvider.when('/student/course/:id', {
-    template: '<course></course>',
+    template: '<course-Abstract></course-Abstract>',
     authenticate: 'student'
   });
 

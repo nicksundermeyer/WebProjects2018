@@ -9,24 +9,36 @@ var AbstractCourseSchema = new Schema({
     type: String,
     required: true
   },
-  description: String,
+  description: {
+    type: String,
+    required: true
+  },
   subjects: {
     type: String,
-    default: shared.subject
+    enum: shared.allSubjects,
+    required: true
   },
   categories: {
     type: String,
-    default: shared.categories
+    enum: shared.allCategories,
+    required: true
   },
-  maxStudents: {
-    type: Number,
-    required: true,
-    default: -1 //default is -1 for unlimited number of students
-  },
-  enrolledStudents: [mongoose.Schema.Types.ObjectId],
   teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
+
+  //embeded assignments
   assignments: [{
-    minNumProblems: Number,
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    minNumProblems: {
+      type: Number,
+      required: true
+    },
     maxNumProblems: {
       type: Number,
       required: true
