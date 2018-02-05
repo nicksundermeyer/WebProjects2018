@@ -9,15 +9,23 @@ export class ProblemCardComponent {
   userInput;
   ast;
   latex;
+  descriptionLatex;
 
   /*@ngInject*/
-  constructor($location) {
+  constructor($location, $timeout) {
     'ngInject';
     this.$location = $location;
-
     this.userInput = '';
     this.ast = '';
     this.latex = '';
+
+    $timeout(x => this.load(), 50);
+  }
+
+  load() {
+    console.log(this.myproblem);
+    this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
+    katex.render(this.descriptionLatex, document.getElementById('problemDisplay'));
   }
 
   updateDisplay() {
@@ -34,7 +42,7 @@ export default angular.module('directives.problemCard', [])
     controller: ProblemCardComponent,
     controllerAs: 'problemCardController',
     bindings: {
-      myProblem: '='
+      myproblem: '='
     }
   })
   .name;

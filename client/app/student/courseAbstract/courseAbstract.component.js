@@ -34,7 +34,10 @@ export class CourseAbstractController {
   register() {
     this.$http.post('/api/courses/' + this.courseId + '/students')
       .then(response => {
-        console.log(response);
+        this.$http.get('/api/courses/mycourses/' + response.data.courses[0])
+          .then(response1 => {
+            console.log(response1);
+          });
       });
   }
 
