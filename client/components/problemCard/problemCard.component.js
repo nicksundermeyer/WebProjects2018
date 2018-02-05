@@ -17,13 +17,13 @@ export class ProblemCardComponent {
 
     this.userInput = '';
     this.ast = '';
-   // this.latex = '';
+    this.latex = '';
   }
 
   updateDisplay() {
-  //  this.ast = MathLex.parse(this.userInput);
-    //this.latex = MathLex.render(this.ast, 'latex');
-   // katex.render(this.latex, document.getElementById('display'));
+    this.ast = MathLex.parse(this.userInput);
+    this.latex = MathLex.render(this.ast, 'latex');
+    katex.render(this.latex, document.getElementById('display'));
   }
 
 }
