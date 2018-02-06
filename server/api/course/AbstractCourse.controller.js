@@ -135,8 +135,12 @@ export function enrollStudentInCourse(req, res) {
       if(course) {
         //Create the course and associate it with the enrolling students ID
         //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
-        createCourseAndAddStudent(req.user, course).then( tc => {
-          return res.json(tc).status(201);
+        return createCourseAndAddStudent(req.user, course).then( tc => {
+          //Remove solutions from return
+          //There may be a better way to do this without querying the database
+          TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution').then ( tcNoSolutions => {
+            return res.json(tcNoSolutions).status(201);
+          });
         });
       } else {
         return res.status(204).end();
