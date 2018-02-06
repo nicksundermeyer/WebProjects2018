@@ -21,23 +21,20 @@ export class CourseAbstractController {
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
-        console.log(this.course);
       });
     this.$http.get('/api/users/' + this.course.teacherID)
       .then(response => {
         this.teacher = response.data;
-        console.log(this.teacher);
       });
   }
 
 
-  register() {
+  enroll() {
     this.$http.post('/api/courses/' + this.courseId + '/students')
       .then(response => {
-        this.$http.get('/api/courses/mycourses/' + response.data.courses[0])
-          .then(response1 => {
-            console.log(response1);
-          });
+        //reset course to returned tailored course
+        this.course = response.data;
+        console.log(this.course);
       });
   }
 

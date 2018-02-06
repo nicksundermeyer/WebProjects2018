@@ -20,14 +20,20 @@ export class ProblemCardComponent {
     this.latex = '';
     var vm = this;
 
-    $scope.$watch(() => this.myproblem, function (newVal) {
-        if (newVal) {
-          vm.load();
-        }
-      });
-    }
+    $scope.$watch(() => this.myproblem, function(newVal) {
+      if(newVal) {
+        vm.load();
+      }
+    });
+  }
 
   load() {
+    this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
+    katex.render(this.descriptionLatex, document.getElementById('problemDisplay'));
+  }
+
+  updateDisplay() {
+    this.ast = MathLex.parse(this.userInput);
     this.latex = MathLex.render(this.ast, 'latex');
     katex.render(this.latex, document.getElementById('display'));
   }
