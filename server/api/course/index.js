@@ -6,6 +6,8 @@ var router = new Router();
 
 //show all courses
 router.get('/', controller.index);
+
+//router.get('/courses/:courseId/students/:id/assignments/:id/problems/:id')
 //get course by id
 router.get('/:id', controller.show);
 router.get('/mycourses/:id', controller.getTailoredCourse);
@@ -14,7 +16,7 @@ router.get('/mycourses/assignments/:id', controller.getAssignment);
 
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
-router.post('/:id/students', auth.hasRole('student'), controller.addStudent); // Add Student to course
+router.post('/:id/students', auth.hasRole('student'), controller.enrollStudentInCourse); // Add Student to course
 router.delete('/:id', auth.hasRole('teacher'), controller.destroy);
 router.put('/:id', auth.hasRole('teacher'), controller.update);
 
