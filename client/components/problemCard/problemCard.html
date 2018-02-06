@@ -2,6 +2,8 @@
 <!--<div class="container col-md-4 col-lg-4 col-sm-12">-->
   <div class="problem-card">
     <div class="card-header text-black">
+      <h2>{{problemCardController.myproblem.instructions}}</h2>
+      <span id="problemDisplay"></span>
     </div>
     <div class="text-box">
       <input ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
