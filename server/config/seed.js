@@ -63,7 +63,8 @@ export default function seedDatabaseIfNeeded() {
             role: role,
             name: 'Test '+role.charAt(0).toUpperCase() + role.slice(1),
             email: role+'@example.com',
-            password: 'ps-'+role
+            password: 'ps-'+role,
+            courses: []
           }).then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });
@@ -81,6 +82,8 @@ export default function seedDatabaseIfNeeded() {
                   'category': category,
                   'depth': 1
                 }
+              }).catch( erro => {
+                console.log(erro);
               });
             })
             .catch(err => console.log('error populating Problems', err));
@@ -107,12 +110,18 @@ export default function seedDatabaseIfNeeded() {
                   title: 'Assignment 1',
                   description: 'this focuses on ' + category + 'operations',
                   minNumProblems: 5,
+                  maxNumProblems: 10,
+                  newProblemPercentage: 15
+                }, {
+                  title: 'Assignment 2',
+                  description: 'this focuses on ' + category + 'operations',
+                  minNumProblems: 3,
                   maxNumProblems: 15,
                   newProblemPercentage: 25
                 }]
               }).then((createdCourse) => {
                 console.log('finished populating Abstract Courses');
-                createTailoredCourse(createdCourse);
+                return createTailoredCourse(createdCourse);
               })
                 .catch(err => console.log('error populating Abstract Courses', err));
             });
@@ -128,9 +137,9 @@ export default function seedDatabaseIfNeeded() {
 
 function createTailoredCourse(abstractCourse) {
   //console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
-  TailoredCourse.find({}).remove()
+  return TailoredCourse.find({}).remove()
     .then(() => {
-      TailoredCourse.create({
+      return TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,

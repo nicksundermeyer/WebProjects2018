@@ -6,6 +6,32 @@ import shared from './../../config/environment/shared';
 import Assignment from './assignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
+import User from '../user/user.model';
+
+
+export function getTailoredCourse(req, res) {
+  return TailoredCourse.findById(req.params.id).exec().then( tc => {
+    if(tc) {
+      return res.json(tc).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
+
+export function getAssignment(req, res) {
+  return Assignment.findById(req.params.id).exec().then( assignment => {
+    if(assignment) {
+      return res.json(assignment).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
 
 export function index(req, res) {
   AbstractCourse.find()
@@ -19,7 +45,6 @@ export function index(req, res) {
       res.send(err);
     });
 }
-
 
 
 export function show(req, res) {
@@ -84,15 +109,15 @@ export function update(req, res) {
 
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).then(course => {
-      if(course) {
-        hasPermission(req, course).then(() => {
-          course.remove();
-          return res.status(204).end();
-        }).catch(() => {
-          return res.status(403).end();
-        });
-      }
+    if(course) {
+      hasPermission(req, course).then(() => {
+        course.remove();
+        return res.status(204).end();
+      }).catch(() => {
+        return res.status(403).end();
+      });
     }
+  }
   ).catch(() => {
     return res.status(400).end();
   });
@@ -102,117 +127,120 @@ export function destroy(req, res) {
  * Add student id to enrolled students in course
  */
 export function addStudent(req, res) {
-  AbstractCourse.findById(req.params.id)
+  return AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {
-        return res.status(201).json(createCourseAndAddToStudent(req.user, course));
+        return createCourseAndAddToStudent(req.user, course).then(() => {
+          return User.findOne({_id: req.user._id}, '-salt -password -courses.assignments.problems.problem.solution').exec()
+            .then(user => {
+              if(!user) {
+                return res.status(401).end();
+              }
+
+              var courseIds = []
+              for(let i = 0; i < user.courses.length; i++){
+                courseIds.push(user.courses[i]._id);
+              }
+
+              return res.json({
+                name: user.name,
+                email: user.email,
+                courses: courseIds
+              }).status(201);
+             // return res.json(user).status(201);
+            })
+            .catch(err => console.log('err in add student', err));
+        });
       } else {
         return res.status(204).end();
       }
     })
-    .catch(function(err) {
-      res.status(400);
-      res.send(err);
+    .catch(function() {
+      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
     });
 }
 
 /**
  * Generate a TailoredCourse that is specific to the student
- * include unique assignments and problems
- *
- * TODO: Error handling.
- *
+ * include unique assignments and problems*
  * @params {User} user - Student that is getting the tailoredCourse
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddToStudent(user, course) {
-  // Using predefined assignment information from course, create a new tailored Course
-  console.log(course.assignments.length);
-  // Create Assignments for TailoredCourse
   var tailoredAssignments = [];
-  for(var i = 0; i < course.assignments.length; i++) {
-    console.log('Loop over assignments');
-    //  console.log(course.assignments[i]);
 
-    var newAssignment = generateAssignmentsWith(course, course.assignments[i]);
-    tailoredAssignments.push(newAssignment);
+  for(var i = 0; i < course.assignments.length; i++) {
+    tailoredAssignments.push(generateAssignmentsWith(course, course.assignments[i]));
   }
 
-  // Create TailoredCourse
-  var newTailoredCourse = new TailoredCourse({
-    abstractCourseID: course._id,
-    studentID: user._id,
-    subjects: course.subjects,
-    categories: course.categories,
-    assignments: tailoredAssignments
+  return Promise.all(tailoredAssignments).then(ta => {
+    var tailoredCourse = new TailoredCourse();
+    tailoredCourse.abstractCourseID = course._id;
+    tailoredCourse.studentID = user._id;
+    tailoredCourse.subjects = course.subjects;
+    tailoredCourse.categories = course.categories;
+
+    ta.forEach(function(item) {
+      tailoredCourse.assignments.push(item);
+    });
+
+    return tailoredCourse.save().then(tc => {
+      return User.update(
+        { _id: user._id},
+        { $push: { courses: tc } }
+      );
+    });
+  }).catch(err => {
+    console.log('Error creating tailored assignment', err);
   });
-  // console.log(newTailoredCourse);
-  // Add course to user object
-
-  //this line gives error :(
-  newTailoredCourse.save();
-
-  return newTailoredCourse;
 }//end create tailored course
 
 
 /**
  * Generate a new assignment with problems based on the pre-defined
  * parameters from a AbstractCourse and AbstractCourse.assignment
- *
- * TODO: Question requesting process
- *
- * @params {Course} course
+  * @params {Course} course
  * @params {Assignment} assignment
  * @return {Assignment}
  */
 function generateAssignmentsWith(course, assignment) {
-  // Generate problems with parameters
-  var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-  var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
-  var newProblems = [];
-  var currentProblems = [];
-  //assuming that there are enough matching problems in the DB when querying. We will seed enough.
+  return new Promise(function(resolve, reject) {
+      // Generate problems with parameters
+    var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
+    var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
 
-  Problem.aggregate(
-    [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
-  ).then(results => {
-    results.forEach(function(item) {
-      currentProblems.push(item);
-    });
-  }).catch(err => {
-    console.log('Error fetching existing problems', err);
-  });
+    Problem.aggregate(
+        [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
+      ).then(results => {
+        for(let i = 0; i < numberOfNew; i++) {
+          results.push(problemController.create({
+            protocol: 'dpg',
+            version: '0.1',
+            problem: {
+              subject: course.subjects,
+              category: course.categories,
+              depth: 1
+            }
+          }));
+        }
 
-
-  for(let i = 0; i < numberOfNew; i++) {
-    newProblems.push(problemController.create({
-      protocol: 'dpg',
-      version: '0.1',
-      problem: {
-        subject: course.subjects,
-        category: course.categories,
-        depth: 1
-      }
-    }));
+        return results;
+      }).then(promises => {
+        Promise.all(promises).then(finalProblems => {
+          resolve(new Assignment({
+            AbstractAssignmentId: course._id,
+            title: assignment.title,
+            description: assignment.description,
+            problems: finalProblems
+          }).save());
+        });
+      }).catch(err => {
+        reject('Error getting problems', err);
+      });
   }
-
-
-  return Promise.all(newProblems).then(probs => {
-    console.log(probs);
-    // Create Assignment with problems
-    return new Assignment({
-      minNumProblems: assignment.minNumProblems,
-      maxNumProblems: assignment.maxNumProblems,
-      newProblemPercentage: assignment.newProblemPercentage,
-      problems: currentProblems.concat(probs)
-    });
-
-  }).catch((err) => {
-    console.log('Error resolving promises', err);
-  });
-}//end generate assignments
+  );
+}
 
 
 //only allow the course teacher or role greater than teacher permission

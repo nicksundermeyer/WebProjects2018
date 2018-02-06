@@ -16,6 +16,15 @@ var AssignmentSchema = new Schema({
   //from the problems model
   //problems: [Problem.schema]
 
+  title: {
+    type: String,
+      required: true
+  },
+  description: {
+    type: String,
+      required: true
+  },
+
   problems: {
     type: [Problem.schema],
     required: true
