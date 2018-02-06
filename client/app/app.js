@@ -10,6 +10,7 @@ const ngRoute = require('angular-route');
 
 import uiBootstrap from 'angular-ui-bootstrap';
 import 'angular-validation-match';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import {
   routeConfig
