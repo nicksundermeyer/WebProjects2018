@@ -20,7 +20,7 @@ export default angular.module('directives.assignmentCardAbstract', [])
     controllerAs: 'assignmentCardAbstractController',
     bindings: {
       assignment: '=',
-      courseid: '=',
+      course: '=',
     }
   })
   .name;
