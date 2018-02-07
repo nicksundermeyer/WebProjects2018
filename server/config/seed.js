@@ -63,8 +63,7 @@ export default function seedDatabaseIfNeeded() {
             role: role,
             name: 'Test '+role.charAt(0).toUpperCase() + role.slice(1),
             email: role+'@example.com',
-            password: 'ps-'+role,
-            courses: []
+            password: 'ps-'+role
           }).then(() => console.log('finished populating users'))
           .catch(err => console.log('error populating users', err));
       });

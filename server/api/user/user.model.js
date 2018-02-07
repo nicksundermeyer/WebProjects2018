@@ -27,9 +27,6 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
 
-  courses: {
-    type: [TailoredCourse.schema]
-  },
 }, { usePushEach: true });
 
 /**

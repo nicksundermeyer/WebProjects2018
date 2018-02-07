@@ -20,12 +20,7 @@ export class AssignmentController {
       .then(response => {
         this.assignment = response.data;
         this.problems = this.assignment.problems;
-        if(this.$routeParams.problemId == null) {
-          this.selectedProblem = this.problems[0].problem;
-        }
-        else {
-          this.selectedProblem = this.problems.filter(prob => prob._id == this.$routeParams.problemId)[0].problem;
-        }
+        this.selectedProblem = this.problems[0].problem;
       });
 
 
@@ -33,6 +28,10 @@ export class AssignmentController {
       .then(response => {
         this.course = response.data;
       });
+  }
+
+  changeProblem(problemId) {
+    this.selectedProblem = this.problems.filter(prob => prob._id == problemId)[0].problem;
   }
 }
 
