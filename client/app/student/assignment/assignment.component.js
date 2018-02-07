@@ -16,21 +16,22 @@ export class AssignmentController {
   }
 
   $onInit() {
+    this.$http.get('/api/courses/mycourses/assignments/' + this.$routeParams.assignmentId)
+      .then(response => {
+        this.assignment = response.data;
+        this.problems = this.assignment.problems;
+        this.selectedProblem = this.problems[0].problem;
+      });
+
+
     this.$http.get('/api/courses/' + this.$routeParams.courseId)
       .then(response => {
         this.course = response.data;
-        console.log(this.course);
-        this.assignment = this.course.assignments.find(asmt => {
-          return asmt._id === this.$routeParams.assignmentId;
-        });
-        this.problems = this.assinment.problems;
-        if(this.$routeParams.problemId === null) {
-          this.selectedProblem = this.problems[0];
-        }
-        else {
-          this.selectedProblem = this.problems[this.$routeParams.problemId];
-        }
       });
+  }
+
+  changeProblem(problemId) {
+    this.selectedProblem = this.problems.filter(prob => prob._id == problemId)[0].problem;
   }
 }
 

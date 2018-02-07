@@ -9,6 +9,10 @@ $fa-font-path: '/assets/fonts/font-awesome/';
  * App-wide Styles
  */
 
+html {
+  background: #F7F7F7;
+}
+
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -18,13 +22,15 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 
 // Component styles are injected through gulp
 /* inject:scss */
+@import 'about/about';
 @import 'admin/admin';
 @import 'main/main';
 @import 'student/student';
 @import 'teacher/teacher';
-@import '../components/assignmentCard/assignmentCard';
+@import '../components/assignmentCardAbstract/assignmentCardAbstract';
 @import '../components/courseCard/courseCard';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
+@import '../components/navbar/navbar';
 @import '../components/problemCard/problemCard';
 /* endinject */

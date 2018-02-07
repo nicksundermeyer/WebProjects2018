@@ -14,16 +14,11 @@ export default function routes($routeProvider) {
   });
 
   $routeProvider.when('/student/course/:id', {
-    template: '<course></course>',
+    template: '<course-Abstract></course-Abstract>',
     authenticate: 'student'
   });
 
   $routeProvider.when('/student/course/:courseId/assignment/:assignmentId', {
-    template: '<assignment></assignment>',
-    authenticate: 'student'
-  });
-
-  $routeProvider.when('/student/course/:courseId/assignment/:assignmentId/problem/:problemId', {
     template: '<assignment></assignment>',
     authenticate: 'student'
   });
