@@ -10,7 +10,7 @@
       <p>Min problem:{{assignmentCardAbstractController.assignment.minNumProblems}}</p>
       <p>Max problem:{{assignmentCardAbstractController.assignment.maxNumProblems}}</p>
     </div>
-    <button ng-disabled = "!assignmentCardAbstractController.course.isTailored" href="/student/course/{{assignmentCardAbstractController.course._id}}/assignment/{{assignmentCardAbstractController.assignment._id}}" class="btn btn-primary goButton">Go</button>
+    <button ng-disabled = "!(assignmentCardAbstractController.istailored)" class="btn btn-primary goButton" ng-click="assignmentCardAbstractController.redirect()">Go</button>
   </div>
 </div>
 

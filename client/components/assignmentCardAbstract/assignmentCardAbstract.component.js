@@ -8,8 +8,12 @@ export class AssignmentCardComponent {
   constructor($location) {
     'ngInject';
     this.$location = $location;
-
   }
+
+  redirect() {
+    this.$location.path('/student/course/' + this.courseid + '/assignment/' + this.assignment._id);
+  }
+
 
 }
 
@@ -20,7 +24,8 @@ export default angular.module('directives.assignmentCardAbstract', [])
     controllerAs: 'assignmentCardAbstractController',
     bindings: {
       assignment: '=',
-      course: '=',
+      courseid: '=',
+      istailored: '='
     }
   })
   .name;

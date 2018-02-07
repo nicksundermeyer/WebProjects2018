@@ -44,6 +44,7 @@ export class CourseAbstractController {
       .then(response => {
         //reset course to returned tailored course
         this.course = response.data;
+        this.assignments = this.course.assignments;
         this.isTailored = true;
       });
   }
