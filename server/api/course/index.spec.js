@@ -21,12 +21,12 @@ var authServiceStub = {
     }
   };
 
-var absabsCourseCtrlStub = {
-    index: 'absCourseCtrl.index',
-    show: 'absCourseCtrl.show',
-    create: 'absCourseCtrl.create',
-    update: 'absCourseCtrl.update',
-    destroy: 'absCourseCtrl.destroy'
+var CourseCtrlStub = {
+    index: 'CourseCtrl.index',
+    show: 'CourseCtrl.show',
+    create: 'CourseCtrl.create',
+    update: 'CourseCtrl.update',
+    destroy: 'CourseCtrl.destroy'
   };
 
 var problemCtrlStub = {
@@ -43,7 +43,7 @@ var courseIndex = proxyquire('./index.js', {
         return routerStub;
       }
     },
-    './AbstractCourse.controller': absabsCourseCtrlStub,
+    './Course.controller': CourseCtrlStub,
     '../../auth/auth.service': authServiceStub,
     '../problem/problem.controller': problemCtrlStub
   });
@@ -57,7 +57,7 @@ var courseIndex = proxyquire('./index.js', {
     describe('GET api/courses', function(){
         it('should route to course.controller', function(){
             expect(routerStub.get
-                .withArgs('/', 'absCourseCtrl.index')
+                .withArgs('/', 'CourseCtrl.index')
                 ).to.have.been.calledOnce;
         });
     });
@@ -65,7 +65,7 @@ var courseIndex = proxyquire('./index.js', {
     describe('GET api/courses/:id', function() {
       it('should route to course.controller.show', function(){
         expect(routerStub.get
-          .withArgs('/:id', 'absCourseCtrl.show')
+          .withArgs('/:id', 'CourseCtrl.show')
         ).to.have.been.calledOnce;
       });
     });
@@ -73,7 +73,7 @@ var courseIndex = proxyquire('./index.js', {
     describe('POST /api/courses', function() {
         it('should route to course.controller.create', function() {
             expect(routerStub.post
-                .withArgs('/','authService.hasRole.teacher', 'absCourseCtrl.create')
+                .withArgs('/','authService.hasRole.teacher', 'CourseCtrl.create')
                 ).to.have.been.calledOnce;
         });
     });
@@ -81,15 +81,15 @@ var courseIndex = proxyquire('./index.js', {
     describe('DELETE /api/courses/:id', function() {
       it('should route to course.controller.destroy', function() {
         expect(routerStub.delete
-          .withArgs('/:id', 'authService.hasRole.teacher','absCourseCtrl.destroy')
+          .withArgs('/:id', 'authService.hasRole.teacher','CourseCtrl.destroy')
         ).to.have.been.calledOnce;
     });
     });
 
-    describe('PUT /api/courses/:id', function() {
+    describe('PUT /api/mycourses/:id', function() {
       it('should route to course.controller.update', function() {
         expect(routerStub.put
-          .withArgs('/:id','authService.hasRole.teacher', 'absCourseCtrl.update')
+          .withArgs('/:id','authService.hasRole.teacher', 'CourseCtrl.update')
         ).to.have.been.calledOnce;
       });
     });
