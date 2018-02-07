@@ -10,6 +10,11 @@ export class AssignmentCardComponent {
     this.$location = $location;
   }
 
+  redirect() {
+    this.$location.path('/student/course/' + this.courseid + '/assignment/' + this.assignment._id);
+  }
+
+
 }
 
 export default angular.module('directives.assignmentCardAbstract', [])
@@ -20,6 +25,7 @@ export default angular.module('directives.assignmentCardAbstract', [])
     bindings: {
       assignment: '=',
       courseid: '=',
+      istailored: '='
     }
   })
   .name;

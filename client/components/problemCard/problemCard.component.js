@@ -29,13 +29,13 @@ export class ProblemCardComponent {
 
   load() {
     this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
-    katex.render(this.descriptionLatex, document.getElementById('problemDisplay'));
+    katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
   }
 
   updateDisplay() {
     this.ast = MathLex.parse(this.userInput);
     this.latex = MathLex.render(this.ast, 'latex');
-    katex.render(this.latex, document.getElementById('display'));
+    katex.render(this.latex, document.getElementById('problem-input'));
   }
 }
 
