@@ -8,6 +8,7 @@ export class AssignmentCardComponent {
   constructor($location) {
     'ngInject';
     this.$location = $location;
+
   }
 
 }

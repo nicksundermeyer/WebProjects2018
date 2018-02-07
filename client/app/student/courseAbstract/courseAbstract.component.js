@@ -8,12 +8,14 @@ export class CourseAbstractController {
   course;
   courseId;
   teacher;
+  isTailored;
 
   /*@ngInject*/
   constructor($http, $routeParams) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
+    this.isTailored = false;
   }
 
   $onInit() {
@@ -33,8 +35,12 @@ export class CourseAbstractController {
     this.$http.post('/api/courses/' + this.courseId + '/students')
       .then(response => {
         //reset course to returned tailored course
+
+        // console.log(this.course);//abstract
         this.course = response.data;
-        console.log(this.course);
+        this.isTailored = true;
+        console.log(this.isTailored);
+        // console.log(this.course);//tailored
       });
   }
 
