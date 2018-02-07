@@ -9,21 +9,29 @@ export class CourseAbstractController {
   courseId;
   teacher;
   isTailored;
+  student;
 
   /*@ngInject*/
-  constructor($http, $routeParams) {
+  constructor($http, $routeParams, courseService) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
+    this.courseService = courseService;
     this.isTailored = false;
   }
 
   $onInit() {
-    this.$http.get('/api/courses/' + this.$routeParams.id)
+    this.$http.get('/api/courses/' + this.courseId)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
       });
+
+    //student api get
+    this.courseService.getStudentInfo();
+    console.log(this.student);
+
+
     this.$http.get('/api/users/' + this.course.teacherID)
       .then(response => {
         this.teacher = response.data;
@@ -31,16 +39,12 @@ export class CourseAbstractController {
   }
 
 
-  enroll() {
+  enroll(){
     this.$http.post('/api/courses/' + this.courseId + '/students')
       .then(response => {
         //reset course to returned tailored course
-
-        // console.log(this.course);//abstract
         this.course = response.data;
         this.isTailored = true;
-        console.log(this.isTailored);
-        // console.log(this.course);//tailored
       });
   }
 
@@ -52,6 +56,19 @@ export default angular.module('webProjectsApp.courseAbstract', [ngRoute])
     template: require('./courseAbstract.html'),
     controller: CourseAbstractController,
     controllerAs: 'courseAbstractController',
+  })
+  .service('courseService', function() {
+    this.getStudentInfo = function () {
+      this.$http.get('/api/users/me')
+        .then(response => {
+          this.student = response.data;
+        });
+    };
+
+
+    this.isTailored = function () {
+      return false;
+    }
   })
   .name;
 
