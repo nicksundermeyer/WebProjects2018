@@ -123,9 +123,6 @@ export function destroy(req, res) {
   });
 }
 
-/*
- * Add student id to enrolled students in course
- */
 export function enrollStudentInCourse(req, res) {
 
   //Find the course with the ID passed into the URL
