@@ -102,18 +102,18 @@ export default function seedDatabaseIfNeeded() {
             .then(() => {
               AbstractCourse.create({
                 name: subject.subject + '-about-' + category,
-                description: subject.subject + 'focusing on the ' + category + ' topic',
+                description: subject.subject + ' focusing on the ' + category + ' topic',
                 subjects: [subject.subject],
                 categories: [category],
                 assignments: [{
                   title: 'Assignment 1',
-                  description: 'this focuses on ' + category + 'operations',
+                  description: 'this focuses on ' + category + ' operations',
                   minNumProblems: 5,
                   maxNumProblems: 10,
                   newProblemPercentage: 15
                 }, {
                   title: 'Assignment 2',
-                  description: 'this focuses on ' + category + 'operations',
+                  description: 'this focuses on ' + category + ' operations',
                   minNumProblems: 3,
                   maxNumProblems: 15,
                   newProblemPercentage: 25
@@ -135,15 +135,68 @@ export default function seedDatabaseIfNeeded() {
 }//end export
 
 function createTailoredCourse(abstractCourse) {
-  //console.log(`${abstractCourse.subjects}: ${abstractCourse.categories} -> ${abstractCourse._id}`);
-  return TailoredCourse.find({}).remove()
+    return TailoredCourse.find({}).remove()
     .then(() => {
       return TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,
         categories: abstractCourse.categories,
-        assignments: []
+        assignments: [{
+          AbstractAssignmentId: abstractCourse.assignments[0].id,
+          title: abstractCourse.assignments[0].title,
+          description: abstractCourse.assignments[0].description,
+          problems: [{
+              protocol: "dpg",
+              version: "0.1",
+    
+              problem: {
+                  problemId: "a72fadaba84ef41f34f3ba6cd87ce43b85e151bf",
+                  description: {
+                      math: [
+                          "Equal",
+                          [
+                              "Plus",
+                              [
+                                  "Variable",
+                                  "x"
+                              ],
+                              [
+                                  "Literal",
+                                  "Int",
+                                  4
+                              ]
+                          ],
+                          [
+                              "Literal",
+                              "Int",
+                              0
+                          ]
+                      ]
+                  },
+                  depth: 1,
+                  subject: "algebra",
+                  category: "addition",
+                  solution: {
+                      math: [
+                          "Equal",
+                          [
+                              "Variable",
+                              "x"
+                          ],
+                          [
+                              "Literal",
+                              "Int",
+                              -4
+                          ]
+                      ]
+                  },
+
+                  instructions: "Solve for x."
+              }
+              //instructions: "Solve for x."
+          }]
+        }]
       }).then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
       .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));
   });
