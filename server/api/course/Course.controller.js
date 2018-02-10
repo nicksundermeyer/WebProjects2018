@@ -8,6 +8,87 @@ import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
 
+export function index(req, res) {
+  AbstractCourse.find()
+    .exec()
+    .then(function(courses) {
+      return res.status(200).json(courses);
+    })
+    //Print errors
+    .catch(function(err) {
+      res.status(500);
+      res.send(err);
+    });
+}
+
+export function show(req, res) {
+  AbstractCourse.findById(req.params.id)
+    .exec()
+    .then(function(course) {
+      //return an OK status and the course, if course exists
+      return res.status(200).json(course);
+    })
+    .catch(function(err) {
+      //if course does not exists return a not found status 
+      return res.status(404).end();
+    });
+}
+
+export function create(req, res) {
+  let course = req.body;
+  AbstractCourse.create(course)
+    .then(function(createdCourse) {
+      //any role hgher than teacher
+      //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
+      //so id should not be just grabber from the current user
+      if(req.user.role === 'teacher'){
+        //set teacher id if current user is actually a teacher
+        createdCourse.teacherID = req.user._id;
+      }
+      createdCourse.save();
+      return res.status(201).json(createdCourse);
+    })
+    //Print errors
+    .catch(function(err) {
+      res.send(err);
+      return res.status(400).end();
+    });
+}
+
+export function update(req, res) {
+  AbstractCourse.findById(req.params.id).exec()
+    .then(course => {
+      if(course) {
+          //update these paths
+          course.name = req.body.name;
+          course.description = req.body.description;
+          //save course
+          course.save();
+          //return an OK status and the course
+          return res.status(200).send(course);
+      }
+    })
+    .catch(err => {
+      //otherwise return a not found status
+      return res.status(404).end();
+    });
+}
+
+
+export function destroy(req, res) {
+  AbstractCourse.findById(req.params.id).exec()
+  .then(course => {
+      //if course found delete course. Permanently
+      course.remove();
+      //return a no content status
+      return res.status(204).end();
+  }).catch(() => {
+    //return a not found status
+    return res.status(404).end();
+  });
+}
+
+//Operations for Tailored courses
 
 export function getTailoredCourse(req, res) {
   return TailoredCourse.findById(req.params.id).exec().then( tc => {
@@ -30,96 +111,6 @@ export function getAssignment(req, res) {
     }
   }).catch( () => {
     return res.status(404).end();
-  });
-}
-
-export function index(req, res) {
-  AbstractCourse.find()
-    .exec()
-    .then(function(courses) {
-      return res.status(200).json(courses);
-    })
-    //Print errors
-    .catch(function(err) {
-      res.status(500);
-      res.send(err);
-    });
-}
-
-
-export function show(req, res) {
-  AbstractCourse.findById(req.params.id)
-    .exec()
-    .then(function(course) {
-      if(course) {
-        return res.status(200).json(course);
-      } else {
-        return res.status(204).end();
-      }
-    })
-    //Print errors
-    .catch(function(err) {
-      res.send(err);
-      return res.status(404).end();
-    });
-}
-
-
-export function create(req, res) {
-  let course = req.body;
-  AbstractCourse.create(course)
-    .then(function(createdCourse) {
-      createdCourse.teacherID = req.user._id;
-      createdCourse.save();
-      return res.status(201).json(createdCourse);
-    })
-    //Print errors
-    .catch(function(err) {
-      res.send(err);
-      return res.status(400).end();
-    });
-}
-
-export function update(req, res) {
-  return AbstractCourse.findById(req.params.id).exec()
-    .then(course => {
-      if(course) {
-        hasPermission(req, course).then(() => {
-          //update abstract course
-          course.name = req.body.name;
-          course.description = req.body.description;
-          course.maxStudents = req.body.maxStudents;
-
-          return course.save()
-            .then(() => {
-              return res.status(204).end();
-            })
-            .catch(function() {
-              return res.status(404).end();
-            });
-        })
-          .catch(function() {
-            return res.status(403).end();
-          });
-      } else {
-        return res.status(403).end();
-      }
-    });
-}
-
-export function destroy(req, res) {
-  AbstractCourse.findById(req.params.id).then(course => {
-    if(course) {
-      hasPermission(req, course).then(() => {
-        course.remove();
-        return res.status(204).end();
-      }).catch(() => {
-        return res.status(403).end();
-      });
-    }
-  }
-  ).catch(() => {
-    return res.status(400).end();
   });
 }
 
@@ -246,16 +237,4 @@ function generateAssignmentsWith(course, assignment) {
       });
   }
   );
-}
-
-
-//only allow the course teacher or role greater than teacher permission
-export function hasPermission(req, course) {
-  return new Promise(function(resolve, reject) {
-    if(shared.userRoles.indexOf(req.user.role) > shared.userRoles.indexOf('teacher') || course.teacherID.equals(req.user._id)) {
-      resolve();
-    } else {
-      reject();
-    }
-  });
 }

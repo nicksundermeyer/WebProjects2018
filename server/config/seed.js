@@ -51,7 +51,7 @@ export default function seedDatabaseIfNeeded() {
     })
     .then(() => console.log('finished populating things'))
     .catch(err => console.log('error populating things', err));
-
+    //end Things
 
     //for every role on shared user roles, create a user for that role.
     for (let role of shared.userRoles)
@@ -64,10 +64,22 @@ export default function seedDatabaseIfNeeded() {
             name: 'Test '+role.charAt(0).toUpperCase() + role.slice(1),
             email: role+'@example.com',
             password: 'ps-'+role
-          }).then(() => console.log('finished populating users'))
+          }).then(user => {
+            console.log('finished populating users');
+            //if user created is a teacher
+            //grab the teacher and pass it so that abstracted courses have a teacher id
+            if(user.role === 'teacher')
+            {
+              createAbstractCourses(user);
+              //return the user so that there is no runaway promisse
+              return user;
+            }
+          })
           .catch(err => console.log('error populating users', err));
       });
     }//end creating users
+    
+    //populate problems
     for(let i = 0; i < 25; i++) {
       for (let subject of shared.subjects) {
         for (let category of subject.allowedCategories) {
@@ -90,49 +102,48 @@ export default function seedDatabaseIfNeeded() {
 
         console.log("Finished populating a problem set");
       }//end for of.
-    }
-
-    //create a course with a every combination
-    //of categories and subjects
-      for (let subject of shared.subjects) {
-        //for each specific category for this subject
-        //create a course
-        for (let category of subject.allowedCategories) {
-          AbstractCourse.find({}).remove()
-            .then(() => {
-              AbstractCourse.create({
-                name: subject.subject + '-about-' + category,
-                description: subject.subject + ' focusing on the ' + category + ' topic',
-                subjects: [subject.subject],
-                categories: [category],
-                assignments: [{
-                  title: 'Assignment 1',
-                  description: 'this focuses on ' + category + ' operations',
-                  minNumProblems: 5,
-                  maxNumProblems: 10,
-                  newProblemPercentage: 15
-                }, {
-                  title: 'Assignment 2',
-                  description: 'this focuses on ' + category + ' operations',
-                  minNumProblems: 3,
-                  maxNumProblems: 15,
-                  newProblemPercentage: 25
-                }]
-              }).then((createdCourse) => {
-                console.log('finished populating Abstract Courses');
-                return createTailoredCourse(createdCourse);
-              })
-                .catch(err => console.log('error populating Abstract Courses', err));
-            });
-        }//end for of.
-      }//end seeding Abstract courses.
-
-    //Tailored Course
-    //Random numbers for numbers and percentages
-    //makes title informative, for problems and assignments
+    }//end populating problems
 
   }//end config seedDB
 }//end export
+
+function createAbstractCourses(teacher){
+  //create a course with a every combination
+  //of categories and subjects
+  for (let subject of shared.subjects) {
+    //for each specific category for this subject
+    //create a course
+    for (let category of subject.allowedCategories) {
+      AbstractCourse.find({}).remove()
+        .then(() => {
+          AbstractCourse.create({
+            name: subject.subject + '-about-' + category,
+            description: subject.subject + ' focusing on the ' + category + ' topic',
+            subjects: [subject.subject],
+            categories: [category],
+            teacherID: teacher._id,
+            assignments: [{
+              title: 'Assignment 1',
+              description: 'this focuses on ' + category + ' operations',
+              minNumProblems: 5,
+              maxNumProblems: 10,
+              newProblemPercentage: 15
+            }, {
+              title: 'Assignment 2',
+              description: 'this focuses on ' + category + ' operations',
+              minNumProblems: 3,
+              maxNumProblems: 15,
+              newProblemPercentage: 25
+            }]
+          }).then((createdCourse) => {
+            console.log('finished populating Abstract Courses');
+            return createTailoredCourse(createdCourse);
+          })
+            .catch(err => console.log('error populating Abstract Courses', err));
+        });
+    }//end for of.
+  }//end seeding Abstract courses.
+}
 
 function createTailoredCourse(abstractCourse) {
     return TailoredCourse.find({}).remove()
