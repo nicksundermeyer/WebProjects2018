@@ -26,18 +26,6 @@ export function getTailoredCourse(req, res) {
     });
 }
 
-export function getAssignment(req, res) {
-  return Assignment.findById(req.params.id).exec().then( assignment => {
-    if(assignment) {
-      return res.json(assignment).status(200);
-    } else {
-      return res.status(204).end();
-    }
-  }).catch( () => {
-    return res.status(404).end();
-  });
-}
-
 export function index(req, res) {
   AbstractCourse.find()
     .exec()
@@ -59,7 +47,7 @@ export function show(req, res) {
       return res.status(200).json(course);
     })
     .catch(function(err) {
-      //if course does not exists return a not found status 
+      //if course does not exists return a not found status
       return res.status(404).end();
     });
 }
@@ -126,7 +114,7 @@ export function submitSolution(req, res){
     if(course){
       course.assignments.filter(_assignment => {
           if(_assignment._id == req.params.assignment){
-            
+
             _assignment.problems.filter(_problem => {
               if(_problem.problem.problemId == req.params.problem)
               {
@@ -158,17 +146,6 @@ export function submitSolution(req, res){
   });
 }
 
-export function getTailoredCourse(req, res) {
-  return TailoredCourse.findById(req.params.id).exec().then( tc => {
-    if(tc) {
-      return res.json(tc).status(200);
-    } else {
-      return res.status(204).end();
-    }
-  }).catch( () => {
-    return res.status(404).end();
-  });
-}
 
 export function getAssignment(req, res) {
   return Assignment.findById(req.params.id).exec().then( assignment => {
