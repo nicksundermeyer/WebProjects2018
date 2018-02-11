@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './course.events';
+import {registerEvents} from './Course.events';
 import shared from './../../config/environment/shared';
 
 var AbstractCourseSchema = new Schema({

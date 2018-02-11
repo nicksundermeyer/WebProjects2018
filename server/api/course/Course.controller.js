@@ -3,7 +3,7 @@
 import AbstractCourse from './AbstractCourse.model';
 import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
-import Assignment from './assignment.model';
+import Assignment from './Assignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
@@ -51,30 +51,30 @@ export function index(req, res) {
     });
 }
 
-
 export function show(req, res) {
   AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
-      if(course) {
-        return res.status(200).json(course);
-      } else {
-        return res.status(204).end();
-      }
+      //return an OK status and the course, if course exists
+      return res.status(200).json(course);
     })
-    //Print errors
     .catch(function(err) {
-      res.send(err);
+      //if course does not exists return a not found status 
       return res.status(404).end();
     });
 }
-
 
 export function create(req, res) {
   let course = req.body;
   AbstractCourse.create(course)
     .then(function(createdCourse) {
-      createdCourse.teacherID = req.user._id;
+      //any role hgher than teacher
+      //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
+      //so id should not be just grabber from the current user
+      if(req.user.role === 'teacher'){
+        //set teacher id if current user is actually a teacher
+        createdCourse.teacherID = req.user._id;
+      }
       createdCourse.save();
       return res.status(201).json(createdCourse);
     })
@@ -86,51 +86,102 @@ export function create(req, res) {
 }
 
 export function update(req, res) {
-  return AbstractCourse.findById(req.params.id).exec()
+  AbstractCourse.findById(req.params.id).exec()
     .then(course => {
       if(course) {
-        hasPermission(req, course).then(() => {
-          //update abstract course
+          //update these paths
           course.name = req.body.name;
           course.description = req.body.description;
-          course.maxStudents = req.body.maxStudents;
-
-          return course.save()
-            .then(() => {
-              return res.status(204).end();
-            })
-            .catch(function() {
-              return res.status(404).end();
-            });
-        })
-          .catch(function() {
-            return res.status(403).end();
-          });
-      } else {
-        return res.status(403).end();
+          //save course
+          course.save();
+          //return an OK status and the course
+          return res.status(200).send(course);
       }
+    })
+    .catch(err => {
+      //otherwise return a not found status
+      return res.status(404).end();
     });
 }
 
+
 export function destroy(req, res) {
-  AbstractCourse.findById(req.params.id).then(course => {
-    if(course) {
-      hasPermission(req, course).then(() => {
-        course.remove();
-        return res.status(204).end();
-      }).catch(() => {
-        return res.status(403).end();
-      });
-    }
-  }
-  ).catch(() => {
-    return res.status(400).end();
+  AbstractCourse.findById(req.params.id).exec()
+  .then(course => {
+      //if course found delete course. Permanently
+      course.remove();
+      //return a no content status
+      return res.status(204).end();
+  }).catch(() => {
+    //return a not found status
+    return res.status(404).end();
   });
 }
 
-/*
- * Add student id to enrolled students in course
- */
+//Operations for Tailored courses
+
+export function submitSolution(req, res){
+  return TailoredCourse.findById(req.params.course).exec()
+  .then(course => {
+    if(course){
+      course.assignments.filter(_assignment => {
+          if(_assignment._id == req.params.assignment){
+            
+            _assignment.problems.filter(_problem => {
+              if(_problem.problem.problemId == req.params.problem)
+              {
+                //push the attempts to problem
+                //we need a number of attempts allowed for each problem
+                if(_problem.attempts.length < 5){
+                  _problem.attempts.push(req.body);
+                }
+                //save the changes made to attempts
+                _problem.save();
+              }
+            });
+
+            //save the changes made in the problem
+            _assignment.save();
+          }
+        });
+
+        //save the changes made in the assignment
+        course.save();
+        //return the entire course for now
+        //the idea is to write the logic to check the attempts
+        //and compare them to the solution here
+        return res.json(course).status(200).end();
+    }
+  })
+  .catch(() => {
+    return res.status(400).json("Submition Failed!").end();
+  });
+}
+
+export function getTailoredCourse(req, res) {
+  return TailoredCourse.findById(req.params.id).exec().then( tc => {
+    if(tc) {
+      return res.json(tc).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
+
+export function getAssignment(req, res) {
+  return Assignment.findById(req.params.id).exec().then( assignment => {
+    if(assignment) {
+      return res.json(assignment).status(200);
+    } else {
+      return res.status(204).end();
+    }
+  }).catch( () => {
+    return res.status(404).end();
+  });
+}
+
 export function enrollStudentInCourse(req, res) {
 
   //Find the course with the ID passed into the URL

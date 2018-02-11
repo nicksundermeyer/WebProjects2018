@@ -52,24 +52,29 @@ var ProblemSchema = new Schema({
       default: null,
       required: true
     },
+  },
 
-    instructions:{
-      type:String,
-      default: null,
-      required:true
+  attempts: [{
+    date: {
+      type: String, 
+      required: true
     },
+    attempt: {
+      type: String, 
+      required: true
+    },
+    correct: {
+      type: Boolean, 
+      default: null
+    }
+  }],
 
-    //Can add this when we implement the functionality
-    // attempts:{
-    //   type:[{
-    //     date: String,
-    //     attempt: String,
-    //     correct: Boolean
-    //   }],
-    //   required:true
-    // }
-
+  instructions: {
+    type: String,
+    default: null,
+    required:true
   }
+
 }, { minimize: false });
 
 

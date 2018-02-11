@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import Assignment from './assignment.model';
+import Assignment from './Assignment.model';
 import shared from './../../config/environment/shared';
 
 

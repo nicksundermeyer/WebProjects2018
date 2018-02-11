@@ -42,7 +42,7 @@ export function create(req) {
         problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
         problem.problem.solution = JSON.parse(JSON.stringify(response.data.problem.solution));
         problem.problem.problemId = response.data.problem.problemId;
-        problem.problem.instructions = response.data.instructions;
+        problem.instructions = response.data.instructions;
         problem.problem.subject = response.data.problem.subject;
         problem.problem.category = response.data.problem.category;
         problem.problem.depth = response.data.problem.depth;
