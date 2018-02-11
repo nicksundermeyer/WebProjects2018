@@ -10,15 +10,20 @@ import User from '../user/user.model';
 
 
 export function getTailoredCourse(req, res) {
-  return TailoredCourse.findById(req.params.id).exec().then( tc => {
-    if(tc) {
-      return res.json(tc).status(200);
-    } else {
-      return res.status(204).end();
-    }
-  }).catch( () => {
-    return res.status(404).end();
-  });
+  return TailoredCourse.findOne({ 'abstractCourseID': req.params.courseID , 'studentID': req.params.studentID  }, '-assignments.problems.problem.solution')
+    .populate('abstractCourseID')
+    .exec()
+    .then( tc => {
+      if(tc) {
+        return res.json(tc).status(200);
+      } else {
+        return res.status(204).end();
+      }
+    })
+    .catch( err => {
+      console.log(err);
+      return res.status(404).end();
+    });
 }
 
 export function getAssignment(req, res) {
@@ -186,6 +191,7 @@ function createCourseAndAddStudent(user, course) {
     //Save the newly created tailoredCourse object to the database and return it
     return tailoredCourse.save();
   }).catch(err => {
+    console.log(err);
     console.log('Error creating tailored assignment', err);
   });
 }//end create tailored course
@@ -245,11 +251,13 @@ function generateAssignmentsWith(course, assignment) {
           }).save());
         });
       }).catch(err => {
+        console.log(err);
         reject('Error getting problems', err);
       });
   }
   );
 }
+
 
 export function getProblem(req, res) {
 

@@ -6,26 +6,21 @@ var router = new Router();
 
 //show all courses
 router.get('/', controller.index);
-<<<<<<< HEAD
 
-=======
->>>>>>> upstream/sprint-02
 //get course by id
 router.get('/:id', controller.show);
 //get Tailored course by id
 router.get('/mycourses/:id', controller.getTailoredCourse);
-<<<<<<< HEAD
 //router.get('/mycourses/assignments/:id', controller.getAssignment);
 
 // Find Problem
 router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem)
-// get students tailored course for that abstract course if enrolled, if not enrolled it should return the abstract course
-//router.get('/:courseid/students/:studentid', auth.hasRole('student'), controller.getCourse)
+// get tailored course with the abstract course id and student id
+router.get('/:courseID/students/:studentID', auth.hasRole('student'), controller.getTailoredCourse)
 
-=======
+
 //get assignments by id
 router.get('/mycourses/assignments/:id', controller.getAssignment);
->>>>>>> upstream/sprint-02
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
 //enroll in a course if student
