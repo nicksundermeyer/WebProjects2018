@@ -3,7 +3,7 @@
 import AbstractCourse from './AbstractCourse.model';
 import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
-import Assignment from './assignment.model';
+import Assignment from './Assignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
@@ -89,6 +89,44 @@ export function destroy(req, res) {
 }
 
 //Operations for Tailored courses
+
+export function submitSolution(req, res){
+  return TailoredCourse.findById(req.params.course).exec()
+  .then(course => {
+    if(course){
+      course.assignments.filter(_assignment => {
+          if(_assignment._id == req.params.assignment){
+            
+            _assignment.problems.filter(_problem => {
+              if(_problem.problem.problemId == req.params.problem)
+              {
+                //push the attempts to problem
+                //we need a number of attempts allowed for each problem
+                if(_problem.attempts.length < 5){
+                  _problem.attempts.push(req.body);
+                }
+                //save the changes made to attempts
+                _problem.save();
+              }
+            });
+
+            //save the changes made in the problem
+            _assignment.save();
+          }
+        });
+
+        //save the changes made in the assignment
+        course.save();
+        //return the entire course for now
+        //the idea is to write the logic to check the attempts
+        //and compare them to the solution here
+        return res.json(course).status(200).end();
+    }
+  })
+  .catch(() => {
+    return res.status(400).json("Submition Failed!").end();
+  });
+}
 
 export function getTailoredCourse(req, res) {
   return TailoredCourse.findById(req.params.id).exec().then( tc => {

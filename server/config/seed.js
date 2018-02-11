@@ -201,11 +201,15 @@ function createTailoredCourse(abstractCourse) {
                               -4
                           ]
                       ]
-                  },
-
-                  instructions: "Solve for x."
-              }
-              //instructions: "Solve for x."
+                  }
+              },
+              attempts: [{
+                date: "02/10/2018",
+                attempt: "True",
+                correct: false              
+              }],
+              
+              instructions: "Solve for x."
           }]
         }]
       }).then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
