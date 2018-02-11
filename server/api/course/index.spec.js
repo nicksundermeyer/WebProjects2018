@@ -92,7 +92,7 @@ var courseIndex = proxyquire('./index.js', {
       });
     });
 
-    describe('POST /api/courses/:course/assignments/:assignment/problems/:problem', 
+    describe('POST /api/courses/:course/assignments/:assignment/problems/:problem',
     function() {
       it('should route to course.controller.submitSolution', function() {
         expect(routerStub.post
@@ -103,14 +103,14 @@ var courseIndex = proxyquire('./index.js', {
       });
     });
 
-    describe('GET /api/courses/mycourses/:id', function() {
-      it('should route to course.controller.getTailoredCourse', function() {
-        expect(routerStub.get
-          .withArgs('/mycourses/:id', 'authService.hasRole.student',
-          'CourseCtrl.getTailoredCourse')
-        ).to.have.been.calledOnce;
-      });
-    });
+//    describe('GET /api/courses/mycourses/:id', function() {
+//      it('should route to course.controller.getTailoredCourse', function() {
+//        expect(routerStub.get
+//          .withArgs('/mycourses/:id', 'authService.hasRole.student',
+//          'CourseCtrl.getTailoredCourse')
+//        ).to.have.been.calledOnce;
+//      });
+//    });
 
     describe('GET /api/courses/mycourses/assignments/:id', function() {
       it('should route to course.controller.getAssignment', function() {
