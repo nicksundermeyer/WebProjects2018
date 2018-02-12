@@ -1,0 +1,20 @@
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>{{courseController.course.name}}</h1>
+  </div>
+</header>
+<br>
+<div class="container">
+  <div class="courseTeacher col-md-offset-5 col-lg-6 col-sm-12">Teacher:{{courseController.course.teacher.name}}</div>
+  <div class="courseData col-md-offset-5 col-lg-6 col-sm-12">subject: {{courseController.course.name}}</div>
+  <div class="courseData col-md-offset-5 col-lg-6 col-sm-12">categories:{{courseController.course.categories}}</div>
+  <div class="description col-md-offset-3 col-lg-6 col-sm-12">{{courseController.course.description}}</div>
+  <button class="btn btn-primary" ng-if="!courseController.isTailored" ng-click="courseController.enroll()">Enroll</button>
+  <div ng-repeat="anAssignment in courseController.assignments">
+    <assignment-card-abstract assignment="anAssignment" courseid="courseController.courseId" istailored="courseController.isTailored" ></assignment-card-abstract>
+  </div>
+</div>
+
+
+
+

@@ -21,7 +21,7 @@ import account from './account';
 import admin from './admin';
 import assignment from './student/assignment/assignment.component';
 import about from './about/about.component';
-import courseAbstract from './student/courseAbstract/courseAbstract.component';
+import course from './student/course/course.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import courseDiscovery from './student/courseDiscovery/courseDiscovery.component';
@@ -40,7 +40,7 @@ import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
 
-  account, admin, 'validation.match', navbar, about, footer, assignment, courseAbstract, courseCard, assignmentCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
+  account, admin, 'validation.match', navbar, about, footer, assignment, course, courseCard, assignmentCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

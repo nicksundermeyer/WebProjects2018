@@ -2,7 +2,7 @@ import angular from 'angular';
 const ngRoute = require('angular-route');
 import routing from '../student.routes';
 
-export class CourseAbstractController {
+export class CourseController {
 
   assignments = [];
   course;
@@ -39,7 +39,7 @@ export class CourseAbstractController {
   }
 
 
-  enroll(){
+  enroll() {
     this.$http.post('/api/courses/' + this.courseId + '/students')
       .then(response => {
         //reset course to returned tailored course
@@ -51,12 +51,12 @@ export class CourseAbstractController {
 
 }
 
-export default angular.module('webProjectsApp.courseAbstract', [ngRoute])
+export default angular.module('webProjectsApp.course', [ngRoute])
   .config(routing)
-  .component('courseAbstract', {
-    template: require('./courseAbstract.html'),
-    controller: CourseAbstractController,
-    controllerAs: 'courseAbstractController',
+  .component('course', {
+    template: require('./course.html'),
+    controller: CourseController,
+    controllerAs: 'courseController',
   })
   .service('courseService', function() {
     this.getStudentInfo = function () {
