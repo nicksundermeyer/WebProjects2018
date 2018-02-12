@@ -10,13 +10,14 @@ export class AssignmentController {
   problems;
 
   /*@ngInject*/
-  constructor($http, $routeParams) {
-    this.$http = $http;
+  constructor($routeParams, Assignment, Course) {
     this.$routeParams = $routeParams;
+    this.Assignment = Assignment;
+    this.Course = Course;
   }
 
   $onInit() {
-    this.$http.get('/api/courses/mycourses/assignments/' + this.$routeParams.assignmentId)
+    this.Assignment.getAssignmentInfo(this.$routeParams.assignmentId)
       .then(response => {
         this.assignment = response.data;
         this.problems = this.assignment.problems;
@@ -24,7 +25,7 @@ export class AssignmentController {
       });
 
 
-    this.$http.get('/api/courses/' + this.$routeParams.courseId)
+    this.Course.getCourseInfo(this.$routeParams.courseId)
       .then(response => {
         this.course = response.data;
       });

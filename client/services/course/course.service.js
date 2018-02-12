@@ -17,6 +17,10 @@ export function CourseService($http) {
 
     getTailoredCourseInfo(courseId, studentId){
       return $http.get('/api/courses' + courseId + '/student/' + studentId)
+    },
+
+    getStudentInfo () {
+      return $http.get('/api/users/me')
     }
   };
   return Course;
