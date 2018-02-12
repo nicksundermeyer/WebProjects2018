@@ -2,11 +2,21 @@
 export function CourseService($http) {
   'ngInject'
   var Course = {
-    
 
+    getAllCourses(){
+      return $http.get('/api/courses/')
+    },
 
-    getStudentInfo () {
-      return $http.get('/api/users/me')
+    getCourseInfo(courseId){
+      return $http.get('/api/courses/' + courseId)
+    },
+
+    enrollStudentCourse(courseId){
+      return $http.post('/api/courses/' + courseId + '/students')
+    },
+
+    getTailoredCourseInfo(courseId, studentId){
+      return $http.get('/api/courses' + courseId + '/student/' + studentId)
     }
   };
   return Course;

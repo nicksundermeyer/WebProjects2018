@@ -9,12 +9,13 @@ export class CourseDiscoveryController {
   selectedCourses = [];
 
   /*@ngInject*/
-  constructor($http) {
+  constructor($http, Course) {
     this.$http = $http;
+    this.Course = Course;
   }
 
   $onInit() {
-    this.$http.get('/api/courses')
+    this.Course.getAllCourses()
       .then(response => {
         this.courses = response.data;
         this.courses.forEach(course => {

@@ -21,7 +21,7 @@ export class CourseController {
   }
 
   $onInit() {
-    this.$http.get('/api/courses/' + this.courseId)
+    this.Course.getCourseInfo(this.courseId)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
@@ -42,7 +42,7 @@ export class CourseController {
 
 
   enroll() {
-    this.$http.post('/api/courses/' + this.courseId + '/students')
+    this.Course.enrollStudentCourse(this.courseId)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
