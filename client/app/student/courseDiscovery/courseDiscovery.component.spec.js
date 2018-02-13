@@ -1,12 +1,15 @@
 'use strict';
 
 import courseDiscovery from './courseDiscovery.component';
+import courseService from '../../../services/course/course.module';
+
 import {
   CourseDiscoveryController
 } from './courseDiscovery.component';
 
 describe('Component: CourseDiscoveryComponent', function() {
   beforeEach(angular.mock.module(courseDiscovery));
+  beforeEach(angular.mock.module(courseService));
 
   var scope;
   var courseDiscoveryComponent;
@@ -15,7 +18,7 @@ describe('Component: CourseDiscoveryComponent', function() {
   // Initialize the controller and a mock scope
   beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope) {
     $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/courses')
+    $httpBackend.expectGET('/api/courses/')
       .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
 
     scope = $rootScope.$new();
