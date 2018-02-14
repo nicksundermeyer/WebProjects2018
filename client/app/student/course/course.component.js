@@ -12,15 +12,20 @@ export class CourseController {
   student;
 
   /*@ngInject*/
-  constructor($http, $routeParams, Course) {
+  constructor($http, $routeParams, Course, UserServ) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
     this.isTailored = false;
     this.Course = Course;
+    this.UserServ = UserServ;
   }
 
   $onInit() {
+    this.UserServ.promiseTest().then(json => {
+      console.log(json);
+    });
+
     this.Course.getCourseInfo(this.courseId)
       .then(response => {
         this.course = response.data;
@@ -30,7 +35,6 @@ export class CourseController {
       this.Course.getStudentInfo()
       .then(response => {
         this.student = response.data;
-        console.log(this.student);
       });
 
 

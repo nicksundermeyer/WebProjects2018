@@ -27,6 +27,7 @@ import footer from '../components/footer/footer.component';
 import courseDiscovery from './student/courseDiscovery/courseDiscovery.component';
 import assignmentCard from '../components/assignmentCardAbstract/assignmentCardAbstract.component';
 import courseCard from '../components/courseCard/courseCard.component';
+import problemCard from '../components/problemCard/problemCard.component';
 import typeahead from '../components/typeahead/typeahead.component';
 import main from './main/main.component';
 import student from './student/student.component';
@@ -35,14 +36,14 @@ import constants from './app.constants';
 import util from '../components/util/util.module';
 import courseService from '../services/course/course.module';
 import assignmentService from '../services/assignment/assignment.module';
-import problemCard from '../components/problemCard/problemCard.component';
+import userService from '../services/user/user.module';
 
 
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
 
-  account, admin, 'validation.match', courseService, assignmentService, navbar, about, footer, assignment, course, courseCard, assignmentCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
+  account, admin, 'validation.match', courseService, assignmentService, userService, navbar, about, footer, assignment, course, courseCard, assignmentCard, problemCard, courseDiscovery, typeahead, main, constants, util, student, teacher
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
