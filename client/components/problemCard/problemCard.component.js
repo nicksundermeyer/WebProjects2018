@@ -26,7 +26,6 @@ export class ProblemCardComponent {
       }
     });
   }
-
   load() {
     this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
@@ -35,7 +34,46 @@ export class ProblemCardComponent {
   updateDisplay() {
     this.ast = MathLex.parse(this.userInput);
     this.latex = MathLex.render(this.ast, 'latex');
-    katex.render(this.latex, document.getElementById('problem-input'));
+    var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
+    katex.render(str_version, document.getElementById('problem-input'));
+  }
+
+  append(htmlVal) {
+    console.log(htmlVal);
+    if(htmlVal == 'sqrt') {
+      if(this.userInput) { //not empty
+        this.userInput += '*sqrt(x)';
+        this.updateDisplay();
+      }
+      else {
+        this.userInput += 'sqrt(x)';
+        this.updateDisplay();
+      }
+    }
+    else if(htmlVal == 'plus') {
+      this.userInput += '+x';
+      this.updateDisplay();
+    }
+    else if(htmlVal == 'mult') {
+      this.userInput += '*x';
+      this.updateDisplay();
+    }
+    else if(htmlVal == 'div') {
+      this.userInput += '/x';
+      this.updateDisplay();
+    }
+    else if(htmlVal == 'equals') {
+      this.userInput += '= x';
+      this.updateDisplay();
+    }
+    else if(htmlVal == 'greater') {
+      this.userInput += '>x';
+      this.updateDisplay();
+    }
+    else if(htmlVal == 'less') {
+      this.userInput += '<x';
+      this.updateDisplay();
+    }
   }
 }
 
