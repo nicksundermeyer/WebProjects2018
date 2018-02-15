@@ -22,9 +22,6 @@ export class CourseController {
   }
 
   $onInit() {
-    this.UserServ.promiseTest().then(json => {
-      console.log(json);
-    });
 
     this.Course.getCourseInfo(this.courseId)
       .then(response => {
