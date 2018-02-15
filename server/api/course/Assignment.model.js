@@ -1,15 +1,40 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import shared from './../../config/environment/shared';
 import Problem from './../problem/problem.model'
-import AbstractCourse from './AbstractCourse.model';
 
-var AssignmentSchema = new Schema({
+var AbstractAssignment = new Schema({
+
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  minNumProblems: {
+    type: Number,
+    required: true
+  },
+  maxNumProblems: {
+    type: Number,
+    required: true
+  },
+  //New problems will be fetched from problem engine
+  //existing problems will be fetched from local DB from problem table
+  newProblemPercentage: {
+    type: Number,
+    required: true
+  }
+
+}, {usePushEach: true});
+
+var TailoredAssignment = new Schema({
   //abstract assignment id
   AbstractAssignmentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'AbstractCourse.assignments',
+    ref: 'abstractAssignmentSchema',
     required: true
   },
   //grabs problems written for this assignment
@@ -18,11 +43,11 @@ var AssignmentSchema = new Schema({
 
   title: {
     type: String,
-      required: true
+    required: true
   },
   description: {
     type: String,
-      required: true
+    required: true
   },
 
   problems: {
@@ -30,6 +55,6 @@ var AssignmentSchema = new Schema({
     required: true
   }
 
-}, { usePushEach: true });
+}, {usePushEach: true});
 
-export default mongoose.model('Assignment', AssignmentSchema);
+export {AbstractAssignment, TailoredAssignment};

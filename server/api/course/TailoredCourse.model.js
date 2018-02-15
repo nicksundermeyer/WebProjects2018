@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import Assignment from './Assignment.model';
+import {TailoredAssignment} from './Assignment.model';
 import shared from './../../config/environment/shared';
 
 
@@ -37,7 +37,7 @@ var TailoredCourseSchema = new Schema({
 
   //grabs the assignments written for this course
   assignments:{
-    type:[Assignment.schema],
+    type:[TailoredAssignment],
     default: null
     //required:true
   }
