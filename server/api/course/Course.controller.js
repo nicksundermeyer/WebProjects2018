@@ -3,7 +3,7 @@
 import AbstractCourse from './AbstractCourse.model';
 import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
-import Assignment from './Assignment.model';
+import {AbstractAssignment, TailoredAssignment} from './Assignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
@@ -148,7 +148,7 @@ export function submitSolution(req, res){
 
 
 export function getAssignment(req, res) {
-  return Assignment.findById(req.params.id).exec().then( assignment => {
+  return AbstractAssignment.findById(req.params.id).exec().then(assignment => {
     if(assignment) {
       return res.json(assignment).status(200);
     } else {
@@ -230,7 +230,7 @@ function createCourseAndAddStudent(user, course) {
  * parameters from a AbstractCourse and AbstractCourse.assignment
   * @params {Course} course
  * @params {Assignment} assignment
- * @return {Assignment}
+ * @return {AbstractAssignment}
  */
 function generateAssignmentsWith(course, assignment) {
 
@@ -271,7 +271,7 @@ function generateAssignmentsWith(course, assignment) {
         //Promises becomes finalProblems, which we then save in the assignment.
 
         Promise.all(promises).then(finalProblems => {
-          resolve(new Assignment({
+          resolve(new TailoredAssignment({
             AbstractAssignmentId: course._id,
             title: assignment.title,
             description: assignment.description,

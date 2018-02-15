@@ -3,6 +3,7 @@
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './Course.events';
 import shared from './../../config/environment/shared';
+import {AbstractAssignment} from './Assignment.model';
 
 var AbstractCourseSchema = new Schema({
   name: {
@@ -26,30 +27,7 @@ var AbstractCourseSchema = new Schema({
   teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
 
   //embeded assignments
-  assignments: [{
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    minNumProblems: {
-      type: Number,
-      required: true
-    },
-    maxNumProblems: {
-      type: Number,
-      required: true
-    },
-    //New problems will be fetched from problem engine
-    //existing problems will be fetched from local DB from problem table
-    newProblemPercentage: {
-      type: Number,
-      required: true
-    }
-  }]
+  assignments: [AbstractAssignment]
 
 }, { usePushEach: true });
 
