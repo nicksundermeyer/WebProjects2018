@@ -12,35 +12,35 @@ export class CourseController {
   student;
 
   /*@ngInject*/
-  constructor($http, $routeParams, Course, UserServ) {
+  constructor($http, $routeParams, Course, UserServ, Auth) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
     this.isTailored = false;
     this.Course = Course;
     this.UserServ = UserServ;
+    this.Auth = Auth;
   }
 
   $onInit() {
-
-    this.Course.getCourseInfo(this.courseId)
+    this.Auth.getCurrentUser()
+      .then(student => {
+        this.student = student;
+        return this.Course.getTailoredCourseInfo(this.courseId, this.student._id);
+      })
       .then(response => {
+        this.isTailored = true;
         this.course = response.data;
         this.assignments = this.course.assignments;
-      });
-
-      this.Course.getStudentInfo()
+      })
+      .catch(() => this.Course.getCourseInfo(this.courseId))
       .then(response => {
-        this.student = response.data;
-      });
-
-
-    this.$http.get('/api/users/' + this.course.teacherID)
-      .then(response => {
-        this.teacher = response.data;
-      });
+        this.isTailored = false;
+        this.course = response.data;
+        this.assignments = this.course.assignments;
+      })
+      .catch(err => console.error(err));
   }
-
 
   enroll() {
     this.Course.enrollStudentCourse(this.courseId)
