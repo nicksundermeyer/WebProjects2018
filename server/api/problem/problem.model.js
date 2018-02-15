@@ -15,13 +15,66 @@ var ProblemSchema = new Schema({
     default: '.01'
   },
   problem: {
-    subject: {type: String, default: null},
-    category: {type: String, default: null},
-    depth: {type: Number, required: true, default: 1},
-    problemId: {type: String, required: true, default: null},
-    description: {type: Object, default: null},
-    solution: {type: Object, required: true, default: null}
+
+
+    problemId: {
+      type: String,
+      default: null,
+      required: true
+    },
+
+    description:{
+      type: Object,
+      default: null,
+      required:true
+    },
+
+    depth:{
+      type: Number,
+      default: 1,
+      required: true
+    },
+
+    subject:{
+      type:String,
+      default: null,
+      required:true
+    },
+
+    category:{
+      type:String,
+      default: null,
+      required: true
+    },
+
+    solution: {
+      type: Object,
+      default: null,
+      required: true
+    },
+  },
+
+  attempts: [{
+    date: {
+      type: String, 
+      required: true
+    },
+    attempt: {
+      type: String, 
+      required: true
+    },
+    correct: {
+      type: Boolean, 
+      default: null
+    }
+  }],
+
+  instructions: {
+    type: String,
+    default: null,
+    required:true
   }
+
 }, { minimize: false });
 
 

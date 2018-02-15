@@ -6,21 +6,51 @@ export class CourseController {
 
   assignments = [];
   course;
+  courseId;
+  teacher;
+  isTailored;
+  student;
 
   /*@ngInject*/
-  constructor($http, $routeParams) {
+  constructor($http, $routeParams, Course, UserServ) {
     this.$http = $http;
     this.$routeParams = $routeParams;
+    this.courseId = this.$routeParams.id;
+    this.isTailored = false;
+    this.Course = Course;
+    this.UserServ = UserServ;
   }
 
   $onInit() {
-    this.$http.get('/api/courses/' + this.$routeParams.id)
+
+    this.Course.getCourseInfo(this.courseId)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
-        console.log(this.assignments);
+      });
+
+      this.Course.getStudentInfo()
+      .then(response => {
+        this.student = response.data;
+      });
+
+
+    this.$http.get('/api/users/' + this.course.teacherID)
+      .then(response => {
+        this.teacher = response.data;
       });
   }
+
+
+  enroll() {
+    this.Course.enrollStudentCourse(this.courseId)
+      .then(response => {
+        this.course = response.data;
+        this.assignments = this.course.assignments;
+        this.isTailored = true;
+      });
+  }
+
 }
 
 export default angular.module('webProjectsApp.course', [ngRoute])

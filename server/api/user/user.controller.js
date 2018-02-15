@@ -1,8 +1,10 @@
 'use strict';
 
 import User from './user.model';
+import TailoredCourse from '../course/TailoredCourse.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
+
 
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
@@ -30,6 +32,20 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
+export function getUsersCourses(req, res) {
+  if(!req.user._id.equals(req.params.id)) {
+    return res.status(400).end();
+  }
+  else {
+    //Once hasPermission gets moved to auth service we will return solutions to teachers
+    TailoredCourse.find({ studentID: req.params.id}, '-assignments.problems.problem.solution').then(tc => {
+      return res.json(tc).status(200);
+    }).catch(() => {
+      return res.status(404);
+    });
+  }
+}
+
 /**
  * Creates a new user
  */
@@ -37,7 +53,7 @@ export function create(req, res) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.save()
-    .then(function (user) {
+    .then(function(user) {
       var token = jwt.sign({_id: user._id, role: user.role}, config.secrets.session, {
         expiresIn: 60 * 60 * 5
       });
@@ -53,7 +69,7 @@ export function show(req, res, next) {
   var userId = req.params.id;
   return User.findById(userId).exec()
     .then(user => {
-      if (!user) {
+      if(!user) {
         res.status(404).end();
       }
       res.json(user.profile);
