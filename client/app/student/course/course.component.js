@@ -12,13 +12,12 @@ export class CourseController {
   student;
 
   /*@ngInject*/
-  constructor($http, $routeParams, Course, UserServ, Auth) {
+  constructor($http, $routeParams, Course, Auth) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
     this.isTailored = false;
     this.Course = Course;
-    this.UserServ = UserServ;
     this.Auth = Auth;
   }
 
