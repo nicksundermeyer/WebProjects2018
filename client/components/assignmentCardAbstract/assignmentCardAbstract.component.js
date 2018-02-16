@@ -11,7 +11,7 @@ export class AssignmentCardComponent {
   }
 
   redirect() {
-    this.$location.path('/student/course/' + this.courseid + '/assignment/' + this.assignment._id);
+    this.$location.path('/student/course/${this.courseid}/assignment/${this.assignment._id}');
   }
 
 
