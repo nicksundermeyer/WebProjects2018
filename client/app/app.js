@@ -25,7 +25,7 @@ import course from './student/course/course.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import courseDiscovery from './student/courseDiscovery/courseDiscovery.component';
-import assignmentCard from '../components/assignmentCardAbstract/assignmentCardAbstract.component';
+import assignmentCard from '../components/assignmentCard/assignmentCard.component';
 import courseCard from '../components/courseCard/courseCard.component';
 import problemCard from '../components/problemCard/problemCard.component';
 import typeahead from '../components/typeahead/typeahead.component';

@@ -2,7 +2,7 @@
 
 import angular from 'angular';
 
-export class AssignmentCardComponent {
+export class AssignmentCard {
 
   /*@ngInject*/
   constructor($location) {
@@ -17,11 +17,11 @@ export class AssignmentCardComponent {
 
 }
 
-export default angular.module('directives.assignmentCardAbstract', [])
-  .component('assignmentCardAbstract', {
-    template: require('./assignmentCardAbstract.html'),
-    controller: AssignmentCardComponent,
-    controllerAs: 'assignmentCardAbstractController',
+export default angular.module('directives.assignmentCard', [])
+  .component('assignmentCard', {
+    template: require('./assignmentCard.html'),
+    controller: AssignmentCard,
+    controllerAs: 'assignmentCardController',
     bindings: {
       assignment: '=',
       courseid: '=',
