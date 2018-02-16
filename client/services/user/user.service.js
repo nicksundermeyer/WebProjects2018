@@ -2,7 +2,6 @@
 export function UserService($http) {
   'ngInject';
   var UserServ = {
-
     getCurrentUser() {
       return $http.get('/api/users/me');
     },
@@ -24,34 +23,6 @@ export function UserService($http) {
     },
     getUsersCourses(id) {
       return $http.get('/api/users/' + id + '/courses');
-    },
-    promiseTest() {
-      return Promise.resolve({
-        json: {
-          'glossary': {
-            'title': 'example glossary',
-            'GlossDiv': {
-              'title': 'S',
-              'GlossList': {
-                'GlossEntry': {
-                  'ID': 'SGML',
-                  'SortAs': 'SGML',
-                  'GlossTerm': 'Standard Generalized Markup Language',
-                  'Acronym': 'SGML',
-                  'Abbrev': 'ISO 8879:1986',
-                  'GlossDef': {
-                    'para': 'A meta-markup language, used to create markup languages such as DocBook.',
-                    'GlossSeeAlso': ['GML', 'XML']
-                  },
-                  'GlossSee': 'markup'
-                }
-              }
-            }
-          }
-        }
-      });
     }
-
   };
-  return UserServ;
 }

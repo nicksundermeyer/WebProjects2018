@@ -1,10 +1,10 @@
 
 export function AssignmentService($http) {
-  'ngInject'
+  'ngInject';
   var Assignment = {
 
-    getAssignmentInfo(assignmentId){
-      return $http.get('/api/courses/mycourses/assignments/' + assignmentId)
+    getAssignmentInfo(assignmentId) {
+      return $http.get('/api/courses/mycourses/assignments/' + assignmentId);
     }
   };
   return Assignment;
