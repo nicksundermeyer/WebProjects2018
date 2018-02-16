@@ -6,5 +6,4 @@ export default function routes($routeProvider) {
   $routeProvider.when('/about', {
     template: '<about></about>'
   });
-
 }
