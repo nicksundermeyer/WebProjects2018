@@ -44,36 +44,30 @@ export class ProblemCardComponent {
       if(this.userInput) { //not empty
         this.userInput += '*sqrt(x)';
         this.updateDisplay();
-      }
-      else {
+      } else {
         this.userInput += 'sqrt(x)';
         this.updateDisplay();
       }
-    }
-    else if(htmlVal == 'plus') {
+    } else if(htmlVal == 'plus') {
       this.userInput += '+x';
       this.updateDisplay();
-    }
-    else if(htmlVal == 'mult') {
+    } else if(htmlVal == 'mult') {
       this.userInput += '*x';
       this.updateDisplay();
-    }
-    else if(htmlVal == 'div') {
+    } else if(htmlVal == 'div') {
       this.userInput += '/x';
       this.updateDisplay();
-    }
-    else if(htmlVal == 'equals') {
+    } else if(htmlVal == 'equals') {
       this.userInput += '= x';
       this.updateDisplay();
-    }
-    else if(htmlVal == 'greater') {
+    } else if(htmlVal == 'greater') {
       this.userInput += '>x';
       this.updateDisplay();
-    }
-    else if(htmlVal == 'less') {
+    } else if(htmlVal == 'less') {
       this.userInput += '<x';
       this.updateDisplay();
     }
+    //Jesse and Amy, I know this is hard to read but the linter expects else to be on the same line as closing bracket
   }
 }
 
