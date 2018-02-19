@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {TailoredAssignment} from './Assignment.model';
+import TailoredAssignment from './TailoredAssignment.model';
 import shared from './../../config/environment/shared';
 
 
@@ -34,13 +34,13 @@ var TailoredCourseSchema = new Schema({
     required: true
   },
 
-
   //grabs the assignments written for this course
-  assignments:{
-    type:[TailoredAssignment],
+  assignments:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TailoredAssignment',
     default: null
-    //required:true
-  }
+  }]
+
 
 
 }, { usePushEach: true });
