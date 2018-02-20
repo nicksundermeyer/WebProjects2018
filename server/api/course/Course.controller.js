@@ -3,7 +3,8 @@
 import AbstractCourse from './AbstractCourse.model';
 import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
-import {AbstractAssignment, TailoredAssignment} from './Assignment.model';
+import AbstractAssignment from './AbstractAssignment.model';
+import TailoredAssignment from './TailoredAssignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './TailoredCourse.model';
 import User from '../user/user.model';
@@ -12,6 +13,7 @@ import User from '../user/user.model';
 export function getTailoredCourse(req, res) {
   return TailoredCourse.findOne({ 'abstractCourseID': req.params.courseID , 'studentID': req.params.studentID  }, '-assignments.problems.problem.solution')
     .populate('abstractCourseID')
+//    .populate('assignments.AbstractAssignmentId')
     .exec()
     .then( tc => {
       if(tc) {
@@ -271,10 +273,8 @@ function generateAssignmentsWith(course, assignment) {
         //Promises becomes finalProblems, which we then save in the assignment.
 
         Promise.all(promises).then(finalProblems => {
-          resolve(new TailoredAssignment({
-            AbstractAssignmentId: course._id,
-            title: assignment.title,
-            description: assignment.description,
+          resolve( new TailoredCourse({
+            AbstractAssignmentId: assignment._id,
             problems: finalProblems
           }).save());
         });

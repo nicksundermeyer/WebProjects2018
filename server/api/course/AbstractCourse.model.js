@@ -3,7 +3,7 @@
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './Course.events';
 import shared from './../../config/environment/shared';
-import {AbstractAssignment} from './Assignment.model';
+import AbstractAssignment from './AbstractAssignment.model';
 
 var AbstractCourseSchema = new Schema({
   name: {
@@ -27,7 +27,11 @@ var AbstractCourseSchema = new Schema({
   teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
 
   //embeded assignments
-  assignments: [AbstractAssignment]
+  assignments:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AbstractAssignment',
+      default: null
+    }]
 
 }, { usePushEach: true });
 
