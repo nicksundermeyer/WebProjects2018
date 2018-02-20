@@ -32,13 +32,15 @@ export class CourseController {
         this.course = response.data;
         this.assignments = this.course.assignments;
       })
-      .catch(() => this.Course.getCourseInfo(this.courseId))
-      .then(response => {
-        this.isTailored = false;
-        this.course = response.data;
-        this.assignments = this.course.assignments;
-      })
-      .catch(err => console.error(err));
+      .catch(() => {
+        this.Course.getCourseInfo(this.courseId)
+          .then(response => {
+            this.isTailored = false;
+            this.course = response.data;
+            this.assignments = this.course.assignments;
+          })
+          .catch(err => console.error(err));
+      });
   }
 
   enroll() {
