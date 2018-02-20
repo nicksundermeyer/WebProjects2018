@@ -44,7 +44,7 @@ export class CourseController {
   }
 
   enroll() {
-    this.Course.enrollStudentCourse(this.courseId)
+    this.Course.enrollStudentCourse(this.courseId, this.student._id)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;

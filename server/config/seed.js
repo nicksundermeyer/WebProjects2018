@@ -8,6 +8,8 @@ import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 import AbstractCourse from '../api/course/AbstractCourse.model';
 import TailoredCourse from '../api/course/TailoredCourse.model';
+import AbstractAssignment from '../api/course/AbstractAssignment.model';
+import TailoredAssignment from '../api/course/TailoredAssignment.model';
 import config from './environment/';
 import shared from './environment/shared';
 import Problem from '../api/problem/problem.model';
@@ -78,7 +80,7 @@ export default function seedDatabaseIfNeeded() {
           .catch(err => console.log('error populating users', err));
       });
     }//end creating users
-    
+
     //populate problems
     for(let i = 0; i < 25; i++) {
       for (let subject of shared.subjects) {
@@ -128,7 +130,7 @@ function createAbstractCourses(teacher){
               minNumProblems: 5,
               maxNumProblems: 10,
               newProblemPercentage: 15
-            }, {
+            },{
               title: 'Assignment 2',
               description: 'this focuses on ' + category + ' operations',
               minNumProblems: 3,
@@ -155,12 +157,10 @@ function createTailoredCourse(abstractCourse) {
         categories: abstractCourse.categories,
         assignments: [{
           AbstractAssignmentId: abstractCourse.assignments[0].id,
-          title: abstractCourse.assignments[0].title,
-          description: abstractCourse.assignments[0].description,
           problems: [{
               protocol: "dpg",
               version: "0.1",
-    
+
               problem: {
                   problemId: "a72fadaba84ef41f34f3ba6cd87ce43b85e151bf",
                   description: {
@@ -206,9 +206,9 @@ function createTailoredCourse(abstractCourse) {
               attempts: [{
                 date: "02/10/2018",
                 attempt: "True",
-                correct: false              
+                correct: false
               }],
-              
+
               instructions: "Solve for x."
           }]
         }]
