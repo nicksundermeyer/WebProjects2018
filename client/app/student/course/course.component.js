@@ -33,6 +33,7 @@ export class CourseController {
         this.assignments = this.course.assignments;
       })
       .catch(() => this.Course.getCourseInfo(this.courseId))
+      //calling both thens? :TODO
       .then(response => {
         this.isTailored = false;
         this.course = response.data;
@@ -42,7 +43,7 @@ export class CourseController {
   }
 
   enroll() {
-    this.Course.enrollStudentCourse(this.courseId)
+    this.Course.enrollStudentCourse(this.courseId, this.student._id)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
