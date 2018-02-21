@@ -11,7 +11,7 @@ var TailoredCourseSchema = new Schema({
   abstractCourseID: {
     type: Schema.Types.ObjectId,
     ref: 'AbstractCourse',
-    required:true
+    default: null,
   },
 
   //identifies a student enrolled in this course
@@ -26,12 +26,10 @@ var TailoredCourseSchema = new Schema({
   subjects:{
     type: String,
     enum: shared.allSubjects,
-    required: true
   },
   categories:{
     type: String,
-    enum: shared.allCategories,
-    required: true
+    enum: shared.allCategories
   },
 
   //grabs the assignments written for this course

@@ -235,26 +235,28 @@ function createCourseAndAddStudent(user, course) {
  * @return {AbstractAssignment}
  */
 function generateAssignmentsWith(course, assignment) {
+  console.log(assignment);
 
   //We are returning a promise so the Promise.all in the above function will only be called when tailoredAssignments
   //has been fully populated! This is important because Javascript is asynchronous and we do NOT want to create
   //a tailoredCourse until we have fully populated its fields!
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
 
-    //Compute the number of existing problems to fetch, and the number of new ones to generate
-    var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-    var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
+    return AbstractAssignment.findById(assignment.toString()).then(assign => {
+      //Compute the number of existing problems to fetch, and the number of new ones to generate
+      var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
+      var numberOfNew = Math.floor(numberOfProblems * (assign.newProblemPercentage / 100));
 
-    //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
-    //the amount of existing problems we need
-    Problem.aggregate(
+      //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
+      //the amount of existing problems we need
+      Problem.aggregate(
         [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
       ).then(results => {
         //Results is an array with numberOfProblems - numberOfNew matching problems
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
         //fetching existing problems there is a possibility that a newly generated problem would be fetched
         //as an existing problems and there could be duplicate problems.
-        for(let i = 0; i < numberOfNew; i++) {
+        for (let i = 0; i < numberOfNew; i++) {
           //Add on to the array of existing problems with numberOfNew new problems
           results.push(problemController.create({
             protocol: 'dpg',
@@ -272,20 +274,26 @@ function generateAssignmentsWith(course, assignment) {
         //Create new assignment populated with appropriate fields and our final array of problems
         //Promises becomes finalProblems, which we then save in the assignment.
 
-        Promise.all(promises).then(finalProblems => {
-          resolve( new TailoredCourse({
-            AbstractAssignmentId: assignment._id,
+        return Promise.all(promises).then(finalProblems => {
+          TailoredAssignment.create({
+            AbstractAssignmentId: assign._id,
             problems: finalProblems
-          }).save());
+          }).then(ta => {
+            resolve(new TailoredCourse({
+              AbstractCourseID: course._id,
+              assignments: ta
+            }).save());
+          });
+        }).catch(err => {
+          console.log(err);
+          reject('Error getting problems', err);
         });
-      }).catch(err => {
-        console.log(err);
-        reject('Error getting problems', err);
+      }).catch(() => {
+        console.log('Error getting abstract assignment');
       });
-  }
-  );
+    });
+  });
 }
-
 
 export function getProblem(req, res) {
 
