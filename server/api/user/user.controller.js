@@ -32,13 +32,16 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
-export function getUsersCourses(req, res) {
-  if(!req.user._id.equals(req.params.id)) {
+export function getUsersCourses(req, res, allowSolutions) {
+  if(!allowSolutions && !req.user._id.equals(req.params.id)) {
     return res.status(400).end();
   }
   else {
-    //Once hasPermission gets moved to auth service we will return solutions to teachers
-    TailoredCourse.find({ studentID: req.params.id}, '-assignments.problems.problem.solution').then(tc => {
+    var solutions = '';
+    if(allowSolutions) {
+      solutions = '-assignments.problems.problem.solution';
+    }
+    TailoredCourse.find({ studentID: req.params.id}, solutions).then(tc => {
       return res.json(tc).status(200);
     }).catch(() => {
       return res.status(404);
