@@ -11,12 +11,12 @@ export function CourseService($http) {
       return $http.get('/api/courses/' + courseId);
     },
 
-    enrollStudentCourse(courseId) {
+    enrollStudentCourse(courseId, studentId) {
       return $http.post('/api/courses/' + courseId + '/students');
     },
 
     getTailoredCourseInfo(courseId, studentId) {
-      return $http.get('/api/courses' + courseId + '/student/' + studentId);
+      return $http.get('/api/courses/' + courseId + '/students/' + studentId);
     },
 
     getStudentInfo() {

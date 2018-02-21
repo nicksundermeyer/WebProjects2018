@@ -27,24 +27,23 @@ export class CourseController {
         this.student = student;
         return this.Course.getTailoredCourseInfo(this.courseId, this.student._id);
       })
-      .then(response => {
+      .then(tailored => {
         this.isTailored = true;
-        this.course = response.data;
+        this.course = tailored.data;
         this.assignments = this.course.assignments;
-      })
-      .catch(() => {
-        this.Course.getCourseInfo(this.courseId)
-          .then(response => {
-            this.isTailored = false;
-            this.course = response.data;
-            this.assignments = this.course.assignments;
-          })
-          .catch(err => console.error(err));
+        if(!this.course) {
+          this.Course.getCourseInfo(this.courseId)
+            .then(abstract => {
+              this.isTailored = false;
+              this.course = abstract.data;
+              this.assignments = this.course.assignments;
+            });
+        }
       });
   }
 
   enroll() {
-    this.Course.enrollStudentCourse(this.courseId, this.student._id)
+    this.Course.enrollStudentCourse(this.courseId)
       .then(response => {
         this.course = response.data;
         this.assignments = this.course.assignments;
