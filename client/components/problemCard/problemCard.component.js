@@ -19,12 +19,21 @@ export class ProblemCardComponent {
     this.ast = '';
     this.latex = '';
     var vm = this;
+    this.isClicked = false;
 
     $scope.$watch(() => this.myproblem, function(newVal) {
       if(newVal) {
         vm.load();
       }
     });
+  }
+
+  click() {
+    if(this.isClicked) {
+      this.isClicked = false;
+    } else {
+      this.isClicked = true;
+    }
   }
   load() {
     this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
@@ -37,9 +46,7 @@ export class ProblemCardComponent {
     var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
     katex.render(str_version, document.getElementById('problem-input'));
   }
-
   append(htmlVal) {
-    console.log(htmlVal);
     if(htmlVal == 'sqrt') {
       if(this.userInput) { //not empty
         this.userInput += '*sqrt(x)';
@@ -67,7 +74,6 @@ export class ProblemCardComponent {
       this.userInput += '<x';
       this.updateDisplay();
     }
-    //Jesse and Amy, I know this is hard to read but the linter expects else to be on the same line as closing bracket
   }
 }
 

@@ -14,7 +14,9 @@
   <div class="submit-button-problem">
     <button type="button">SUBMIT</button>
   </div>
-  <span class="button-container">
+  <button type="button" ng-click="problemCardController.click()"> Basic operators </button>
+
+  <span class="button-container" ng-show="problemCardController.isClicked">
       <span class="sqrt-button">
         <button type="button" ng-click="problemCardController.append('sqrt')"> &#8730; </button>
       </span>
@@ -36,6 +38,6 @@
       <span class="plus-button">
         <button type="button" ng-click="problemCardController.append('less')"> &#60; </button>
       </span>
-</div>
+  </span>
 </div>
 <!--</div>-->
