@@ -11,7 +11,7 @@ export function CourseService($http) {
       return $http.get('/api/courses/' + courseId);
     },
 
-    enrollStudentCourse(courseId, studentId) {
+    enrollStudentCourse(courseId) {
       return $http.post('/api/courses/' + courseId + '/students');
     },
 

@@ -30,12 +30,16 @@ export class CourseController {
       .then(tailored => {
         this.isTailored = true;
         this.course = tailored.data;
+        console.log('tailored course');
+        console.log(this.course);
         this.assignments = this.course.assignments;
         if(!this.course) {
           this.Course.getCourseInfo(this.courseId)
             .then(abstract => {
               this.isTailored = false;
               this.course = abstract.data;
+              console.log('abstract course');
+              console.log(this.course);
               this.assignments = this.course.assignments;
             });
         }
@@ -44,10 +48,10 @@ export class CourseController {
 
   enroll() {
     this.Course.enrollStudentCourse(this.courseId)
-      .then(response => {
-        this.course = response.data;
-        this.assignments = this.course.assignments;
+      .then(enroll => {
         this.isTailored = true;
+        this.course = enroll.data;
+        this.assignments = this.course.assignments;
       });
   }
 
