@@ -6,18 +6,16 @@
 'use strict';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
-import AbstractCourse from '../api/course/AbstractCourse.model';
-import TailoredCourse from '../api/course/TailoredCourse.model';
-import AbstractAssignment from '../api/course/AbstractAssignment.model';
-import TailoredAssignment from '../api/course/TailoredAssignment.model';
+import AbstractCourse from '../api/course/abstractCourse.model';
+import TailoredCourse from '../api/course/tailoredCourse.model';
+import AbstractAssignment from '../api/course/abstractAssignment.model';
 import config from './environment/';
 import shared from './environment/shared';
 import Problem from '../api/problem/problem.model';
 import * as problemController from '../api/problem/problem.controller';
 
 export default function seedDatabaseIfNeeded() {
-  if(config.seedDB)
-  {
+  if(config.seedDB) {
     //not related to app data - could be deleted
     Thing.find({}).remove()
     .then(() => {
@@ -56,8 +54,7 @@ export default function seedDatabaseIfNeeded() {
     //end Things
 
     //for every role on shared user roles, create a user for that role.
-    for(let role of shared.userRoles)
-    {
+    for(let role of shared.userRoles) {
       User.find({}).remove()
         .then(() => {
           User.create({
@@ -70,8 +67,7 @@ export default function seedDatabaseIfNeeded() {
             console.log('finished populating users');
             //if user created is a teacher
             //grab the teacher and pass it so that abstracted courses have a teacher id
-            if(user.role === 'teacher')
-            {
+            if(user.role === 'teacher') {
               createAbstractCourses(user);
               //return the user so that there is no runaway promisse
               return user;
@@ -105,8 +101,8 @@ export default function seedDatabaseIfNeeded() {
         console.log('Finished populating a problem set');
       }//end for of.
     }//end populating problems
-  }//end config seedDB
-}//end export
+  }//end if
+}//end fn
 
 function createAbstractCourses(teacher) {
   //create a course with a every combination
@@ -119,34 +115,21 @@ function createAbstractCourses(teacher) {
         .then(() => {
           AbstractAssignment.create({
             title: 'Assignment 1',
-            description: 'this focuses on ' + category + ' operations',
+            description: 'This focuses on ' + category + ' operations',
             minNumProblems: 5,
             maxNumProblems: 10,
             newProblemPercentage: 15
           }).then(newAssignment => {
-            AbstractCourse.create({
+            return AbstractCourse.create({
               name: subject.subject + '-about-' + category,
               description: subject.subject + ' focusing on the ' + category + ' topic',
               subjects: [subject.subject],
               categories: [category],
-              teacherID: teacher._id,
-              // assignments: [{
-              //   title: 'Assignment 1',
-              //   description: 'this focuses on ' + category + ' operations',
-              //   minNumProblems: 5,
-              //   maxNumProblems: 10,
-              //   newProblemPercentage: 15
-              // },{
-              //   title: 'Assignment 2',
-              //   description: 'this focuses on ' + category + ' operations',
-              //   minNumProblems: 3,
-              //   maxNumProblems: 15,
-              //   newProblemPercentage: 25
-              // }]
-            }).then((createdCourse) => {
+              teacherID: teacher._id
+
+            }).then(createdCourse => {
               createdCourse.assignments.push(newAssignment);
               createdCourse.save();
-             // console.log(createdCourse);
               console.log('finished populating Abstract Courses');
               return createTailoredCourse(createdCourse);
             });
@@ -155,76 +138,26 @@ function createAbstractCourses(teacher) {
         });
     }//end for of.
   }//end seeding Abstract courses.
-}
+}//end fn
+
+//Tailored courses are almost useless here in seed now
+//because the get Tailored course function is suposed populate an abstract course
+//so most of the information is available through that route.
 
 function createTailoredCourse(abstractCourse) {
   return TailoredCourse.find({}).remove()
     .then(() => {
-      console.log(abstractCourse.assignments[0]);
-
-      TailoredCourse.create({
+      return TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,
         categories: abstractCourse.categories,
-          // problems: [{
-          //   protocol: 'dpg',
-          //   version: '0.1',
-          //
-          //   problem: {
-          //     problemId: 'a72fadaba84ef41f34f3ba6cd87ce43b85e151bf',
-          //     description: {
-          //       math: [
-          //         'Equal',
-          //         [
-          //           'Plus',
-          //           [
-          //             'Variable',
-          //             'x'
-          //           ],
-          //           [
-          //             'Literal',
-          //             'Int',
-          //             4
-          //           ]
-          //         ],
-          //         [
-          //           'Literal',
-          //           'Int',
-          //           0
-          //         ]
-          //       ]
-          //     },
-          //     depth: 1,
-          //     subject: 'algebra',
-          //     category: 'addition',
-          //     solution: {
-          //       math: [
-          //         'Equal',
-          //         [
-          //           'Variable',
-          //           'x'
-          //         ],
-          //         [
-          //           'Literal',
-          //           'Int',
-          //           -4
-          //         ]
-          //       ]
-          //     }
-          //   },
-          //   attempts: [{
-          //     date: '02/10/2018',
-          //     attempt: 'True',
-          //     correct: false
-          //   }],
-          //
-          //   instructions: 'Solve for x.'
-          // }]
       }).then(tc => {
         tc.assignments.concat(abstractCourse.assignments);
         tc.save();
-      }).then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
+        return tc;
+      })
+      .then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
       .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));
     });
 }//end create Tailored Course

@@ -2,7 +2,6 @@
 
 import mongoose, {Schema} from 'mongoose';
 import Problem from './../problem/problem.model';
-import AbstractAssignment from './AbstractAssignment.model';
 
 var TailoredAssignment = new Schema({
   //abstract assignment id
@@ -21,4 +20,4 @@ var TailoredAssignment = new Schema({
 
 }, {usePushEach: true});
 
-export default mongoose.model('TailoredAssignment',TailoredAssignment);
+export default mongoose.model('TailoredAssignment', TailoredAssignment);

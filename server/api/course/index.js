@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import * as controller from './Course.controller';
+import * as controller from './course.controller';
 import * as auth from '../../auth/auth.service';
 
 var router = new Router();
@@ -11,18 +11,10 @@ router.get('/', controller.index);
 router.get('/:id', controller.show);
 //get Tailored course by id
 router.get('/mycourses/:id', controller.getTailoredCourse);
-//router.get('/mycourses/assignments/:id', controller.getAssignment);
-
 // Find Problem
-router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem)
+router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem);
 // get tailored course with the abstract course id and student id
 router.get('/:courseID/students/:studentID', auth.hasRole('student'), controller.getTailoredCourse);
-
-
-//get assignments by id
-router.get('/mycourses/assignments/:id', controller.getAssignment);
-//get assignment by id
-router.get('/mycourses/assignments/:id', auth.hasRole('student'),  controller.getAssignment);
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
 //enroll in a course if student
