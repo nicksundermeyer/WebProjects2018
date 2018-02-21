@@ -1,9 +1,8 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './Course.events';
+import {registerEvents} from './course.events';
 import shared from './../../config/environment/shared';
-import AbstractAssignment from './AbstractAssignment.model';
 
 var AbstractCourseSchema = new Schema({
   name: {
@@ -27,11 +26,11 @@ var AbstractCourseSchema = new Schema({
   teacherID: { type: mongoose.Schema.Types.ObjectId, default: null },
 
   //embeded assignments
-  assignments:[{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'AbstractAssignment',
-      default: null
-    }]
+  assignments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AbstractAssignment',
+    default: null
+  }]
 
 }, { usePushEach: true });
 
