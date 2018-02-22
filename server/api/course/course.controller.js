@@ -80,17 +80,17 @@ export function update(req, res) {
 
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).exec()
-  .then(course => {
-    //if course found delete course. Permanently
-    course.remove();
-    //return a no content status
-    return res.status(204).end();
-  })
-  .catch(err => {
-    //return a not found status
-    res.send(err);
-    return res.status(404).end();
-  });
+    .then(course => {
+      //if course found delete course. Permanently
+      course.remove();
+      //return a no content status
+      return res.status(204).end();
+    })
+    .catch(err => {
+      //return a not found status
+      res.send(err);
+      return res.status(404).end();
+    });
 }
 
 //Operations for Tailored courses
@@ -114,43 +114,46 @@ export function getTailoredCourse(req, res) {
 }
 
 export function submitSolution(req, res) {
-  return TailoredCourse.findById(req.params.course).exec()
-  .then(course => {
-    if(course) {
-      course.assignments.filter(_assignment => {
-        if(_assignment._id == req.params.assignment) {
-          _assignment.problems.filter(_problem => {
-            if(_problem.problem.problemId == req.params.problem) {
-              //push the attempts to problem
-              //we need a number of attempts allowed for each problem
-              if(_problem.attempts.length < 5) {
-                _problem.attempts.push(req.body);
-              }
-              //save the changes made to attempts
-              _problem.save();
-            }
-            return _problem;
-          });
+  return TailoredCourse.findOne({abstractCourseID: req.params.courseId, studentID: req.params.studentId }, '-assignments.problems.problem.solution')
+    .populate('abstractCourseID')
+    .exec()
+    .then(tc => {
+      var promises = [];
 
-          //save the changes made in the problem
-          _assignment.save();
-        }
-        return _assignment;
-      });
+      let tailoredAssignment = tc.assignments.filter(_assignment => _assignment.AbstractAssignmentId === req.params.assignmentId)[0];
+      let problem = tailoredAssignment.problems.filter(_problem => _problem._id == req.params.problemId);
 
-      //save the changes made in the assignment
-      course.save();
-      //return the entire course for now
-      //the idea is to write the logic to check the attempts
-      //and compare them to the solution here
-      return res.json(course).status(200)
-      .end();
-    }
-  })
-  .catch(() => {
-    return res.status(400).json('Submition Failed!')
-    .end();
-  });
+      let attempt = {
+        date: Date.now().toString(),
+        attempt: req.body.toString(),
+        correct: true
+      };
+
+      if(problem.attempts.length <= problem.maxNumAttempts) {
+        problem.attempts.push(attempt);
+        promises.push(function() {
+          problem.save();
+        });
+        promises.push(function() {
+          tailoredAssignment.save();
+        });
+        promises.push(function() {
+          tc.save();
+        });
+        Promise.all(promises).then(function() {
+          //TODO check correctness here
+          return res.status(200).json('correct')
+            .end();
+        });
+      } else {
+        return res.status(400).json('Over max number of attempts')
+          .end();
+      }
+    })
+    .catch(function() {
+      return res.status(400).json('Course not found.')
+        .end();
+    });
 }
 
 export function enrollStudentInCourse(req, res) {
@@ -162,21 +165,21 @@ export function enrollStudentInCourse(req, res) {
         //Create the course and associate it with the enrolling students ID
         //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
         return createCourseAndAddStudent(req.user, course)
-        .then(tc => {
-          //Remove solutions from return
-          //There may be a better way to do this without querying the database
-          TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution')
-          .then(tcNoSolutions => {
-            return res.json(tcNoSolutions).status(201);
+          .then(tc => {
+            //Remove solutions from return
+            //There may be a better way to do this without querying the database
+            TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution')
+              .then(tcNoSolutions => {
+                return res.json(tcNoSolutions).status(201);
+              });
           });
-        });
       } else {
         return res.status(204).end();
       }
     })
     .catch(function() {
       return res.json('Invalid Course ID: '.concat(req.params.id)).status(400)
-      .end();
+        .end();
     });
 }
 
@@ -213,17 +216,17 @@ function createCourseAndAddStudent(user, course) {
     //Save the newly created tailoredCourse object to the database and return it
     return tailoredCourse.save();
   })
-  .catch(err => {
-    console.log(err);
-    console.log('Error creating tailored assignment', err);
-  });
+    .catch(err => {
+      console.log(err);
+      console.log('Error creating tailored assignment', err);
+    });
 }//end create tailored course
 
 
 /**
  * Generate a new assignment with problems based on the pre-defined
  * parameters from a AbstractCourse and AbstractCourse.assignment
-  * @params {Course} course
+ * @params {Course} course
  * @params {Assignment} assignment
  * @return {AbstractAssignment}
  */
@@ -261,75 +264,106 @@ function generateAssignmentsWith(course, assignment) {
 
         return results;
       })
-      .then(promises => {
-        //Create new assignment populated with appropriate fields and our final array of problems
-        //Promises becomes finalProblems, which we then save in the assignment.
+        .then(promises => {
+          //Create new assignment populated with appropriate fields and our final array of problems
+          //Promises becomes finalProblems, which we then save in the assignment.
 
-        return Promise.all(promises).then(finalProblems => {
-          TailoredAssignment.create({
-            AbstractAssignmentId: assign._id,
-            problems: finalProblems
-          }).then(ta => {
-            resolve(new TailoredCourse({
-              AbstractCourseID: course._id,
-              assignments: ta
-            }).save());
-          });
+          return Promise.all(promises).then(finalProblems => {
+            TailoredAssignment.create({
+              AbstractAssignmentId: assign._id,
+              problems: finalProblems
+            }).then(ta => {
+              resolve(new TailoredCourse({
+                AbstractCourseID: course._id,
+                assignments: ta
+              }).save());
+            });
+          })
+            .catch(err => {
+              console.log(err);
+              reject('Error getting problems', err);
+            });
         })
-        .catch(err => {
-          console.log(err);
-          reject('Error getting problems', err);
+        .catch(() => {
+          console.log('Error getting abstract assignment');
         });
-      })
-      .catch(() => {
-        console.log('Error getting abstract assignment');
-      });
     });
   });
+}
+
+export function getTailoredAssignment(req, res) {
+  // get tailored course
+  TailoredCourse.findOne({'abstractCourseID': req.courseid, 'studentID': req.studentid })
+    .exec()
+    .then(function(tailoredCourse) {
+      if(tailoredCourse) {
+        tailoredCourse.assignments.findById(req.assignmentid)
+          .exec()
+          .then(function(assignment) {
+            if(assignment) {
+              return res.status(200).json(assignment);
+            } else {
+              return res.status(204).end();
+            }
+          })
+          //Print errors
+          .catch(function(err) {
+            res.send(err);
+            return res.status(404).end();
+          });
+      } else {
+        return res.status(204).end();
+      }
+    })
+    //Print errors
+    .catch(function(err) {
+      res.send(err);
+      return res.status(404).end();
+    });
 }
 
 export function getProblem(req, res) {
   // get tailored course
   TailoredCourse.findOne({'abstractCourseID': req.courseid, 'studentID': req.studentid })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          tailoredCourse.assignments.findById(req.assignmentid)
-            .exec()
-            .then(function(assignment) {
-              if(assignment) {
-                assignment.problems.findById(req.problemid)
-                  .exec()
-                  .then(function(problem) {
-                    if(problem) {
-                      return res.status(200).json(problem);
-                    } else {
-                      return res.status(204).end();
-                    }
-                  })
-                  //Print errors
-                  .catch(function(err) {
-                    res.send(err);
-                    return res.status(404).end();
-                  });
-              } else {
-                return res.status(204).end();
-              }
-            })
-            //Print errors
-            .catch(function(err) {
-              res.send(err);
-              return res.status(404).end();
-            });
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
+    .exec()
+    .then(function(tailoredCourse) {
+      if(tailoredCourse) {
+        tailoredCourse.assignments.findById(req.assignmentid)
+          .exec()
+          .then(function(assignment) {
+            if(assignment) {
+              assignment.problems.findById(req.problemid)
+                .exec()
+                .then(function(problem) {
+                  if(problem) {
+                    return res.status(200).json(problem);
+                  } else {
+                    return res.status(204).end();
+                  }
+                })
+                //Print errors
+                .catch(function(err) {
+                  res.send(err);
+                  return res.status(404).end();
+                });
+            } else {
+              return res.status(204).end();
+            }
+          })
+          //Print errors
+          .catch(function(err) {
+            res.send(err);
+            return res.status(404).end();
+          });
+      } else {
+        return res.status(204).end();
+      }
+    })
+    //Print errors
+    .catch(function(err) {
+      res.send(err);
+      return res.status(404).end();
+    });
 }
 
 //only allow the course teacher or role greater than teacher permission
