@@ -9,14 +9,13 @@
   </div>
   <div id="problem-input"></div>
   <!--<div class="text-box-problem">-->
-  <input class="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
+  <input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
   <!--</div>-->
   <div class="submit-button-problem">
     <button type="button">SUBMIT</button>
   </div>
-  <button type="button" ng-click="problemCardController.click()"> Basic operators </button>
-
-  <span class="button-container" ng-show="problemCardController.isClicked">
+  <button type="button" class="button-toggler" ng-click="problemCardController.click('basic_operators_isClicked')"> Basic Operators </button>
+  <div class="operators-container" ng-show="problemCardController.basic_operators_isClicked">
       <span class="sqrt-button">
         <button type="button" ng-click="problemCardController.append('sqrt')"> &#8730; </button>
       </span>
@@ -38,6 +37,27 @@
       <span class="plus-button">
         <button type="button" ng-click="problemCardController.append('less')"> &#60; </button>
       </span>
-  </span>
+  </div>
+  <button type="button" class="button-toggler" ng-click="problemCardController.click('constants_isClicked')"> Constants </button>
+  <div class="constants-container" ng-show="problemCardController.constants_isClicked">
+      <span class="pi-button">
+        <button type="button" ng-click="problemCardController.append('pi')"> &#960; </button>
+      </span>
+      <span class="e-button">
+        <button type="button" ng-click="problemCardController.append('e')"> e </button>
+      </span>
+      <span class="infinity-button">
+        <button type="button" ng-click="problemCardController.append('infinity')"> &#x221e; </button>
+      </span>
+      <span class="i-button">
+        <button type="button" ng-click="problemCardController.append('i')"> i </button>
+      </span>
+      <span class="zeta-button">
+        <button type="button" ng-click="problemCardController.append('zeta')"> 	&zeta; </button>
+      </span>
+      <span class="tau-button">
+        <button type="button" ng-click="problemCardController.append('tau')"> &#964; </button>
+      </span>
+  </div>
 </div>
 <!--</div>-->
