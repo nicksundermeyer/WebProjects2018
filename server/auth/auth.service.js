@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import compose from 'composable-middleware';
 import User from '../api/user/user.model';
-import AbstractCourse from '../api/course/AbstractCourse.model';
+import AbstractCourse from '../api/course/abstractCourse.model';
 
 var validateJwt = expressJwt({
   secret: config.secrets.session
@@ -78,28 +78,26 @@ export function hasPermission(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-
       //grab the course in question
-    return AbstractCourse.findById(req.params.id).exec()
-      .then(course => {
-          //if the course actually exists
-        if(course){
-          //if the role of the current user is bigger than the role required
-          //or the current user is the teacher assigned to the course, success
-          //otherwise forbid access
-          if(config.userRoles.indexOf(req.user.role) > config.userRoles.indexOf(roleRequired)
-          || course.teacherID.equals(req.user._id))
-          {
-            next();
-            return req;
+      return AbstractCourse.findById(req.params.id).exec()
+        .then(course => {
+            //if the course actually exists
+          if(course) {
+            //if the role of the current user is bigger than the role required
+            //or the current user is the teacher assigned to the course, success
+            //otherwise forbid access
+            if(config.userRoles.indexOf(req.user.role) > config.userRoles.indexOf(roleRequired) || course.teacherID.equals(req.user._id)) {
+              next();
+              return req;
+            } else {
+              return res.status(403).send('Forbidden');
+            }
           } else {
-            return res.status(403).send('Forbidden');
+            //if the course does not exists or was just deleted
+            return res.status(404).end();
           }
-        }else{
-          //if the course does not exists or was just deleted
-          return res.status(404).end();
-        }
-      }).catch(err => next(err));
+        })
+        .catch(err => next(err));
     });
 }
 

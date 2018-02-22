@@ -29,4 +29,4 @@ var AbstractAssignment = new Schema({
 
 }, {usePushEach: true});
 
-export default mongoose.model('AbstractAssignment',AbstractAssignment);
+export default mongoose.model('AbstractAssignment', AbstractAssignment);
