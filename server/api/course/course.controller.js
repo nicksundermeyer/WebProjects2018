@@ -154,7 +154,7 @@ export function submitSolution(req, res) {
 export function getTailoredCourse(req, res) {
   return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
     studentID: req.params.studentID })
-    .populate({path: 'abstractCourseID', select: 'name description'})
+    .populate({path: 'abstractCourseID', select: 'name description -_id'})
     .populate({
       path: 'assignments',
       select: '-problems',
@@ -191,7 +191,7 @@ export function enrollStudentInCourse(req, res) {
         return createCourseAndAddStudent(req.user, course).then( tc => {
           //Remove solutions from return
           //There may be a better way to do this without querying the database
-          TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description'})
+          TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description -_id'})
             .populate({
               path: 'assignments',
               select: '-problems',
