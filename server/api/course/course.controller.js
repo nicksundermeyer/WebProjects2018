@@ -97,24 +97,7 @@ export function destroy(req, res) {
 //********************************************************
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
 
-export function getTailoredCourse(req, res) {
-  return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-    studentID: req.params.studentID }, '-assignments.problems.problem.solution')
-    .populate('abstractCourseID')
-    .exec()
-    .then(tc => {
-      if(tc) {
-        return res.json(tc).status(200);
-      } else {
-        return res.status(404).json({message: 'Tailored course not found'})
-        .end();
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(404).end();
-    });
-}
+
 
 export function submitSolution(req, res) {
   //find the correspondign Tailored course based on a abstract course id
@@ -164,6 +147,34 @@ export function submitSolution(req, res) {
     })
     .catch(err => {
       res.json(err);
+      return res.status(404).end();
+    });
+}
+
+export function getTailoredCourse(req, res) {
+  return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
+    studentID: req.params.studentID })
+    .populate({path: 'abstractCourseID', select: 'name description'})
+    .populate({
+      path: 'assignments',
+      select: '-problems',
+      populate: {
+        path: 'AbstractAssignmentId',
+        model: 'AbstractAssignment',
+        select: 'title description'
+      }
+    })
+    .exec()
+    .then(tc => {
+      if(tc) {
+        return res.json(tc).status(200);
+      } else {
+        return res.status(404).json({message: 'Tailored course not found'})
+          .end();
+      }
+    })
+    .catch(err => {
+      console.log(err);
       return res.status(404).end();
     });
 }
