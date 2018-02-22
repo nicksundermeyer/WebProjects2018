@@ -22,6 +22,7 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
+@import 'variables';
 @import 'about/about';
 @import 'admin/admin';
 @import 'main/main';
