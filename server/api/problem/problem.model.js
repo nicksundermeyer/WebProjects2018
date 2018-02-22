@@ -53,6 +53,12 @@ var ProblemSchema = new Schema({
       required: true
     },
   },
+// max number of attempts per problem, should come from abstract assignment
+  maxNumAttempts: {
+    type: Number,
+    reuired: true,
+    default: 5
+  },
 
   numberOfAllowedAttempts: {
     type: Number,

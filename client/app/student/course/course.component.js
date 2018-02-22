@@ -65,4 +65,3 @@ export default angular.module('webProjectsApp.course', [ngRoute])
     controllerAs: 'courseController',
   })
   .name;
-

@@ -1,9 +1,12 @@
 $icon-font-path: '/assets/fonts/bootstrap/';
+@import 'variables';
+@import 'custom';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 $fa-font-path: '/assets/fonts/font-awesome/';
 @import '~font-awesome/scss/font-awesome';
 
 // @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
+//@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800);
 
 /**
  * App-wide Styles
@@ -22,6 +25,7 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
+
 @import 'about/about';
 @import 'admin/admin';
 @import 'main/main';
