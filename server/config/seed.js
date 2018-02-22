@@ -9,6 +9,7 @@ import User from '../api/user/user.model';
 import AbstractCourse from '../api/course/abstractCourse.model';
 import TailoredCourse from '../api/course/tailoredCourse.model';
 import AbstractAssignment from '../api/course/abstractAssignment.model';
+import TailoredAssignment from '../api/course/tailoredAssignment.model';
 import config from './environment/';
 import shared from './environment/shared';
 import Problem from '../api/problem/problem.model';
@@ -113,36 +114,33 @@ function createAbstractCourses(teacher) {
     for(let category of subject.allowedCategories) {
       AbstractCourse.find({}).remove()
         .then(() => {
-          AbstractAssignment.create({
-            title: 'Assignment 1',
-            description: 'This focuses on ' + category + ' operations',
-            minNumProblems: 5,
-            maxNumProblems: 10,
-            newProblemPercentage: 15
-          }).then(newAssignment => {
-            return AbstractCourse.create({
-              name: subject.subject + '-about-' + category,
-              description: subject.subject + ' focusing on the ' + category + ' topic',
-              subjects: [subject.subject],
-              categories: [category],
-              teacherID: teacher._id
+          //create the abstract course first then add the created assignment
+          AbstractCourse.create({
+            name: subject.subject + '-about-' + category,
+            description: subject.subject + ' focusing on the ' + category + ' topic',
+            subjects: [subject.subject],
+            categories: [category],
+            teacherID: teacher._id
 
-            }).then(createdCourse => {
+          }).then(createdCourse => {
+            return AbstractAssignment.create({
+              title: 'Assignment 1',
+              description: 'This focuses on ' + category + ' operations',
+              minNumProblems: 5,
+              maxNumProblems: 10,
+              newProblemPercentage: 15
+            }).then(newAssignment => {
               createdCourse.assignments.push(newAssignment);
               createdCourse.save();
               console.log('finished populating Abstract Courses');
               return createTailoredCourse(createdCourse);
             });
           })
-            .catch(err => console.log('error populating Abstract Courses', err));
+          .catch(err => console.log('error populating Abstract Courses', err));
         });
     }//end for of.
   }//end seeding Abstract courses.
 }//end fn
-
-//Tailored courses are almost useless here in seed now
-//because the get Tailored course function is suposed populate an abstract course
-//so most of the information is available through that route.
 
 function createTailoredCourse(abstractCourse) {
   return TailoredCourse.find({}).remove()
@@ -151,11 +149,71 @@ function createTailoredCourse(abstractCourse) {
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,
-        categories: abstractCourse.categories,
+        categories: abstractCourse.categories
       }).then(tc => {
-        tc.assignments.concat(abstractCourse.assignments);
-        tc.save();
-        return tc;
+        //create tailored course assignments then add it to the course
+        return TailoredAssignment.create({
+          AbstractAssignmentId: abstractCourse.assignments[0]._id,
+          problems: [{
+            protocol: 'dpg',
+            version: '0.1',
+            problem: {
+              problemId: 'a72fadaba84ef41f34f3ba6cd87ce43b85e151bf',
+              description: {
+                math: [
+                  'Equal',
+                  [
+                    'Plus',
+                    [
+                      'Variable',
+                      'x'
+                    ],
+                    [
+                      'Literal',
+                      'Int',
+                      4
+                    ]
+                  ],
+                  [
+                    'Literal',
+                    'Int',
+                    0
+                  ]
+                ]
+              },
+              depth: 1,
+              subject: 'algebra',
+              category: 'addition',
+              solution: {
+                math: [
+                  'Equal',
+                  [
+                    'Variable',
+                    'x'
+                  ],
+                  [
+                    'Literal',
+                    'Int',
+                    -4
+                  ]
+                ]
+              }
+            },
+            attempts: [{
+              attempt: {
+                mysolution: false
+              },
+              correct: false
+            }],
+            instructions: 'Solve for x.'
+          }]
+        }).then(tcAssignment => {
+          tc.assignments.push(tcAssignment);
+          tc.save();
+          console.log('Tailored course assignment added to the course');
+          return tc;
+        })
+        .catch(err => console.log('error creating Tailored Courses assignment', err));
       })
       .then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
       .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));

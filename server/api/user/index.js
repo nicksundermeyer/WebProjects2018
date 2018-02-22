@@ -12,6 +12,7 @@ router.get('/:id/courses', function(req, res, next) {
     controller.getUsersCourses(req, res, true);
   } else {
     next();
+    return;
   }
 });
 router.get('/:id/courses', auth.hasRole('student'), function(req, res) {

@@ -25,6 +25,10 @@ var AbstractAssignment = new Schema({
   newProblemPercentage: {
     type: Number,
     required: true
+  },
+  numberOfPossibleAttempts: {
+    type: Number,
+    default: 1
   }
 
 }, {usePushEach: true});

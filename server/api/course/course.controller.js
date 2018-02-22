@@ -11,6 +11,7 @@ import TailoredCourse from './tailoredCourse.model';
 
 export function index(req, res) {
   AbstractCourse.find()
+    .populate('assignments')
     .exec()
     .then(function(courses) {
       return res.status(200).json(courses);
@@ -24,6 +25,7 @@ export function index(req, res) {
 
 export function show(req, res) {
   AbstractCourse.findById(req.params.id)
+    .populate('assignments')
     .exec()
     .then(function(course) {
       //return an OK status and the course, if course exists
@@ -77,7 +79,6 @@ export function update(req, res) {
     });
 }
 
-
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).exec()
   .then(course => {
@@ -93,18 +94,20 @@ export function destroy(req, res) {
   });
 }
 
-//Operations for Tailored courses
+//********************************************************
+//Operations for Tailored courses - Tailored courses functions go here for clear debugging
 
 export function getTailoredCourse(req, res) {
-  return TailoredCourse.findOne({'abstractCourseID': req.params.courseID,
-    'studentID': req.params.studentID }, '-assignments.problems.problem.solution')
+  return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
+    studentID: req.params.studentID }, '-assignments.problems.problem.solution')
     .populate('abstractCourseID')
     .exec()
     .then(tc => {
       if(tc) {
         return res.json(tc).status(200);
       } else {
-        return res.status(204).end();
+        return res.status(404).json({message: 'Tailored course not found'})
+        .end();
       }
     })
     .catch(err => {
@@ -114,43 +117,55 @@ export function getTailoredCourse(req, res) {
 }
 
 export function submitSolution(req, res) {
-  return TailoredCourse.findById(req.params.course).exec()
-  .then(course => {
-    if(course) {
-      course.assignments.filter(_assignment => {
-        if(_assignment._id == req.params.assignment) {
-          _assignment.problems.filter(_problem => {
-            if(_problem.problem.problemId == req.params.problem) {
-              //push the attempts to problem
-              //we need a number of attempts allowed for each problem
-              if(_problem.attempts.length < 5) {
-                _problem.attempts.push(req.body);
-              }
-              //save the changes made to attempts
-              _problem.save();
-            }
-            return _problem;
-          });
-
-          //save the changes made in the problem
-          _assignment.save();
-        }
-        return _assignment;
-      });
-
-      //save the changes made in the assignment
-      course.save();
-      //return the entire course for now
-      //the idea is to write the logic to check the attempts
-      //and compare them to the solution here
-      return res.json(course).status(200)
-      .end();
-    }
+  //find the correspondign Tailored course based on a abstract course id
+  //and student id
+  TailoredCourse.findOne({
+    abstractCourseId: req.params.course,
+    studentId: req.params.student
   })
-  .catch(() => {
-    return res.status(400).json('Submition Failed!')
-    .end();
-  });
+    .exec()
+    .then(tailoredCourse => {
+      if(tailoredCourse) {
+        //filter through all the assignments
+        //find the corresponding problem and push the solution
+        //into the attempts array
+        tailoredCourse.assignments.filter(_assignment => {
+          if(_assignment._id == req.params.assignment) {
+            _assignment.problems.filter(_problem => {
+              if(_problem.problem.problemId == req.params.problem) {
+                //push the attempts to problem
+                //we need a number of attempts allowed for each problem
+                if(_problem.attempts.length < 5) {
+                  _problem.attempts.push(req.body);
+                }
+                //save the changes made to attempts
+                _problem.save();
+              }
+              return _problem;
+            });
+
+            //save the changes made in the problem
+            _assignment.save();
+          }
+          return _assignment;
+        });
+
+        //save the changes made in the assignment
+        tailoredCourse.save();
+        //return the entire course for now
+        //the idea is to write the logic to check the attempts
+        //and compare them to the solution here
+        return res.json(tailoredCourse).status(200)
+        .end();
+      } else {
+        return res.status(404).json({message: 'Tailored course not found'})
+        .end();
+      }
+    })
+    .catch(err => {
+      res.json(err);
+      return res.status(404).end();
+    });
 }
 
 export function enrollStudentInCourse(req, res) {

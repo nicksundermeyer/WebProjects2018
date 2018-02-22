@@ -32,7 +32,7 @@ var TailoredCourseSchema = new Schema({
 
   //grabs the assignments written for this course
   assignments: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'TailoredAssignment',
     default: null
   }]
