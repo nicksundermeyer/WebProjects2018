@@ -30,19 +30,21 @@ export class CourseController {
       .then(tailored => {
         this.isTailored = true;
         this.course = tailored.data;
-        console.log('tailored course');
-        console.log(this.course);
-        this.assignments = this.course.assignments;
-        if(!this.course) {
-          this.Course.getCourseInfo(this.courseId)
-            .then(abstract => {
-              this.isTailored = false;
-              this.course = abstract.data;
-              console.log('abstract course');
-              console.log(this.course);
-              this.assignments = this.course.assignments;
-            });
-        }
+        this.course.name = this.course.abstractCourseID.name;
+        this.course.description = this.course.abstractCourseID.description;
+        this.assignments = [];
+        this.course.assignments.forEach(asmt => {
+          this.assignments.push(asmt.AbstractAssignmentId);
+        });
+      })
+      .catch(err => {
+        this.Course.getCourseInfo(this.courseId)
+          .then(abstract => {
+            console.log(abstract);
+            this.isTailored = false;
+            this.course = abstract.data;
+            this.assignments = this.course.assignments;
+          });
       });
   }
 
@@ -51,7 +53,12 @@ export class CourseController {
       .then(enroll => {
         this.isTailored = true;
         this.course = enroll.data;
-        this.assignments = this.course.assignments;
+        this.course.name = this.course.abstractCourseID.name;
+        this.course.description = this.course.abstractCourseID.description;
+        this.assignments = [];
+        this.course.assignments.forEach(asmt => {
+          this.assignments.push(asmt.AbstractAssignmentId);
+        });
       });
   }
 

@@ -325,24 +325,18 @@ function generateAssignmentsWith(course, assignment) {
 
 export function getTailoredAssignment(req, res) {
   // get tailored course
-  TailoredCourse.findOne({'abstractCourseID': req.courseid, 'studentID': req.studentid })
+  TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+    .populate('assignments')
     .exec()
     .then(function(tailoredCourse) {
       if(tailoredCourse) {
-        tailoredCourse.assignments.findById(req.assignmentid)
-          .exec()
-          .then(function(assignment) {
-            if(assignment) {
-              return res.status(200).json(assignment);
-            } else {
-              return res.status(204).end();
-            }
-          })
-          //Print errors
-          .catch(function(err) {
-            res.send(err);
-            return res.status(404).end();
-          });
+        let assignment = tailoredCourse.assignments.find(asmt =>
+          asmt.AbstractAssignmentId == req.params.assignmentid);
+        if(assignment) {
+          return res.status(200).json(assignment);
+        } else {
+          return res.status(204).end();
+        }
       } else {
         return res.status(204).end();
       }
