@@ -17,7 +17,7 @@ export class AssignmentController {
   }
 
   $onInit() {
-    this.Assignment.getAssignmentInfo(this.$routeParams.assignmentId)
+    this.Assignment.getAssignmentInfo(this.$routeParams.courseId, this.$routeParams.assignmentId)
       .then(response => {
         this.assignment = response.data;
         this.problems = this.assignment.problems;
