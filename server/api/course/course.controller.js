@@ -169,6 +169,7 @@ export function submitSolution(req, res) {
 }
 
 export function enrollStudentInCourse(req, res) {
+
   //Find the course with the ID passed into the URL
   return AbstractCourse.findById(req.params.id)
     .exec()
@@ -176,22 +177,29 @@ export function enrollStudentInCourse(req, res) {
       if(course) {
         //Create the course and associate it with the enrolling students ID
         //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
-        return createCourseAndAddStudent(req.user, course)
-          .then(tc => {
-            //Remove solutions from return
-            //There may be a better way to do this without querying the database
-            TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution')
-              .then(tcNoSolutions => {
-                return res.json(tcNoSolutions).status(201);
-              });
-          });
+        return createCourseAndAddStudent(req.user, course).then( tc => {
+          //Remove solutions from return
+          //There may be a better way to do this without querying the database
+          TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description'})
+            .populate({
+              path: 'assignments',
+              select: '-problems',
+              populate: {
+                path: 'AbstractAssignmentId',
+                model: 'AbstractAssignment',
+                select: 'title description'
+              }
+            })
+            .then ( tcNoSolutions => {
+              return res.json(tcNoSolutions).status(201);
+            });
+        });
       } else {
         return res.status(204).end();
       }
     })
     .catch(function() {
-      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400)
-        .end();
+      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
     });
 }
 
@@ -202,6 +210,7 @@ export function enrollStudentInCourse(req, res) {
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddStudent(user, course) {
+
   //This is where we will store the assignments returned by our generateAssignmentsWith() function
   var tailoredAssignments = [];
 
@@ -212,6 +221,7 @@ function createCourseAndAddStudent(user, course) {
 
   //Return a pending promise. We will use .then to access this return in createCourseAndAddStudent() function
   return Promise.all(tailoredAssignments).then(ta => {
+
     //Create a TailoredCourse and assign the the values we have access to right now
     var tailoredCourse = new TailoredCourse();
     tailoredCourse.abstractCourseID = course._id;
@@ -227,11 +237,10 @@ function createCourseAndAddStudent(user, course) {
 
     //Save the newly created tailoredCourse object to the database and return it
     return tailoredCourse.save();
-  })
-    .catch(err => {
-      console.log(err);
-      console.log('Error creating tailored assignment', err);
-    });
+  }).catch(err => {
+    console.log(err);
+    console.log('Error creating tailored assignment', err);
+  });
 }//end create tailored course
 
 
@@ -246,7 +255,8 @@ function generateAssignmentsWith(course, assignment) {
   //We are returning a promise so the Promise.all in the above function will only be called when tailoredAssignments
   //has been fully populated! This is important because Javascript is asynchronous and we do NOT want to create
   //a tailoredCourse until we have fully populated its fields!
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
+
     return AbstractAssignment.findById(assignment.toString()).then(assign => {
       //Compute the number of existing problems to fetch, and the number of new ones to generate
       var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
@@ -261,7 +271,7 @@ function generateAssignmentsWith(course, assignment) {
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
         //fetching existing problems there is a possibility that a newly generated problem would be fetched
         //as an existing problems and there could be duplicate problems.
-        for(let i = 0; i < numberOfNew; i++) {
+        for (let i = 0; i < numberOfNew; i++) {
           //Add on to the array of existing problems with numberOfNew new problems
           results.push(problemController.create({
             protocol: 'dpg',
@@ -275,33 +285,32 @@ function generateAssignmentsWith(course, assignment) {
         }
 
         return results;
-      })
-        .then(promises => {
-          //Create new assignment populated with appropriate fields and our final array of problems
-          //Promises becomes finalProblems, which we then save in the assignment.
+      }).then(promises => {
+        //Create new assignment populated with appropriate fields and our final array of problems
+        //Promises becomes finalProblems, which we then save in the assignment.
 
-          return Promise.all(promises).then(finalProblems => {
-            TailoredAssignment.create({
-              AbstractAssignmentId: assign._id,
-              problems: finalProblems
-            }).then(ta => {
-              resolve(new TailoredCourse({
-                AbstractCourseID: course._id,
-                assignments: ta
-              }).save());
-            });
-          })
-            .catch(err => {
-              console.log(err);
-              reject('Error getting problems', err);
-            });
-        })
-        .catch(() => {
-          console.log('Error getting abstract assignment');
+        return Promise.all(promises).then(finalProblems => {
+          TailoredAssignment.create({
+            AbstractAssignmentId: assign._id,
+            problems: finalProblems
+          }).then(ta => {
+            resolve(ta);
+            // resolve(new TailoredCourse({
+            //   AbstractCourseID: course._id,
+            //   assignments: ta
+            // }).save());
+          });
+        }).catch(err => {
+          console.log(err);
+          reject('Error getting problems', err);
         });
+      }).catch(() => {
+        console.log('Error getting abstract assignment');
+      });
     });
   });
 }
+
 
 export function getTailoredAssignment(req, res) {
   // get tailored course
