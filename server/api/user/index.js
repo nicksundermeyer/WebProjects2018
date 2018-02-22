@@ -7,7 +7,16 @@ import * as auth from '../../auth/auth.service';
 var router = new Router();
 
 router.get('/', auth.hasRole('admin'), controller.index);
-router.get('/:id/courses', auth.hasRole('student'), controller.getUsersCourses);
+router.get('/:id/courses', function(req, res, next) {
+  if(auth.hasPermission('teacher')) {
+    controller.getUsersCourses(req, res, true);
+  } else {
+    next();
+  }
+});
+router.get('/:id/courses', auth.hasRole('student'), function(req, res) {
+  controller.getUsersCourses(req, res, false);
+});
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/me', auth.isAuthenticated(), controller.me);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);

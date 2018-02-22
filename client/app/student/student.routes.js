@@ -22,5 +22,4 @@ export default function routes($routeProvider) {
     template: '<assignment></assignment>',
     authenticate: 'student'
   });
-
 }

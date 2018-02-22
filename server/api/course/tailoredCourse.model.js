@@ -1,9 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import Assignment from './Assignment.model';
 import shared from './../../config/environment/shared';
-
 
 var TailoredCourseSchema = new Schema({
   //grabs information from abstract course
@@ -11,7 +9,7 @@ var TailoredCourseSchema = new Schema({
   abstractCourseID: {
     type: Schema.Types.ObjectId,
     ref: 'AbstractCourse',
-    required:true
+    default: null,
   },
 
   //identifies a student enrolled in this course
@@ -23,26 +21,21 @@ var TailoredCourseSchema = new Schema({
   },
 
   //subjects and categories must match the enums defined below
-  subjects:{
+  subjects: {
     type: String,
     enum: shared.allSubjects,
-    required: true
   },
-  categories:{
+  categories: {
     type: String,
-    enum: shared.allCategories,
-    required: true
+    enum: shared.allCategories
   },
-
 
   //grabs the assignments written for this course
-  assignments:{
-    type:[Assignment.schema],
+  assignments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TailoredAssignment',
     default: null
-    //required:true
-  }
-
-
+  }]
 }, { usePushEach: true });
 
 export default mongoose.model('TailoredCourse', TailoredCourseSchema);

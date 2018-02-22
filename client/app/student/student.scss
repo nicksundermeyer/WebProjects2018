@@ -77,3 +77,25 @@ line-height: 33px;
   margin-top: 15px;
 }
 
+#subbanner {
+  background-image: url("/assets/images/background.jpg");
+  height: 29em;
+  opacity: 50%;
+  background-size: contain;
+}
+.studnentBanner {
+  border-bottom: none;
+  margin-top: -20px;
+  color:#EBEBEB;
+  background-color: #3D3D3D;
+  margin:auto;
+  position:absolute;
+  top:35%;
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -1px;
+  font-style: normal;
+  font-family: Montserrat;
+}

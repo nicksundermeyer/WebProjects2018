@@ -12,42 +12,46 @@ export class CourseController {
   student;
 
   /*@ngInject*/
-  constructor($http, $routeParams, Course, UserServ) {
+  constructor($http, $routeParams, Course, Auth) {
     this.$http = $http;
     this.$routeParams = $routeParams;
     this.courseId = this.$routeParams.id;
     this.isTailored = false;
     this.Course = Course;
-    this.UserServ = UserServ;
+    this.Auth = Auth;
   }
 
   $onInit() {
-
-    this.Course.getCourseInfo(this.courseId)
-      .then(response => {
-        this.course = response.data;
+    this.Auth.getCurrentUser()
+      .then(student => {
+        this.student = student;
+        return this.Course.getTailoredCourseInfo(this.courseId, this.student._id);
+      })
+      .then(tailored => {
+        this.isTailored = true;
+        this.course = tailored.data;
+        console.log('tailored course');
+        console.log(this.course);
         this.assignments = this.course.assignments;
-      });
-
-      this.Course.getStudentInfo()
-      .then(response => {
-        this.student = response.data;
-      });
-
-
-    this.$http.get('/api/users/' + this.course.teacherID)
-      .then(response => {
-        this.teacher = response.data;
+        if(!this.course) {
+          this.Course.getCourseInfo(this.courseId)
+            .then(abstract => {
+              this.isTailored = false;
+              this.course = abstract.data;
+              console.log('abstract course');
+              console.log(this.course);
+              this.assignments = this.course.assignments;
+            });
+        }
       });
   }
 
-
   enroll() {
     this.Course.enrollStudentCourse(this.courseId)
-      .then(response => {
-        this.course = response.data;
-        this.assignments = this.course.assignments;
+      .then(enroll => {
         this.isTailored = true;
+        this.course = enroll.data;
+        this.assignments = this.course.assignments;
       });
   }
 
@@ -61,4 +65,3 @@ export default angular.module('webProjectsApp.course', [ngRoute])
     controllerAs: 'courseController',
   })
   .name;
-

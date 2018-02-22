@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './Course.events';
+import {registerEvents} from './course.events';
 import shared from './../../config/environment/shared';
 
 var AbstractCourseSchema = new Schema({
@@ -27,28 +27,9 @@ var AbstractCourseSchema = new Schema({
 
   //embeded assignments
   assignments: [{
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    minNumProblems: {
-      type: Number,
-      required: true
-    },
-    maxNumProblems: {
-      type: Number,
-      required: true
-    },
-    //New problems will be fetched from problem engine
-    //existing problems will be fetched from local DB from problem table
-    newProblemPercentage: {
-      type: Number,
-      required: true
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AbstractAssignment',
+    default: null
   }]
 
 }, { usePushEach: true });

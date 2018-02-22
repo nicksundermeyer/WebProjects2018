@@ -1,30 +1,13 @@
 'use strict';
 
-import AbstractCourse from './AbstractCourse.model';
+import AbstractCourse from './abstractCourse.model';
 import * as problemController from '../problem/problem.controller';
 import shared from './../../config/environment/shared';
-import Assignment from './Assignment.model';
+import AbstractAssignment from './abstractAssignment.model';
+import TailoredAssignment from './tailoredAssignment.model';
 import Problem from '../problem/problem.model';
-import TailoredCourse from './TailoredCourse.model';
-import User from '../user/user.model';
-
-
-export function getTailoredCourse(req, res) {
-  return TailoredCourse.findOne({ 'abstractCourseID': req.params.courseID , 'studentID': req.params.studentID  }, '-assignments.problems.problem.solution')
-    .populate('abstractCourseID')
-    .exec()
-    .then( tc => {
-      if(tc) {
-        return res.json(tc).status(200);
-      } else {
-        return res.status(204).end();
-      }
-    })
-    .catch( err => {
-      console.log(err);
-      return res.status(404).end();
-    });
-}
+import TailoredCourse from './tailoredCourse.model';
+//import User from '../user/user.model';
 
 export function index(req, res) {
   AbstractCourse.find()
@@ -48,6 +31,7 @@ export function show(req, res) {
     })
     .catch(function(err) {
       //if course does not exists return a not found status
+      res.send(err);
       return res.status(404).end();
     });
 }
@@ -59,7 +43,7 @@ export function create(req, res) {
       //any role hgher than teacher
       //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
       //so id should not be just grabber from the current user
-      if(req.user.role === 'teacher'){
+      if(req.user.role === 'teacher') {
         //set teacher id if current user is actually a teacher
         createdCourse.teacherID = req.user._id;
       }
@@ -77,17 +61,18 @@ export function update(req, res) {
   AbstractCourse.findById(req.params.id).exec()
     .then(course => {
       if(course) {
-          //update these paths
-          course.name = req.body.name;
-          course.description = req.body.description;
-          //save course
-          course.save();
-          //return an OK status and the course
-          return res.status(200).send(course);
+        //update these paths
+        course.name = req.body.name;
+        course.description = req.body.description;
+        //save course
+        course.save();
+        //return an OK status and the course
+        return res.status(200).send(course);
       }
     })
     .catch(err => {
       //otherwise return a not found status
+      res.send(err);
       return res.status(404).end();
     });
 }
@@ -96,71 +81,79 @@ export function update(req, res) {
 export function destroy(req, res) {
   AbstractCourse.findById(req.params.id).exec()
   .then(course => {
-      //if course found delete course. Permanently
-      course.remove();
-      //return a no content status
-      return res.status(204).end();
-  }).catch(() => {
+    //if course found delete course. Permanently
+    course.remove();
+    //return a no content status
+    return res.status(204).end();
+  })
+  .catch(err => {
     //return a not found status
+    res.send(err);
     return res.status(404).end();
   });
 }
 
 //Operations for Tailored courses
 
-export function submitSolution(req, res){
+export function getTailoredCourse(req, res) {
+  return TailoredCourse.findOne({'abstractCourseID': req.params.courseID,
+    'studentID': req.params.studentID }, '-assignments.problems.problem.solution')
+    .populate('abstractCourseID')
+    .exec()
+    .then(tc => {
+      if(tc) {
+        return res.json(tc).status(200);
+      } else {
+        return res.status(204).end();
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(404).end();
+    });
+}
+
+export function submitSolution(req, res) {
   return TailoredCourse.findById(req.params.course).exec()
   .then(course => {
-    if(course){
+    if(course) {
       course.assignments.filter(_assignment => {
-          if(_assignment._id == req.params.assignment){
-
-            _assignment.problems.filter(_problem => {
-              if(_problem.problem.problemId == req.params.problem)
-              {
-                //push the attempts to problem
-                //we need a number of attempts allowed for each problem
-                if(_problem.attempts.length < 5){
-                  _problem.attempts.push(req.body);
-                }
-                //save the changes made to attempts
-                _problem.save();
+        if(_assignment._id == req.params.assignment) {
+          _assignment.problems.filter(_problem => {
+            if(_problem.problem.problemId == req.params.problem) {
+              //push the attempts to problem
+              //we need a number of attempts allowed for each problem
+              if(_problem.attempts.length < 5) {
+                _problem.attempts.push(req.body);
               }
-            });
+              //save the changes made to attempts
+              _problem.save();
+            }
+            return _problem;
+          });
 
-            //save the changes made in the problem
-            _assignment.save();
-          }
-        });
+          //save the changes made in the problem
+          _assignment.save();
+        }
+        return _assignment;
+      });
 
-        //save the changes made in the assignment
-        course.save();
-        //return the entire course for now
-        //the idea is to write the logic to check the attempts
-        //and compare them to the solution here
-        return res.json(course).status(200).end();
+      //save the changes made in the assignment
+      course.save();
+      //return the entire course for now
+      //the idea is to write the logic to check the attempts
+      //and compare them to the solution here
+      return res.json(course).status(200)
+      .end();
     }
   })
   .catch(() => {
-    return res.status(400).json("Submition Failed!").end();
-  });
-}
-
-
-export function getAssignment(req, res) {
-  return Assignment.findById(req.params.id).exec().then( assignment => {
-    if(assignment) {
-      return res.json(assignment).status(200);
-    } else {
-      return res.status(204).end();
-    }
-  }).catch( () => {
-    return res.status(404).end();
+    return res.status(400).json('Submition Failed!')
+    .end();
   });
 }
 
 export function enrollStudentInCourse(req, res) {
-
   //Find the course with the ID passed into the URL
   return AbstractCourse.findById(req.params.id)
     .exec()
@@ -168,10 +161,12 @@ export function enrollStudentInCourse(req, res) {
       if(course) {
         //Create the course and associate it with the enrolling students ID
         //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
-        return createCourseAndAddStudent(req.user, course).then( tc => {
+        return createCourseAndAddStudent(req.user, course)
+        .then(tc => {
           //Remove solutions from return
           //There may be a better way to do this without querying the database
-          TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution').then ( tcNoSolutions => {
+          TailoredCourse.findById(tc._id, '-assignments.problems.problem.solution')
+          .then(tcNoSolutions => {
             return res.json(tcNoSolutions).status(201);
           });
         });
@@ -180,7 +175,8 @@ export function enrollStudentInCourse(req, res) {
       }
     })
     .catch(function() {
-      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
+      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400)
+      .end();
     });
 }
 
@@ -191,7 +187,6 @@ export function enrollStudentInCourse(req, res) {
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddStudent(user, course) {
-
   //This is where we will store the assignments returned by our generateAssignmentsWith() function
   var tailoredAssignments = [];
 
@@ -202,7 +197,6 @@ function createCourseAndAddStudent(user, course) {
 
   //Return a pending promise. We will use .then to access this return in createCourseAndAddStudent() function
   return Promise.all(tailoredAssignments).then(ta => {
-
     //Create a TailoredCourse and assign the the values we have access to right now
     var tailoredCourse = new TailoredCourse();
     tailoredCourse.abstractCourseID = course._id;
@@ -218,7 +212,8 @@ function createCourseAndAddStudent(user, course) {
 
     //Save the newly created tailoredCourse object to the database and return it
     return tailoredCourse.save();
-  }).catch(err => {
+  })
+  .catch(err => {
     console.log(err);
     console.log('Error creating tailored assignment', err);
   });
@@ -230,22 +225,21 @@ function createCourseAndAddStudent(user, course) {
  * parameters from a AbstractCourse and AbstractCourse.assignment
   * @params {Course} course
  * @params {Assignment} assignment
- * @return {Assignment}
+ * @return {AbstractAssignment}
  */
 function generateAssignmentsWith(course, assignment) {
-
   //We are returning a promise so the Promise.all in the above function will only be called when tailoredAssignments
   //has been fully populated! This is important because Javascript is asynchronous and we do NOT want to create
   //a tailoredCourse until we have fully populated its fields!
   return new Promise(function(resolve, reject) {
+    return AbstractAssignment.findById(assignment.toString()).then(assign => {
+      //Compute the number of existing problems to fetch, and the number of new ones to generate
+      var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
+      var numberOfNew = Math.floor(numberOfProblems * (assign.newProblemPercentage / 100));
 
-    //Compute the number of existing problems to fetch, and the number of new ones to generate
-    var numberOfProblems = Math.floor(Math.random() * assignment.maxNumProblems) + assignment.minNumProblems;
-    var numberOfNew = Math.floor(numberOfProblems * (assignment.newProblemPercentage / 100));
-
-    //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
-    //the amount of existing problems we need
-    Problem.aggregate(
+      //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
+      //the amount of existing problems we need
+      Problem.aggregate(
         [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
       ).then(results => {
         //Results is an array with numberOfProblems - numberOfNew matching problems
@@ -266,31 +260,37 @@ function generateAssignmentsWith(course, assignment) {
         }
 
         return results;
-      }).then(promises => {
+      })
+      .then(promises => {
         //Create new assignment populated with appropriate fields and our final array of problems
         //Promises becomes finalProblems, which we then save in the assignment.
 
-        Promise.all(promises).then(finalProblems => {
-          resolve(new Assignment({
-            AbstractAssignmentId: course._id,
-            title: assignment.title,
-            description: assignment.description,
+        return Promise.all(promises).then(finalProblems => {
+          TailoredAssignment.create({
+            AbstractAssignmentId: assign._id,
             problems: finalProblems
-          }).save());
+          }).then(ta => {
+            resolve(new TailoredCourse({
+              AbstractCourseID: course._id,
+              assignments: ta
+            }).save());
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          reject('Error getting problems', err);
         });
-      }).catch(err => {
-        console.log(err);
-        reject('Error getting problems', err);
+      })
+      .catch(() => {
+        console.log('Error getting abstract assignment');
       });
-  }
-  );
+    });
+  });
 }
 
-
 export function getProblem(req, res) {
-
   // get tailored course
-  TailoredCourse.findOne({ 'abstractCourseID': req.courseid , 'studentID': req.studentid  })
+  TailoredCourse.findOne({'abstractCourseID': req.courseid, 'studentID': req.studentid })
       .exec()
       .then(function(tailoredCourse) {
         if(tailoredCourse) {
@@ -311,7 +311,7 @@ export function getProblem(req, res) {
                   .catch(function(err) {
                     res.send(err);
                     return res.status(404).end();
-                  })
+                  });
               } else {
                 return res.status(204).end();
               }
@@ -320,7 +320,7 @@ export function getProblem(req, res) {
             .catch(function(err) {
               res.send(err);
               return res.status(404).end();
-            })
+            });
         } else {
           return res.status(204).end();
         }
@@ -330,9 +330,7 @@ export function getProblem(req, res) {
         res.send(err);
         return res.status(404).end();
       });
-
 }
-
 
 //only allow the course teacher or role greater than teacher permission
 export function hasPermission(req, course) {
