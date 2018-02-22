@@ -19,6 +19,8 @@ export class ProblemCardComponent {
     this.ast = '';
     this.latex = '';
     var vm = this;
+    this.basic_operators_isClicked = false;
+    this.constants_isClicked = false;
 
     $scope.$watch(() => this.myproblem, function(newVal) {
       if(newVal) {
@@ -26,22 +28,41 @@ export class ProblemCardComponent {
       }
     });
   }
+  click(name) {
+    if(this[name]) {
+      this[name] = false;
+    } else {
+      this[name] = true;
+    }
+  }
+  // click() {
+  //   if(this.basic_operators_isClicked) {
+  //     this.basic_operators_isClicked = false;
+  //   } else {
+  //     this.basic_operators_isClicked = true;
+  //   }
+  // }
   load() {
     this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
   }
 
   updateDisplay() {
-    this.ast = MathLex.parse(this.userInput);
-    this.latex = MathLex.render(this.ast, 'latex');
-    var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
-    katex.render(str_version, document.getElementById('problem-input'));
+    try {
+      this.ast = MathLex.parse(this.userInput);
+      this.latex = MathLex.render(this.ast, 'latex');
+      var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
+      katex.render(str_version, document.getElementById('problem-input'));
+      document.getElementById('text-box-problem').style.color = 'black';
+    }
+    catch(e) {
+      document.getElementById('text-box-problem').style.color = 'red';
+    }
   }
 
   append(htmlVal) {
-    console.log(htmlVal);
     if(htmlVal == 'sqrt') {
-      if(this.userInput) { //not empty
+      if(this.userInput) { //if not empty
         this.userInput += '*sqrt(x)';
         this.updateDisplay();
       } else {
@@ -66,8 +87,25 @@ export class ProblemCardComponent {
     } else if(htmlVal == 'less') {
       this.userInput += '<x';
       this.updateDisplay();
+    } else if(htmlVal == 'pi') {
+      this.userInput += 'pi';
+      this.updateDisplay();
+    } else if(htmlVal == 'e') {
+      this.userInput += 'e';
+      this.updateDisplay();
+    } else if(htmlVal == 'infinity') {
+      this.userInput += 'infinity';
+      this.updateDisplay();
+    } else if(htmlVal == 'i') {
+      this.userInput += 'i';
+      this.updateDisplay();
+    } else if(htmlVal == 'zeta') {
+      this.userInput += '#Z';
+      this.updateDisplay();
+    } else if(htmlVal == 'tau') {
+      this.userInput += '#tau';
+      this.updateDisplay();
     }
-    //Jesse and Amy, I know this is hard to read but the linter expects else to be on the same line as closing bracket
   }
 }
 
