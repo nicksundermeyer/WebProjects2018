@@ -1,4 +1,6 @@
 $icon-font-path: '/assets/fonts/bootstrap/';
+@import 'variables';
+@import 'custom';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 $fa-font-path: '/assets/fonts/font-awesome/';
 @import '~font-awesome/scss/font-awesome';
@@ -23,8 +25,7 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
-@import 'variables';
-@import 'custom';
+
 @import 'about/about';
 @import 'admin/admin';
 @import 'main/main';
