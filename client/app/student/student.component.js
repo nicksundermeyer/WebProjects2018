@@ -4,12 +4,28 @@ import routing from './student.routes';
 
 export class StudentController {
 
+  courses = [];
+  studentId;
+  student;
+
   /*@ngInject*/
-  constructor($http) {
+  constructor($http, UserServ, Auth) {
     this.$http = $http;
+    this.UserServ = UserServ;
+    this.Auth = Auth;
   }
 
   $onInit() {
+    this.Auth.getCurrentUser()
+      .then(student => {
+        this.UserServ.getUsersCourses(student._id)
+          .then(response => {
+            this.courses = response.data;
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
 

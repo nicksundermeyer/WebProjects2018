@@ -25,35 +25,19 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
-
 @import 'custom';
-
 @import 'variables';
-
 @import 'about/about';
-
 @import 'admin/admin';
-
 @import 'main/main';
-
 @import 'student/course/course';
-
 @import 'student/student';
-
 @import 'style';
-
 @import 'teacher/teacher';
-
 @import '../components/assignmentCard/assignmentCard';
-
 @import '../components/courseCard/courseCard';
-
 @import '../components/footer/footer';
-
 @import '../components/modal/modal';
-
 @import '../components/navbar/navbar';
-
 @import '../components/problemCard/problemCard';
-
 /* endinject */
