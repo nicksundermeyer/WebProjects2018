@@ -41,7 +41,9 @@ export function getUsersCourses(req, res, allowSolutions) {
     if(allowSolutions) {
       solutions = '-assignments.problems.problem.solution';
     }
-    TailoredCourse.find({ studentID: req.params.id}, solutions).then(tc => {
+    TailoredCourse.find({ studentID: req.params.id}, solutions).populate({path: 'abstractCourseID', select: 'name description -_id'})
+      .exec()
+      .then(tc => {
       return res.json(tc).status(200);
     }).catch(() => {
       return res.status(404);
