@@ -22,7 +22,13 @@ export class ProblemCardComponent {
     this.basic_operators_isClicked = false;
     this.constants_isClicked = false;
 
-    $scope.$watch(() => this.myproblem, function(newVal) {
+    $scope.$watch(() => this.myproblemgeneral, function(newVal) {
+      if(newVal) {
+        vm.load();
+      }
+    });
+
+    $scope.$watch(() => this.myproblemspecifc, function(newVal) {
       if(newVal) {
         vm.load();
       }
@@ -35,15 +41,8 @@ export class ProblemCardComponent {
       this[name] = true;
     }
   }
-  // click() {
-  //   if(this.basic_operators_isClicked) {
-  //     this.basic_operators_isClicked = false;
-  //   } else {
-  //     this.basic_operators_isClicked = true;
-  //   }
-  // }
   load() {
-    this.descriptionLatex = MathLex.render(this.myproblem.description.math, 'latex');
+    this.descriptionLatex = MathLex.render(this.myproblemspecific.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
   }
 
@@ -53,6 +52,7 @@ export class ProblemCardComponent {
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
+      console.log(this.ast);
       document.getElementById('text-box-problem').style.color = 'black';
     }
     catch(e) {
@@ -115,7 +115,8 @@ export default angular.module('directives.problemCard', [])
     controller: ProblemCardComponent,
     controllerAs: 'problemCardController',
     bindings: {
-      myproblem: '='
+      myproblemgeneral: '=',
+      myproblemspecific: '='
     }
   })
   .name;

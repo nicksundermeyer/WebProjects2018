@@ -6,7 +6,8 @@ export class AssignmentController {
 
   assignment;
   course;
-  selectedProblem;
+  selectedProblemOverview;
+  selectedProblemSpecific;
   problems;
 
   /*@ngInject*/
@@ -24,7 +25,9 @@ export class AssignmentController {
           .then(response => {
             this.assignment = response.data;
             this.problems = this.assignment.problems;
-            this.selectedProblem = this.problems[0].problem;
+            this.selectedProblemOverview = this.problems[0];
+            this.selectedProblemSpecific = this.problems[0].problem;
+            console.log(this.problems[0]);
           });
         this.Course.getCourseInfo(this.$routeParams.courseId)
           .then(response => {
@@ -35,9 +38,9 @@ export class AssignmentController {
         console.error(err);
       });
   }
-
   changeProblem(problemId) {
-    this.selectedProblem = this.problems.filter(prob => prob._id == problemId)[0].problem;
+    this.selectedProblemOverview = this.problems.filter(prob => prob._id == problemId)[0];
+    this.selectedProblemSpecific = this.problems.filter(prob => prob._id == problemId)[0].problem;
   }
 }
 
