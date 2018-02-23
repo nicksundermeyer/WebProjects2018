@@ -25,6 +25,7 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
+@import 'font';
 @import 'custom';
 @import 'variables';
 @import 'about/about';
@@ -32,7 +33,6 @@ html {
 @import 'main/main';
 @import 'student/course/course';
 @import 'student/student';
-@import 'style';
 @import 'teacher/teacher';
 @import '../components/assignmentCard/assignmentCard';
 @import '../components/courseCard/courseCard';
