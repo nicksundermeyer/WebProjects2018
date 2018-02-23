@@ -17,12 +17,13 @@ export function UserService($http) {
       //must have admin or higher
       return $http.get('/api/users/');
     },
-    getCurrentUsersCourses() {
+    /*getCurrentUsersCourses() {
       var id = UserServ.getCurrentUserId();
-      return $http.get('/api/users/' + id + '/courses');
-    },
+      return $http.get('/api/users/' +  + '/courses');
+    },*/
     getUsersCourses(id) {
       return $http.get('/api/users/' + id + '/courses');
     }
   };
+  return UserServ;
 }
