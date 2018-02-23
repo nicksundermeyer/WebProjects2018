@@ -29,6 +29,7 @@ export class CourseController {
       })
       .then(tailored => {
         this.isTailored = true;
+        console.log('tailored');
         this.course = tailored.data;
         this.course.name = this.course.abstractCourseID.name;
         this.course.description = this.course.abstractCourseID.description;
@@ -36,6 +37,7 @@ export class CourseController {
         this.course.assignments.forEach(asmt => {
           this.assignments.push(asmt.AbstractAssignmentId);
         });
+        console.log(this.assignments);
       })
       .catch(err => {
         this.Course.getCourseInfo(this.courseId)
