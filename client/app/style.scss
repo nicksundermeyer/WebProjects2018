@@ -1,25 +1,25 @@
 @font-face {
   font-family: 'Montserrat-Black';
-src: url('../assets/fonts/font-awesome/Montserrat-Black-webfont.woff2') format('woff2'),
-url('../assets/fonts/font-awesome/Montserrat-Black-webfont.woff') format('woff'),
-url('../assets/fonts/font-awesome/Montserrat-Black.ttf') format('truetype');
-font-weight: normal;
-font-style: normal;
+  src: url('../assets/fonts/font-awesome/Montserrat-Black-webfont.woff2') format('woff2'),
+  url('../assets/fonts/font-awesome/Montserrat-Black-webfont.woff') format('woff'),
+  url('../assets/fonts/font-awesome/Montserrat-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
 }
 @font-face {
   font-family: 'Montserrat-BlackItalic';
   src: url('../assets/fonts/font-awesome/Montserrat-BlackItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-BlackItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-BlackItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 900;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Bold';
   src: url('../assets/fonts/font-awesome/Montserrat-Bold-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-Bold-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Bold.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: bold;
   font-style: normal;
 }
 @font-face {
@@ -27,15 +27,15 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-BoldItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-BoldItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-BoldItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: bold;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-ExtraBold';
   src: url('../assets/fonts/font-awesome/Montserrat-ExtraBold-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraBold-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraBold.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 800;
   font-style: normal;
 }
 @font-face {
@@ -43,15 +43,15 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-ExtraBoldItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraBoldItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraBoldItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 800;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-ExtraLight';
   src: url('../assets/fonts/font-awesome/Montserrat-ExtraLight-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraLight-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraLight.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 200;
   font-style: normal;
 }
 @font-face {
@@ -59,8 +59,8 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-ExtraLightItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraLightItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-ExtraLightItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 200;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Italic';
@@ -68,14 +68,14 @@ font-style: normal;
   url('../assets/fonts/font-awesome/Montserrat-Italic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Italic.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Light';
   src: url('../assets/fonts/font-awesome/Montserrat-Light-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-Light-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Light.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 300;
   font-style: normal;
 }
 @font-face {
@@ -83,15 +83,15 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-LightItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-LightItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-LightItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 300;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Medium';
   src: url('../assets/fonts/font-awesome/Montserrat-Medium-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-Medium-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Medium.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 500;
   font-style: normal;
 }
 @font-face {
@@ -99,15 +99,15 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-MediumItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-MediumItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-MediumItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 500;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Regular';
   src: url('../assets/fonts/font-awesome/Montserrat-Regular-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-Regular-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
 }
 @font-face {
@@ -115,7 +115,7 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-SemiBold-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-SemiBold-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-SemiBold.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
 }
 @font-face {
@@ -123,15 +123,15 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-SemiBoldItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-SemiBoldItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-SemiBoldItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 600;
+  font-style: italic;
 }
 @font-face {
   font-family: 'Montserrat-Thin';
   src: url('../assets/fonts/font-awesome/Montserrat-Thin-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-Thin-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-Thin.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 100;
   font-style: normal;
 }
 @font-face {
@@ -139,6 +139,6 @@ font-style: normal;
   src: url('../assets/fonts/font-awesome/Montserrat-ThinItalic-webfont.woff2') format('woff2'),
   url('../assets/fonts/font-awesome/Montserrat-ThinItalic-webfont.woff') format('woff'),
   url('../assets/fonts/font-awesome/Montserrat-ThinItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 100;
+  font-style: italic;
 }
