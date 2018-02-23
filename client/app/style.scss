@@ -1,0 +1,144 @@
+@font-face {
+  font-family: 'Montserrat-Black';
+src: url('../assers/fonts/font-awesome/Montserrat-Black-webfont.woff2') format('woff2'),
+url('../assers/fonts/font-awesome/Montserrat-Black-webfont.woff') format('woff'),
+url('../assers/fonts/font-awesome/Montserrat-Black.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-BlackItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-BlackItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-BlackItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-BlackItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Bold';
+  src: url('../assers/fonts/font-awesome/Montserrat-Bold-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Bold-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-BoldItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-BoldItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-BoldItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-BoldItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-ExtraBold';
+  src: url('../assers/fonts/font-awesome/Montserrat-ExtraBold-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraBold-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-ExtraBoldItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-ExtraBoldItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraBoldItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-ExtraLight';
+  src: url('../assers/fonts/font-awesome/Montserrat-ExtraLight-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraLight-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-ExtraLightItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-ExtraLightItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraLightItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-ExtraLightItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Italic';
+  src: url('../assers/fonts/font-awesome/Montserrat-Italic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Italic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Light';
+  src: url('../assers/fonts/font-awesome/Montserrat-Light-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Light-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-LightItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-LightItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-LightItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-LightItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src: url('../assers/fonts/font-awesome/Montserrat-Medium-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Medium-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-MediumItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-MediumItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-MediumItalic-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-MediumItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Regular';
+  src: url('../assers/fonts/font-awesome/Montserrat-Regular-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Regular-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-SemiBold';
+  src: url('../assers/fonts/font-awesome/Montserrat-SemiBold-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-SemiBold-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-SemiBoldItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-SemiBoldItalic-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-SemiBoldItalic.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-SemiBoldItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-Thin';
+  src: url('../assers/fonts/font-awesome/Montserrat-Thin-webfont.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-Thin-webfont.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-Thin.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Montserrat-ThinItalic';
+  src: url('../assers/fonts/font-awesome/Montserrat-ThinItalic.woff2') format('woff2'),
+  url('../assers/fonts/font-awesome/Montserrat-ThinItalic.woff') format('woff'),
+  url('../assers/fonts/font-awesome/Montserrat-ThinItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
