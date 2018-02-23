@@ -32,23 +32,14 @@ export function index(req, res) {
     .catch(handleError(res));
 }
 
-export function getUsersCourses(req, res, allowSolutions) {
-  if(!allowSolutions && !req.user._id.equals(req.params.id)) {
-    return res.status(400).end();
-  }
-  else {
-    var solutions = '';
-    if(allowSolutions) {
-      solutions = '-assignments.problems.problem.solution';
-    }
-    TailoredCourse.find({ studentID: req.params.id}, solutions.concat(' -studentID')).populate({path: 'abstractCourseID', select: 'name description _id'})
-      .exec()
-      .then(tc => {
+export function getUsersCourses(req, res) {
+  TailoredCourse.find({ studentID: req.params.id}, '-studentID').populate({path: 'abstractCourseID', select: 'name description _id'})
+    .exec()
+    .then(tc => {
       return res.json(tc).status(200);
     }).catch(() => {
-      return res.status(404);
-    });
-  }
+    return res.status(404);
+  });
 }
 
 /**
