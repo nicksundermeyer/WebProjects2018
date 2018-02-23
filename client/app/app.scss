@@ -25,11 +25,11 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
-@import 'font';
 @import 'custom';
 @import 'variables';
 @import 'about/about';
 @import 'admin/admin';
+@import 'font';
 @import 'main/main';
 @import 'student/course/course';
 @import 'student/student';

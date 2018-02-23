@@ -20,7 +20,18 @@ export class StudentController {
       .then(student => {
         this.UserServ.getUsersCourses(student._id)
           .then(response => {
-            this.courses = response.data;
+            this.courses = [];
+            response.data.forEach(aCourse => {
+              console.log(aCourse);
+              var tempCourse = {
+                name: aCourse.abstractCourseID.name,
+                description: aCourse.abstractCourseID.description,
+                categories: aCourse.categories,
+                subjects: aCourse.subjects,
+                _id: aCourse.abstractCourseID._id
+              }
+              this.courses.push(tempCourse);
+            });
           });
       })
       .catch(err => {

@@ -8,6 +8,7 @@ import TailoredAssignment from './tailoredAssignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './tailoredCourse.model';
 //import User from '../user/user.model';
+
 export function index(req, res) {
   AbstractCourse.find()
     .populate('assignments')

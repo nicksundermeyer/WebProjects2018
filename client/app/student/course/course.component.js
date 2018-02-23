@@ -34,10 +34,10 @@ export class CourseController {
         this.course.name = this.course.abstractCourseID.name;
         this.course.description = this.course.abstractCourseID.description;
         this.assignments = [];
+        console.log(this.course.assignments);
         this.course.assignments.forEach(asmt => {
           this.assignments.push(asmt.AbstractAssignmentId);
         });
-        console.log(this.assignments);
       })
       .catch(err => {
         this.Course.getCourseInfo(this.courseId)
