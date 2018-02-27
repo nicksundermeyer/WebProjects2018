@@ -59,5 +59,21 @@
         <button type="button" ng-click="problemCardController.append('tau')"> &#964; </button>
       </span>
   </div>
+  <button type="button" class="button-toggler" ng-click="problemCardController.click('logical_isClicked')"> Logical Connectives </button>
+  <div class="logical-container" ng-show="problemCardController.logical_isClicked">
+      <span class="rightarrow-button">
+        <button type="button" ng-click="problemCardController.append('rightarrow')"> &#8594; </button>
+      </span>
+    <span class="leftarrow-button">
+      <button type="button" ng-click="problemCardController.append('leftarrow')"> &#8592; </button>
+      </span>
+    <span class="forall-button">
+      <button type="button" ng-click="problemCardController.append('forall')"> &#8704; </button>
+      </span>
+    <span class="exists-button">
+      <button type="button" ng-click="problemCardController.append('exists')"> &#8707; </button>
+      </span>
+  </div>
+
 </div>
 <!--</div>-->

@@ -21,6 +21,7 @@ export class ProblemCardComponent {
     var vm = this;
     this.basic_operators_isClicked = false;
     this.constants_isClicked = false;
+    this.logical_isClicked = false;
 
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
       if(newVal) {
@@ -104,6 +105,18 @@ export class ProblemCardComponent {
       this.updateDisplay();
     } else if(htmlVal == 'tau') {
       this.userInput += '#tau';
+      this.updateDisplay();
+    } else if(htmlVal == 'rightarrow') {
+      this.userInput += '-> x';
+      this.updateDisplay();
+    } else if(htmlVal == 'leftarrow') {
+      this.userInput += '<- x';
+      this.updateDisplay();
+    } else if(htmlVal == 'forall') {
+      this.userInput += 'forall x -> x';
+      this.updateDisplay();
+    } else if(htmlVal == 'exists') {
+      this.userInput += 'exists x : x';
       this.updateDisplay();
     }
   }
