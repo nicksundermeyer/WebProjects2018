@@ -157,7 +157,7 @@ export function getTailoredCourse(req, res) {
     .populate({path: 'abstractCourseID', select: 'name description -_id'})
     .populate({
       path: 'assignments',
-      select: '-problems.problem.solution',
+      select: '-problems',
       populate: {
         path: 'AbstractAssignmentId',
         model: 'AbstractAssignment',
