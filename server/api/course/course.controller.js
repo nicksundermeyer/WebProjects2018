@@ -326,7 +326,10 @@ function generateAssignmentsWith(course, assignment) {
 export function getTailoredAssignment(req, res) {
   // get tailored course
   TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-    .populate('assignments')
+    .populate({
+          path: 'assignments',
+          select: '-problems.problem.solution'
+        })
     .exec()
     .then(function(tailoredCourse) {
       if(tailoredCourse) {
@@ -350,37 +353,28 @@ export function getTailoredAssignment(req, res) {
 
 export function getProblem(req, res) {
   // get tailored course
-  TailoredCourse.findOne({'abstractCourseID': req.courseid, 'studentID': req.studentid })
+  TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+    .populate({
+      path: 'assignments',
+      select: '-problems.problem.solution'
+    })
     .exec()
     .then(function(tailoredCourse) {
       if(tailoredCourse) {
-        tailoredCourse.assignments.findById(req.assignmentid)
-          .exec()
-          .then(function(assignment) {
-            if(assignment) {
-              assignment.problems.findById(req.problemid)
-                .exec()
-                .then(function(problem) {
-                  if(problem) {
-                    return res.status(200).json(problem);
-                  } else {
-                    return res.status(204).end();
-                  }
-                })
-                //Print errors
-                .catch(function(err) {
-                  res.send(err);
-                  return res.status(404).end();
-                });
-            } else {
-              return res.status(204).end();
-            }
-          })
-          //Print errors
-          .catch(function(err) {
-            res.send(err);
-            return res.status(404).end();
-          });
+        let assignment = tailoredCourse.assignments.find(asmt =>
+              asmt.AbstractAssignmentId == req.params.assignmentid);
+        if(assignment) {
+          let problem = assignment.problems.find(prob =>
+                prob.problem.problemId == req.params.problemid);
+           if(problem) {
+            return res.status(200).json(problem);
+           } else {
+            return res.status(204).end();
+           }
+
+        } else {
+          return res.status(204).end();
+        }
       } else {
         return res.status(204).end();
       }

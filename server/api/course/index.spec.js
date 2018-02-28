@@ -46,10 +46,11 @@ var courseIndex = proxyquire('./index.js', {
   '../../auth/auth.service': authServiceStub
 });
 
-describe('Course API Router:', function() {
-  it('should return an express router instance', function() {
-    expect(courseIndex).to.equal(routerStub);
+  describe('Course API Router:', function() {
+    it('should return an express router instance', function() {
+      expect(courseIndex).to.equal(routerStub);
   });
+
   describe('GET api/courses', function() {
     it('should route to course.controller.index', function() {
       expect(routerStub.get
