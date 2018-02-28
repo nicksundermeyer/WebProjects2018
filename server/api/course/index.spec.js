@@ -19,7 +19,7 @@ var authServiceStub = {
   hasRole(role) {
     return `authService.hasRole.${role}`;
   },
-  hasPermission(role){
+  hasPermission(role) {
     return `authService.hasPermission.${role}`;
   }
 };
@@ -32,7 +32,9 @@ var CourseCtrlStub = {
   destroy: 'CourseCtrl.destroy',
   submitSolution: 'CourseCtrl.submitSolution',
   getTailoredCourse: 'CourseCtrl.getTailoredCourse',
-  enrollStudentInCourse: 'CourseCtrl.enrollStudentInCourse'
+  enrollStudentInCourse: 'CourseCtrl.enrollStudentInCourse',
+  getTailoredAssignment: 'CourseCtrl.getTailoredAssignment',
+  getProblem: 'CourseCtrl.getProblem'
 };
 
 // require the index with our stubbed out modules
@@ -46,9 +48,9 @@ var courseIndex = proxyquire('./index.js', {
   '../../auth/auth.service': authServiceStub
 });
 
-  describe('Course API Router:', function() {
-    it('should return an express router instance', function() {
-      expect(courseIndex).to.equal(routerStub);
+describe('Course API Router:', function() {
+  it('should return an express router instance', function() {
+    expect(courseIndex).to.equal(routerStub);
   });
 
   describe('GET api/courses', function() {
@@ -80,7 +82,7 @@ var courseIndex = proxyquire('./index.js', {
       expect(routerStub.delete
         .withArgs('/:id', 'authService.hasPermission.teacher', 'CourseCtrl.destroy')
       ).to.have.been.calledOnce;
-  });
+    });
   });
 
   describe('PUT /api/courses/:id', function() {
@@ -102,11 +104,13 @@ var courseIndex = proxyquire('./index.js', {
     });
   });
 
-  describe('GET /api/courses/mycourses/:id', function() {
+  describe('GET /api/courses/:courseID/students/:studentID',
+  function() {
     it('should route to course.controller.getTailoredCourse', function() {
       expect(routerStub.get
-        .withArgs('/:courseID/students/:studentID', 'authService.hasRole.student',
-        'CourseCtrl.getTailoredCourse')
+        .withArgs('/:courseID/students/:studentID',
+          'authService.hasRole.student',
+          'CourseCtrl.getTailoredCourse')
       ).to.have.been.calledOnce;
     });
   });
@@ -116,6 +120,26 @@ var courseIndex = proxyquire('./index.js', {
       expect(routerStub.post
         .withArgs('/:id/students', 'authService.hasRole.student',
         'CourseCtrl.enrollStudentInCourse')
+      ).to.have.been.calledOnce;
+    });
+  });
+
+  describe('POST /api/courses/:courseid/students/:studentid/assignments/:assignmentid', function() {
+    it('should route to course.controller.getTailoredAssignment', function() {
+      expect(routerStub.get
+        .withArgs('/:courseid/students/:studentid/assignments/:assignmentid',
+         'authService.hasRole.student',
+        'CourseCtrl.getTailoredAssignment')
+      ).to.have.been.calledOnce;
+    });
+  });
+
+  describe('POST /api/courses/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', function() {
+    it('should route to course.controller.getProblem', function() {
+      expect(routerStub.get
+        .withArgs('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid',
+         'authService.hasRole.student',
+        'CourseCtrl.getProblem')
       ).to.have.been.calledOnce;
     });
   });

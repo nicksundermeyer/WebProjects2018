@@ -6,14 +6,10 @@ var router = new Router();
 
 //show all courses
 router.get('/', controller.index);
-
 //get course by id
 router.get('/:id', controller.show);
-//get Tailored course by id
-router.get('/mycourses/:id', controller.getTailoredCourse);
 // Get tailored assignment
 router.get('/:courseid/students/:studentid/assignments/:assignmentid', auth.hasRole('student'), controller.getTailoredAssignment);
-
 // Find Problem
 router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem);
 // get tailored course with the abstract course id and student id
