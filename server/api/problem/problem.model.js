@@ -54,7 +54,7 @@ var ProblemSchema = new Schema({
     },
   },
 // max number of attempts per problem, should come from abstract assignment
-  
+
 
   numberOfAllowedAttempts: {
     type: Number,
@@ -81,6 +81,11 @@ var ProblemSchema = new Schema({
     required: true
   }
 
+}, {
+  //timestamps in mongoose automatically adds
+  //createdAt and updatedAt fields with the type Date
+  //for audit purposed in our case
+  timestamps: true
 }, { minimize: false });
 
 

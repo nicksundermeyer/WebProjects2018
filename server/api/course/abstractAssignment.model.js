@@ -31,6 +31,11 @@ var AbstractAssignment = new Schema({
     default: 1
   }
 
+}, {
+  //timestamps in mongoose automatically adds
+  //createdAt and updatedAt fields with the type Date
+  //for audit purposed in our case
+  timestamps: true
 }, {usePushEach: true});
 
 export default mongoose.model('AbstractAssignment', AbstractAssignment);

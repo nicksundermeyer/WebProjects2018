@@ -18,6 +18,11 @@ var TailoredAssignment = new Schema({
     required: true
   }
 
+}, {
+  //timestamps in mongoose automatically adds
+  //createdAt and updatedAt fields with the type Date
+  //for audit purposed in our case
+  timestamps: true
 }, {usePushEach: true});
 
 export default mongoose.model('TailoredAssignment', TailoredAssignment);
