@@ -23,26 +23,26 @@ var ProblemSchema = new Schema({
       required: true
     },
 
-    description:{
+    description: {
       type: Object,
       default: null,
-      required:true
+      required: true
     },
 
-    depth:{
+    depth: {
       type: Number,
       default: 1,
       required: true
     },
 
-    subject:{
-      type:String,
+    subject: {
+      type: String,
       default: null,
-      required:true
+      required: true
     },
 
-    category:{
-      type:String,
+    category: {
+      type: String,
       default: null,
       required: true
     },
@@ -53,18 +53,24 @@ var ProblemSchema = new Schema({
       required: true
     },
   },
+// max number of attempts per problem, should come from abstract assignment
+  
 
+  numberOfAllowedAttempts: {
+    type: Number,
+    default: 1
+  },
   attempts: [{
     date: {
-      type: String, 
-      required: true
+      type: Date,
+      default: Date.now
     },
-    attempt: {
-      type: String, 
-      required: true
-    },
+    //attempt here is whatever the student send as a solution
+    //so attempt should be of type object to properly capture whatever values we get back from the UI
+    attempt: Object,
+    //correct is changed accordingly when the attempt is checked
     correct: {
-      type: Boolean, 
+      type: Boolean,
       default: null
     }
   }],
@@ -72,7 +78,7 @@ var ProblemSchema = new Schema({
   instructions: {
     type: String,
     default: null,
-    required:true
+    required: true
   }
 
 }, { minimize: false });

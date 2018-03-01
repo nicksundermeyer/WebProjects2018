@@ -5,7 +5,8 @@ mongoose.Promise = require('bluebird');
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './user.events';
 import shared from './../../config/environment/shared';
-import TailoredCourse from '../course/TailoredCourse.model';
+//import TailoredCourse from '../course/tailoredCourse.model';
+
 var UserSchema = new Schema({
   name: String,
   email: {

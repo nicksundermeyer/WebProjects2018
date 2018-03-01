@@ -1,0 +1,29 @@
+@import 'variables';
+
+/*-----------------BOOTSTRAP CUSTOMS--------------------|
+| This styles sheet focuses on customizing the styles   |
+| in bootstrap so we can maintain consistent styles     |
+|-----------------------------------------------------*/
+
+
+$brand-primary:         $blue;
+$brand-info:            $light-blue;
+$brand-success:         $blue;
+$brand-warning:         $orange;
+$brand-danger:          $orange;
+
+
+$gray-base:             $black;
+$gray-darker:           $dark-grey;
+$gray-dark:             $grey;
+$gray:                  $light-grey;
+$gray-light:            $lightest-grey;
+$gray-lighter:          $white;
+
+
+$body-bg:               $white;
+
+$font-family-sans-serif: Montserrat-Regular;
+$font-family-serif: Montserrat-Regular;
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
