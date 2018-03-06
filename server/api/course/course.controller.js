@@ -7,7 +7,7 @@ import AbstractAssignment from './abstractAssignment.model';
 import TailoredAssignment from './tailoredAssignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './tailoredCourse.model';
-//import User from '../user/user.model';
+import User from '../user/user.model';
 
 export function index(req, res) {
   AbstractCourse.find()
@@ -179,15 +179,24 @@ export function getTailoredCourse(req, res) {
 }
 
 export function enrollStudentInCourse(req, res) {
+console.log("this function");
+//find the user to be enrolled in course
+  return User.findById(req.params.studentID)
+    .exec()
+    .then(function(student){
+      if(student){
+        console.log("found student");
+
 
   //Find the course with the ID passed into the URL
   return AbstractCourse.findById(req.params.id)
     .exec()
     .then(function(course) {
       if(course) {
+
         //Create the course and associate it with the enrolling students ID
         //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
-        return createCourseAndAddStudent(req.user, course).then( tc => {
+        return createCourseAndAddStudent(student, course).then( tc => {
           //Remove solutions from return
           //There may be a better way to do this without querying the database
           TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description -_id'})
@@ -210,8 +219,10 @@ export function enrollStudentInCourse(req, res) {
     })
     .catch(function() {
       return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
-    });
-}
+    });}}).catch(function(){
+    return res.json("invalid student ID").status(400).end();
+  })}
+
 
 /**
  * Generate a TailoredCourse that is specific to the student
