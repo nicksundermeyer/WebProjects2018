@@ -12,12 +12,13 @@ export class ProblemCardComponent {
   descriptionLatex;
 
   /*@ngInject*/
-  constructor($location, $scope) {
+  constructor($location, $scope, $uibModal) {
     'ngInject';
     this.$location = $location;
     this.userInput = '';
     this.ast = '';
     this.latex = '';
+    this.$uibModal = $uibModal;
     var vm = this;
     this.basic_operators_isClicked = false;
     this.constants_isClicked = false;
@@ -59,6 +60,19 @@ export class ProblemCardComponent {
     catch(e) {
       document.getElementById('text-box-problem').style.color = 'red';
     }
+  }
+
+  submitSolution(message) {
+    console.log('click work');
+    this.$uibModal.open({
+      template: require('../problemConfirmationModal/problemConfirmationModal.html'),
+      controller: 'problemConfirmationModalController as problemConfirmationModalController',
+      resolve: {
+        message() {
+          return message;
+        }
+      }
+    });
   }
 
   append(htmlVal) {
