@@ -23,6 +23,7 @@ router.delete('/:id', auth.hasPermission('teacher'), controller.destroy);
 //update course if role higher than teacher or teacher who created course
 router.put('/:id', auth.hasPermission('teacher'), controller.update);
 //submit a solution to a problem
-router.post('/:course/assignments/:assignment/problems/:problem', auth.hasRole('student'), controller.submitSolution);
+router.post('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
+auth.hasRole('student'), controller.submitSolution);
 
 module.exports = router;

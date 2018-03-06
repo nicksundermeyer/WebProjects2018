@@ -96,11 +96,11 @@ describe('Course API Router:', function() {
     });
   });
 
-  describe('POST /api/courses/:course/assignments/:assignment/problems/:problem',
+  describe('POST /api/courses/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
   function() {
     it('should route to course.controller.submitSolution', function() {
       expect(routerStub.post
-        .withArgs('/:course/assignments/:assignment/problems/:problem',
+        .withArgs('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
           'authService.hasRole.student',
           'CourseCtrl.submitSolution')
       ).to.have.been.calledOnce;
