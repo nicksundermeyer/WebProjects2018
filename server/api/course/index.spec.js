@@ -115,10 +115,10 @@ describe('Course API Router:', function() {
     });
   });
 
-  describe('POST /api/courses/:id/students', function() {
+  describe('POST /api/courses/:id/students/:studentID', function() {
     it('should route to course.controller.enrollStudentInCourse', function() {
       expect(routerStub.post
-        .withArgs('/:id/students', 'authService.hasRole.student',
+        .withArgs('/:id/students/:studentID', 'authService.hasRole.student',
         'CourseCtrl.enrollStudentInCourse')
       ).to.have.been.calledOnce;
     });
