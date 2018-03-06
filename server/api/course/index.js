@@ -17,7 +17,7 @@ router.get('/:courseID/students/:studentID', auth.hasRole('student'), controller
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
 //enroll in a course if student
-router.post('/:id/students', auth.hasRole('student'), controller.enrollStudentInCourse); // Add Student to course
+router.post('/:id/students/:studentID', auth.hasPermissionToEnroll('teacher'), controller.enrollStudentInCourse); // Add Student to course
 //delete course if role higher than teacher or teacher who created course
 router.delete('/:id', auth.hasPermission('teacher'), controller.destroy);
 //update course if role higher than teacher or teacher who created course
