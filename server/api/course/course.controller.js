@@ -100,11 +100,10 @@ export function destroy(req, res) {
 
 
 export function submitSolution(req, res) {
-  //find the correspondign Tailored course based on a abstract course id
+  //find the corresponding Tailored course based on a abstract course id
   //and student id
   TailoredCourse.findOne({
-    abstractCourseId: req.params.course,
-    studentId: req.params.student
+    abstractCourseID: req.params.course
   })
     .exec()
     .then(tailoredCourse => {
@@ -115,7 +114,7 @@ export function submitSolution(req, res) {
         tailoredCourse.assignments.filter(_assignment => {
           if(_assignment._id == req.params.assignment) {
             _assignment.problems.filter(_problem => {
-              if(_problem.problem.problemId == req.params.problem) {
+              if(_problem.problem._id == req.params.problem) {
                 //push the attempts to problem
                 //we need a number of attempts allowed for each problem
                 if(_problem.attempts.length < _problem.numberOfAllowedAttempts) {
