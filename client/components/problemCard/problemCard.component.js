@@ -12,7 +12,7 @@ export class ProblemCardComponent {
   descriptionLatex;
 
   /*@ngInject*/
-  constructor($location, $scope, $uibModal) {
+  constructor($location, $scope, $uibModal, Assignment, $routeParams) {
     'ngInject';
     this.$location = $location;
     this.userInput = '';
@@ -23,6 +23,8 @@ export class ProblemCardComponent {
     this.basic_operators_isClicked = false;
     this.constants_isClicked = false;
     this.logical_isClicked = false;
+    this.Assignment = Assignment;
+    this.$routeParams = $routeParams;
 
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
       if(newVal) {
@@ -65,16 +67,20 @@ export class ProblemCardComponent {
   }
 
   submitSolution(message) {
-    console.log('click work');
-    this.$uibModal.open({
-      template: require('../problemConfirmationModal/problemConfirmationModal.html'),
-      controller: 'problemConfirmationModalController as problemConfirmationModalController',
-      resolve: {
-        message() {
-          return message;
+    if(document.getElementById('text-box-problem').style.color == 'red') {
+      this.$uibModal.open({
+        template: require('../problemConfirmationModal/problemConfirmationModal.html'),
+        controller: 'problemConfirmationModalController as problemConfirmationModalController',
+        resolve: {
+          message() {
+            return message;
+          }
         }
-      }
-    });
+      });
+    } else {
+      this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+         this.myproblemid, this.latex);
+    }
   }
 
   mappings = {
@@ -215,7 +221,9 @@ export default angular.module('directives.problemCard', [])
     controllerAs: 'problemCardController',
     bindings: {
       myproblemgeneral: '=',
-      myproblemspecific: '='
+      myproblemspecific: '=',
+      myuserid: '=',
+      myproblemid: '='
     }
   })
   .name;

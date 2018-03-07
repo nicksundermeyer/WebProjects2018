@@ -98,7 +98,6 @@ export function destroy(req, res) {
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
 
 
-
 export function submitSolution(req, res) {
   //find the corresponding Tailored course based on a abstract course id
   //and student id
@@ -139,10 +138,10 @@ export function submitSolution(req, res) {
         //the idea is to write the logic to check the attempts
         //and compare them to the solution here
         return res.json(tailoredCourse).status(200)
-        .end();
+          .end();
       } else {
         return res.status(404).json({message: 'Tailored course not found'})
-        .end();
+          .end();
       }
     })
     .catch(err => {
@@ -180,49 +179,48 @@ export function getTailoredCourse(req, res) {
 }
 
 export function enrollStudentInCourse(req, res) {
-console.log("this function");
+  console.log('this function');
 //find the user to be enrolled in course
   return User.findById(req.params.studentID)
     .exec()
-    .then(function(student){
-      if(student){
-        console.log("found student");
+    .then(function(student) {
+      if(student) {
+        console.log('found student');
 
 
-  //Find the course with the ID passed into the URL
-  return AbstractCourse.findById(req.params.id)
-    .exec()
-    .then(function(course) {
-      if(course) {
-
-        //Create the course and associate it with the enrolling students ID
-        //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
-        return createCourseAndAddStudent(student, course).then( tc => {
-          //Remove solutions from return
-          //There may be a better way to do this without querying the database
-          TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description -_id'})
-            .populate({
-              path: 'assignments',
-              select: '-problems',
-              populate: {
-                path: 'AbstractAssignmentId',
-                model: 'AbstractAssignment',
-                select: 'title description'
-              }
-            })
-            .then ( tcNoSolutions => {
-              return res.json(tcNoSolutions).status(201);
-            });
-        });
-      } else {
-        return res.status(204).end();
-      }
-    })
-    .catch(function() {
-      return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
-    });}}).catch(function(){
-    return res.json("invalid student ID").status(400).end();
-  })}
+        //Find the course with the ID passed into the URL
+        return AbstractCourse.findById(req.params.id)
+          .exec()
+          .then(function(course) {
+            if(course) {
+              //Create the course and associate it with the enrolling students ID
+              //Since we return Promise.all we need to chain this with a .then or it will return a pending promise!
+              return createCourseAndAddStudent(student, course).then(tc => {
+                //Remove solutions from return
+                //There may be a better way to do this without querying the database
+                TailoredCourse.findById(tc._id, '-studentID').populate({path: 'abstractCourseID', select: 'name description -_id'})
+                  .populate({
+                    path: 'assignments',
+                    select: '-problems',
+                    populate: {
+                      path: 'AbstractAssignmentId',
+                      model: 'AbstractAssignment',
+                      select: 'title description'
+                    }
+                  })
+                  .then(tcNoSolutions => {
+                    return res.json(tcNoSolutions).status(201);
+                  });
+              });
+            } else {
+              return res.status(204).end();
+            }
+          })
+          .catch(function() {
+            return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
+          });}}).catch(function() {
+            return res.json('invalid student ID').status(400).end();
+          });}
 
 
 /**
@@ -232,7 +230,6 @@ console.log("this function");
  * @params {Course} - The abstractCourse with details on for creating the tailored Course
  */
 function createCourseAndAddStudent(user, course) {
-
   //This is where we will store the assignments returned by our generateAssignmentsWith() function
   var tailoredAssignments = [];
 
@@ -243,7 +240,6 @@ function createCourseAndAddStudent(user, course) {
 
   //Return a pending promise. We will use .then to access this return in createCourseAndAddStudent() function
   return Promise.all(tailoredAssignments).then(ta => {
-
     //Create a TailoredCourse and assign the the values we have access to right now
     var tailoredCourse = new TailoredCourse();
     tailoredCourse.abstractCourseID = course._id;
@@ -277,8 +273,7 @@ function generateAssignmentsWith(course, assignment) {
   //We are returning a promise so the Promise.all in the above function will only be called when tailoredAssignments
   //has been fully populated! This is important because Javascript is asynchronous and we do NOT want to create
   //a tailoredCourse until we have fully populated its fields!
-  return new Promise(function (resolve, reject) {
-
+  return new Promise(function(resolve, reject) {
     return AbstractAssignment.findById(assignment.toString()).then(assign => {
       //Compute the number of existing problems to fetch, and the number of new ones to generate
       var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
@@ -293,7 +288,7 @@ function generateAssignmentsWith(course, assignment) {
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
         //fetching existing problems there is a possibility that a newly generated problem would be fetched
         //as an existing problems and there could be duplicate problems.
-        for (let i = 0; i < numberOfNew; i++) {
+        for(let i = 0; i < numberOfNew; i++) {
           //Add on to the array of existing problems with numberOfNew new problems
           results.push(problemController.create({
             protocol: 'dpg',
@@ -338,9 +333,9 @@ export function getTailoredAssignment(req, res) {
   // get tailored course
   TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
     .populate({
-          path: 'assignments',
-          select: '-problems.problem.solution'
-        })
+      path: 'assignments',
+      select: '-problems.problem.solution'
+    })
     .exec()
     .then(function(tailoredCourse) {
       if(tailoredCourse) {
@@ -373,16 +368,15 @@ export function getProblem(req, res) {
     .then(function(tailoredCourse) {
       if(tailoredCourse) {
         let assignment = tailoredCourse.assignments.find(asmt =>
-              asmt.AbstractAssignmentId == req.params.assignmentid);
+          asmt.AbstractAssignmentId == req.params.assignmentid);
         if(assignment) {
           let problem = assignment.problems.find(prob =>
-                prob.problem.problemId == req.params.problemid);
-           if(problem) {
+            prob.problem.problemId == req.params.problemid);
+          if(problem) {
             return res.status(200).json(problem);
-           } else {
+          } else {
             return res.status(204).end();
-           }
-
+          }
         } else {
           return res.status(204).end();
         }
