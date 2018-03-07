@@ -104,7 +104,7 @@ export function submitSolution(req, res) {
   TailoredCourse.findOne({
     abstractCourseID: req.params.courseId,
     studentID: req.params.studentId
-  })
+  }).populate('assignments')
     .exec()
     .then(tailoredCourse => {
       if(tailoredCourse) {
@@ -112,13 +112,16 @@ export function submitSolution(req, res) {
         //find the corresponding problem and push the solution
         //into the attempts array
         tailoredCourse.assignments.filter(_assignment => {
-          if(_assignment._id == req.params.assignmentId) {
+          if(_assignment.AbstractAssignmentId == req.params.assignmentId) {
             _assignment.problems.filter(_problem => {
-              if(_problem.problem._id == req.params.problemId) {
+              if(_problem._id == req.params.problemId) {
                 //push the attempts to problem
-                //we need a number of attempts allowed for each problem
+                // we need a number of attempts allowed for each problem
                 if(_problem.attempts.length < _problem.numberOfAllowedAttempts) {
-                  _problem.attempts.push(req.body);
+                  _problem.attempts.push({
+                    'date': Date.now(),
+                    'attempt': req.body,
+                    'correct': null});
                 }
                 //save the changes made to attempts
                 _problem.save();
@@ -128,6 +131,7 @@ export function submitSolution(req, res) {
 
             //save the changes made in the problem
             _assignment.save();
+          } else {
           }
           return _assignment;
         });
