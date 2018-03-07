@@ -1,7 +1,20 @@
-.teacher
-{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
+.subject {
+    font-size: 25px;
+}
+
+.teacher {
+    font-size: 25px;
+}
+.spots {
+    color: #1A94D9;
+}
+
+.category {
+    font-size: 20px;
+}
+
+.info {
+    margin-left: 8px;
 }
 
 span.bold {
@@ -15,24 +28,24 @@ span.bold {
 
 #subbanner {
     background-image: url("/assets/images/background.jpg");
-    height: 29em;
-    opacity: 50%;
     background-size: contain;
-}
-
-.sidebar {
-    clear: both;
-    overflow: hidden;
-    margin-top: 9em;
-    margin-left: 21em;
-    position: relative;
 }
 
 img.profile {
     border: 2px solid #021a40;
     border-radius: 50%;
-    margin-top: 20em;
-    margin-left: 14.5em;
-    width: 17em;
-    height: 17em;
+    width: 250px;
+    height: 250px;
+    margin-top: -125px;
+}
+
+.break {
+    height: 15px;
+}
+
+.blue-line {
+    background-color:#1A94D9;
+    margin-left: 30px;
+    margin-right: 30px;
+    height: 3px;
 }
