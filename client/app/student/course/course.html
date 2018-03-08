@@ -11,10 +11,11 @@
       <figure>
         <img class="profile center-block" src="/assets/images/jon_snow.jpg"/>
         <br>
-        <div class="text-center"><span class="teacher bold">{{courseController.course.teacher.name}} Jon Snow</span></div>
+        <div class="text-center"><span class="title bold">{{courseController.course.teacher.name}} Jon Snow</span></div>
         <hr class="blue-line">
         <div class="text-center"><span class="category">Categories: {{courseController.course.categories}}</span></div>
-        <div class="text-center"><span class="category spots">Spots Left: </span><span class="category">42</span></div>
+        <!--Need an angular variable for number of "spots left" and associated server code-->
+        <div class="text-center"><span class="category spots">Spots Left: </span><span class="category">&#x221e;</span></div>
         <div class="break"></div>
           <figcaption>
             <button class="btn btn-primary center-block" ng-if="!courseController.isTailored" ng-click="courseController.enroll()">Enroll</button>
@@ -24,8 +25,8 @@
     <div class= "col-lg-7 col-md-12">
       <div class="container info">
         <br>
-        <div><span class="subject bold">{{courseController.course.name}}</span></div>
-        <div>{{courseController.course.description}} bacon ipsum dolor amet tongue burgdoggen alcatra jerky picanha. Prosciutto hamburger doner, shank chuck leberkas ham hock</div>
+        <div><span class="title bold">{{courseController.course.name}}</span></div>
+        <div>{{courseController.course.description}}</div>
       </div>
       <div class="center-block" ng-repeat="anAssignment in courseController.assignments">
         <assignment-card assignment="anAssignment" courseid="courseController.courseId" istailored="courseController.isTailored" ></assignment-card>
