@@ -67,7 +67,7 @@ export class ProblemCardComponent {
   }
 
   submitSolution(message) {
-    if(document.getElementById('text-box-problem').style.color == 'red') {
+    if(document.getElementById('text-box-problem').style.color == 'red' || document.getElementById('text-box-problem').style.length === 0) {
       this.$uibModal.open({
         template: require('../problemConfirmationModal/problemConfirmationModal.html'),
         controller: 'problemConfirmationModalController as problemConfirmationModalController',
