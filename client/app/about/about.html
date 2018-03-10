@@ -4,17 +4,23 @@
   </div>
 </header>
 <body ng-controller="aboutController">
-  <br>
-  <h3 class="center">Product Description and Purpose</h3>
-  <section class="center">{{aboutController.aboutData.description}}</section>
-  <br>
-  <h3 class="center">Contributors and Contact Information</h3>
-    <table class="center">
-      <tr ng-repeat="x in aboutController.aboutData.contributors">
-        <td>{{x.name}}</td>
-        <td>{{x.email}}</td>
-        <td>{{x.bio}}</td>
-      </tr>
-    </table>
-  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 offset-lg-1 col-md-10">
+        <br>
+        <h3 class="center black">Product Description and Purpose</h3>
+        <section class="center">{{aboutController.aboutData.description}}</section>
+        <br>
+        <h3 class="center black">Contributors and Contact Information</h3>
+          <table class="center">
+            <tr ng-repeat="x in aboutController.aboutData.contributors">
+              <td class="black">{{x.name}}</td>
+              <td><a href="mailto:{{x.email}}" class="link"><u>{{x.email}}</u></a></td>
+              <td>{{x.bio}}</td>
+            </tr>
+          </table>
+        <br>
+      </div>
+    </div>
+  </div>
 </body>

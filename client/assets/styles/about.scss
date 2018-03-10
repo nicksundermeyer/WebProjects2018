@@ -1,24 +1,32 @@
 tr:nth-child(even){
     background-color: lightgray;
 }
+
 td:first-child {
     font-weight: bold;
 }
+
 tr:hover {
-    background-color:#8B2332;
+    background-color:#1A94D9;
 }
+
 table, th, td {
-    padding: 8px;
     text-align: center;
-    border: 1px solid black;
+    padding: 8px;
+    border: 2px solid #1A94D9;
     border-collapse: collapse;
 }
+
 .center {
     margin-left:auto;
     margin-right:auto;
     text-align: center;
 }
 
-section {
-    width: 75%;
+.black {
+    color: black;
+}
+
+.link {
+    color: inherit; 
 }
