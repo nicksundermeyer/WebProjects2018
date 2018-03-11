@@ -8,6 +8,8 @@ import TailoredAssignment from './tailoredAssignment.model';
 import Problem from '../problem/problem.model';
 import TailoredCourse from './tailoredCourse.model';
 import User from '../user/user.model';
+import kas from 'kas/kas';
+var MathLex = require('mathlex_server_friendly');
 
 export function index(req, res) {
   AbstractCourse.find()
@@ -42,7 +44,7 @@ export function create(req, res) {
   let course = req.body;
   AbstractCourse.create(course)
     .then(function(createdCourse) {
-      //any role hgher than teacher
+      //any role higher than teacher
       //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
       //so id should not be just grabber from the current user
       if(req.user.role === 'teacher') {
@@ -113,6 +115,7 @@ export function submitSolution(req, res) {
         //into the attempts array
         tailoredCourse.assignments.filter(_assignment => {
           if(_assignment.AbstractAssignmentId == req.params.assignmentId) {
+            console.log('here0');
             _assignment.problems.filter(_problem => {
               if(_problem._id == req.params.problemId) {
                 //push the attempts to problem
@@ -122,10 +125,29 @@ export function submitSolution(req, res) {
                     'date': Date.now(),
                     'attempt': req.body,
                     'correct': null});
+
+                  var sol_as_tree = _problem.problem.solution.math;
+                  var sol_as_latex = global.MathLex.render(sol_as_tree, 'latex');
+
+                  var att = req.body;
+                  var expr1 = KAS.parse(att.latexSol).expr; //submitted answer
+                  console.log(expr1.print());
+
+                  var expr2 = KAS.parse(sol_as_latex).expr; //stored solution
+                  console.log(expr2.print());
+
+                  if(KAS.compare(expr1, expr2).equal) {
+                    //console.log('right answer! It is working!');
+                    return res.send({result: 'success'});
+                  } else {
+                    //console.log('wrong answer! It is still working!');
+                    return res.send({result: 'failure'});
+                  }
                 }
                 //save the changes made to attempts
                 _problem.save();
               }
+              console.log('gets here too!');
               return _problem;
             });
 
