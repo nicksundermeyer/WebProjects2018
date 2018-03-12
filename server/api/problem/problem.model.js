@@ -81,7 +81,8 @@ var ProblemSchema = new Schema({
     required: true
   }
 
-}, { usePushEach: true }, {
+}, {
+  usePushEach: true,
   //timestamps in mongoose automatically adds
   //createdAt and updatedAt fields with the type Date
   //for audit purposed in our case
