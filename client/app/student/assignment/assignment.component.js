@@ -11,6 +11,7 @@ export class AssignmentController {
   problems;
   userId;
   problemId;
+  isChanged;
 
   /*@ngInject*/
   constructor($routeParams, Assignment, Course, Auth) {
@@ -48,6 +49,7 @@ export class AssignmentController {
     this.selectedProblemOverview = this.problems.filter(prob => prob._id == problemId)[0];
     this.selectedProblemSpecific = this.problems.filter(prob => prob._id == problemId)[0].problem;
     this.problemId = this.selectedProblemOverview._id;
+    this.isChanged = true;
   }
 }
 
