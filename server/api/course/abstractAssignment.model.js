@@ -28,10 +28,11 @@ var AbstractAssignment = new Schema({
   },
   numberOfPossibleAttempts: {
     type: Number,
-    default: 1
+    default: 3
   }
 
-}, {usePushEach: true}, {
+}, {
+  usePushEach: true,
   //timestamps in mongoose automatically adds
   //createdAt and updatedAt fields with the type Date
   //for audit purposed in our case
