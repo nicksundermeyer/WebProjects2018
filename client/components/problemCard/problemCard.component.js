@@ -74,16 +74,16 @@ export class ProblemCardComponent {
     }
   }
 
-  submitSolution(message) {
+  submitSolution() {
     if(document.getElementById('text-box-problem').style.color == 'red' || document.getElementById('text-box-problem').style.length === 0) {
       this.$uibModal.open({
         template: require('../problemConfirmationModal/problemConfirmationModal.html'),
         controller: 'problemConfirmationModalController as problemConfirmationModalController',
-        resolve: {
-          message() {
-            return message;
-          }
-        }
+      }).result.then(() => {
+        this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+          this.myproblemid, this.latex);
+      }, () => {
+        console.log('Cancelled');
       });
     } else {
         this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
