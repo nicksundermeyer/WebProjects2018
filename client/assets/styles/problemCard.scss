@@ -4,7 +4,7 @@
   height: 300px;
   margin: 10px;
   border-radius: 20px;
-  width: 400px;
+  width: 100%;
 }
 
 .card-header-problem{
@@ -22,7 +22,7 @@
 #problem-input {
   background-color: white;
   border-color: #4393B9;
-  width:400px;
+  //width:400px;
   height:150px;
   line-height: 150px;
   color: black;
@@ -46,7 +46,6 @@
 .text-box-problem{
   margin-top: 20px;
   height: 55px;
-  width: 400px;
   //position: absolute;
   //left:150px;
   //top: 320px;
