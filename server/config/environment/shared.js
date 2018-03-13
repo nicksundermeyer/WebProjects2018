@@ -60,7 +60,7 @@ var aboutData = {
       image: 'http://www.example.com/route/to/image'
     }, {
       name: 'Shivani Anirudha Punde',
-      email: 'shivani.anirudha@du.edu',
+      email: 'shivani.punde@du.edu',
       bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
