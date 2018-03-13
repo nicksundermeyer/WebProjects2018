@@ -9,27 +9,28 @@
 </a>
 <div class = "container">
   <div class="row">
-    <div class="left-nav navbar navbar-inverse navbar-fixed-left col-lg-2 col-md-2 col-sm-2 col-xs-1">
+    <div ng-if="!assignmentController.mobile" class="left-nav navbar navbar-inverse navbar-fixed-left col-lg-2 col-md-2 col-sm-2 col-xs-1 pull-left">
       <ul class=" nav navbar-nav">
         <li class="left-nav-header">
           <h3>{{assignmentController.course.name}}</h3>
         </li>
-        <li class = "left-nav-item" ng-repeat="aProblem in assignmentController.problems">
-          <a href = "#" ng-click="assignmentController.changeProblem(aProblem._id)">
+        <li class = "left-nav-item" ng-repeat="aProblem in assignmentController.problemObjects">
+          <a href = "#" ng-click="assignmentController.changeProblem(aProblem.number)">
             <span><h4><i class="glyphicon glyphicon-ok-circle"></i> Problem {{$index + 1}}</h4></span>
           </a>
         </li>
       </ul>
     </div>
-    <div>
-      <div class="problem-container container col-lg-8 col-md-8 col-sm-8 col-xs-6">
-        <problem-card myproblemspecific="assignmentController.selectedProblemSpecific"
-                      myproblemgeneral="assignmentController.selectedProblemOverview"
-                      myuserid="assignmentController.userId"
-                      myproblemid="assignmentController.problemId"></problem-card>
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <button class="btn pull-down">Left</button>
-          <button class="btn pull-down">Right</button>
+    <div class="problem-container col-lg-8 col-md-8 col-sm-8 col-xs-12">
+      <problem-card myproblemspecific="assignmentController.selectedProblem.specific"
+                    myproblemgeneral="assignmentController.selectedProblem.overview"
+                    myuserid="assignmentController.userId"
+                    myproblemid="assignmentController.problemId"></problem-card>
+      <div class = "nav-button-container col-xl-offset-5 col-xl-6 col-lg-offset-5 col-lg-6 col-md-offset-5 col-md-6 col-sm-offset-5 col-sm-6 col-xs-offset-4 col-xs-6">
+        <div class = "row">
+          <button ng-click="assignmentController.left()" class="btn left-button"><i class="glyphicon glyphicon-menu-left"></i></button>
+          <h3 class="nav-button-number">{{assignmentController.selectedProblem.number + 1}}</h3>
+          <button ng-click="assignmentController.right()" class="btn right-button"><i class="glyphicon glyphicon-menu-right"></i></button>
         </div>
       </div>
     </div>
