@@ -135,7 +135,8 @@ function createTailoredCourse(abstractCourse) {
         subjects: abstractCourse.subjects,
         categories: abstractCourse.categories
       }).then(tc => {
-        return addAssignmentsToTailoredCourse(abstractCourse, tc);
+        addAssignmentsToTailoredCourse(abstractCourse, tc);
+        return tc;
       })
       .then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
       .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));

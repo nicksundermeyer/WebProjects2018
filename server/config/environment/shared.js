@@ -109,8 +109,8 @@ var aboutData = {
       bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
-      name: 'Ahn Tran',
-      email: 'ahn.tran@du.edu',
+      name: 'Anh Tran',
+      email: 'anh.tran@du.edu',
       bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
     }
