@@ -59,11 +59,6 @@ var aboutData = {
       bio: 'UI Team Lead Developer',
       image: 'http://www.example.com/route/to/image'
     }, {
-      name: 'Shivani Anirudha Punde',
-      email: 'shivani.punde@du.edu',
-      bio: 'UI Team Developer',
-      image: 'http://www.example.com/path/to/image'
-    }, {
       name: 'Wei Cheng',
       email: 'wei.cheng@du.edu',
       bio: 'UI Team Developer',
@@ -76,6 +71,11 @@ var aboutData = {
     }, {
       name: 'Amy Karlzen',
       email: 'amy.karlzen@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Shivani Punde',
+      email: 'shivani.punde@du.edu',
       bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {

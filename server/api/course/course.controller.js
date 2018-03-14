@@ -305,6 +305,13 @@ function generateAssignmentsWith(course, assignment) {
       var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
       var numberOfNew = Math.floor(numberOfProblems * (assign.newProblemPercentage / 100));
 
+      Problem.count({ }, function (err, count) {
+        if(count == 0) {
+          numberOfNew = numberOfProblems;
+        } else if (count < (numberOfProblems-numberOfNew)) {
+          numberOfNew = numberOfNew + ((numberOfProblems-numberOfNew)-count);
+        }
+      });
       //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
       //the amount of existing problems we need
       Problem.aggregate(
@@ -314,20 +321,11 @@ function generateAssignmentsWith(course, assignment) {
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
         //fetching existing problems there is a possibility that a newly generated problem would be fetched
         //as an existing problems and there could be duplicate problems.
-        for(let i = 0; i < numberOfNew; i++) {
-          //Add on to the array of existing problems with numberOfNew new problems
-          results.push(problemController.create({
-            protocol: 'dpg',
-            version: '0.1',
-            problem: {
-              subject: course.subjects,
-              category: course.categories,
-              depth: 1
-            }
-          }));
-        }
+        return addProblems(course, results, numberOfNew)
+          .then(newProblems => {
+            return results.concat(newProblems);
+          }) ;
 
-        return results;
       }).then(promises => {
         //Create new assignment populated with appropriate fields and our final array of problems
         //Promises becomes finalProblems, which we then save in the assignment.
@@ -354,7 +352,56 @@ function generateAssignmentsWith(course, assignment) {
   });
 }
 
+function addProblems(course, databaseProblems, additionalProblems) {
+ console.log("Add Problems");
+  var results = [];
+  for(let i = 0; i < additionalProblems; i++) {
+    //Add on to the array of existing problems with numberOfNew new problems
+    console.log("Problem " + i);
+    results.push(problemController.create({
+      protocol: 'dpg',
+      version: '0.1',
+      problem: {
+        subject: course.subjects,
+        category: course.categories,
+        depth: 1
+      }
+    }));
+  }
+  return Promise.all(results)
+    .then(problems => {
+        // iterate over problems, remove duplicates, compare against database problems
+        var newProblemIDs = new Set();
+        // Get problem ids from db pulled problems
+        var dbProblemIDs = databaseProblems.map(problem => {
+          return problem.problem.problemId
+        });
+        var dbProblemIdsSet = new Set(dbProblemIDs);
+        // Check all new problems for duplicates from the generator
+        var reducedProblems =  problems.filter(item => {
+          var k = item.problem.problemId;
+          if(newProblemIDs.has(k) || dbProblemIdsSet.has(k)) {
+            return false;
+          } else {
+            newProblemIDs.add(k);
+            return item;
+          }
 
+        });
+        return reducedProblems;
+    })
+    .then(reducedProblems => {
+      if (reducedProblems.length < additionalProblems) {
+        return addProblems(course, databaseProblems.concat(reducedProblems), additionalProblems - reducedProblems.length)
+          .then(moreProblems => {
+            return reducedProblems.concat(moreProblems);
+          })
+      } else {
+        return reducedProblems;
+      }
+    });
+
+}
 export function getTailoredAssignment(req, res) {
   // get tailored course
   TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
