@@ -101,7 +101,6 @@ export function hasPermission(roleRequired) {
     });
 }
 
-
 export function hasPermissionToEnroll(roleRequired) {
   if(!roleRequired) {
     throw new Error('Required role needs to be set');

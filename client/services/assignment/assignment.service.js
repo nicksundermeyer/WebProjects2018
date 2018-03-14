@@ -14,6 +14,9 @@ export function AssignmentService($http) {
             {latexSol});
         }
       };
+    },
+    getProblemInfo(courseId, studentId, assignmentId, problemId) {
+      return $http.get('/api/courses/' + courseId + '/students/' + studentId + '/assignments/' + assignmentId + '/problems/' + problemId);
     }
   };
   return Assignment;
