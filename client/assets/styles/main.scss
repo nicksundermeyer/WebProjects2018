@@ -1,23 +1,123 @@
-#banner {
-  border-bottom: none;
-  margin-top: -20px;
+.signup{
+  background: $orange;
+  color: $white;
+  font-size: 18px;
+  padding: 16px;
+  border-radius: 10px;
 }
-
-#banner h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-
 .hero-unit {
-  position: relative;
-  padding: 30px 15px;
-  color: #F5F5F5;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background:#8B2332;
+
+  &#banner {
+    border-bottom: none;
+    margin-top: -20px;
+    min-height: 600px;
+    background: -webkit-linear-gradient(45deg, rgba(0,67,168,1) 0%, rgba(0,0,82,1) 100%);
+    &:after {
+      content: "";
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+      background-image: url("/assets/images/background.svg");
+      background-size: auto;
+      background-repeat: repeat;
+      opacity: 0.15;
+    }
+    .container{
+      padding-top: 120px;
+      position: relative;
+      z-index: 5;
+    }
+  }
 }
 
-.navbar-text {
-  margin-left: 15px;
+  #banner {
+    h1 {
+      font-size: 60px;
+      line-height: 1;
+      letter-spacing: -1px;
+      color: $white;
+      font-weight: bolder;
+    }
+    h2 {
+      color: $light-grey;
+      font-weight: medium;
+      padding-bottom: 48px;
+    }
+  }
+
+    .hero-unit {
+      position: relative;
+      padding: 30px 15px;
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+      color: $dark-grey;
+    }
+
+    .navbar-text {
+      margin-left: 15px;
+    }
+
+
+    .step{
+      //width: 100%;
+      //padding: 32px 0 128px 0;
+      padding: 64px 0;
+      h2{
+        color: $white;
+      }
+      p{
+        color: $lightest-grey;
+      }
+      a{
+        color: $orange;
+      }
+      .content{
+        padding: 32px 64px 32px 32px;
+      }
+      &#step-one{
+        background-color: $light-blue;
+        background-image: -webkit-linear-gradient(30deg, $light-blue 60%, $lightest-blue 40%);
+      }
+      &#step-two{
+        background-color: $blue;
+        background-image: -webkit-linear-gradient(-210deg, $blue 60%, $lightest-blue 40%);
+      }
+      &#step-three{
+        background-color: $light-blue;
+        background-image: -webkit-linear-gradient(30deg, $light-blue 60%, $lightest-blue 40%);
+      }
+      img{
+        width: 100%;
+        max-height: 256px;
+        display: block;
+        margin: auto;
+      }
+      .left{
+        float: left;
+      }
+      .right{
+        float: right;
+        text-align: right;
+      }
+    }
+
+
+.intro{
+  text-align: center;
+  padding-bottom: 120px;
+  h2{
+    padding: 64px;
+    color: $black;
+    font-weight: bold;
+  }
+  img{
+    padding-bottom: 64px;
+  }
+  .demo{
+    display: block;
+    margin: auto;
+    max-width: 100%;
+  }
 }
