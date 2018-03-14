@@ -12,7 +12,11 @@
   <input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
   <!--</div>-->
   <div class="submit-button-problem">
-    <button ng-click="problemCardController.submitSolution()" type="button" class="btn btn-primary">SUBMIT</button>
+    <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo()" type="button" class="btn btn-primary"
+    ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
+  </div><br><br>
+  <div>
+    <strong>Remaining attempts: {{problemCardController.remainingAttempts}}</strong>
   </div>
   <button class="btn btn-default button-toggler" ng-click="problemCardController.click('basic_operators_isClicked')"> Basic Operators </button>
   <div class="operators-container" ng-show="problemCardController.basic_operators_isClicked">

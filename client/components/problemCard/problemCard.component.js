@@ -13,6 +13,8 @@ export class ProblemCardComponent {
   latex;
   descriptionLatex;
   attIsCorrect;
+  problem;
+  remainingAttempts;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
@@ -59,6 +61,8 @@ export class ProblemCardComponent {
     }
     this.descriptionLatex = MathLex.render(this.myproblemspecific.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
+    this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
+    console.log(this.remainingAttempts);
   }
 
   updateDisplay() {
@@ -100,6 +104,16 @@ export class ProblemCardComponent {
             }
           });
     }
+  }
+
+  attemptInfo(){
+    this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+      this.myproblemid)
+      .then(problem => {
+        this.problem = problem.data;
+        this.remainingAttempts = this.problem.numberOfAllowedAttempts - this.problem.attempts.length;
+        console.log(this.remainingAttempts);
+      })
   }
 
   mappings = {
