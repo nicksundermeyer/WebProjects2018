@@ -34,9 +34,6 @@ var CourseCtrlStub = {
   update: 'CourseCtrl.update',
   destroy: 'CourseCtrl.destroy',
   submitSolution: 'CourseCtrl.submitSolution',
-  getTailoredCourse: 'CourseCtrl.getTailoredCourse',
-  enrollStudentInCourse: 'CourseCtrl.enrollStudentInCourse',
-  getTailoredAssignment: 'CourseCtrl.getTailoredAssignment',
   getProblem: 'CourseCtrl.getProblem'
 };
 
@@ -103,36 +100,6 @@ describe('Course API Router:', function() {
         .withArgs('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
           'authService.hasRole.student',
           'CourseCtrl.submitSolution')
-      ).to.have.been.calledOnce;
-    });
-  });
-
-  describe('GET /api/courses/:courseID/students/:studentID',
-  function() {
-    it('should route to course.controller.getTailoredCourse', function() {
-      expect(routerStub.get
-        .withArgs('/:courseID/students/:studentID',
-          'authService.hasRole.student',
-          'CourseCtrl.getTailoredCourse')
-      ).to.have.been.calledOnce;
-    });
-  });
-
-  // describe('POST /api/courses/:id/students/:studentID', function() {
-  //   it('should route to course.controller.enrollStudentInCourse', function() {
-  //     expect(routerStub.post
-  //       .withArgs('/:id/students/:studentID', 'auth.hasPermissionToEnroll.teacher',
-  //       'CourseCtrl.enrollStudentInCourse')
-  //     ).to.have.been.calledOnce;
-  //   });
-  // });
-
-  describe('POST /api/courses/:courseid/students/:studentid/assignments/:assignmentid', function() {
-    it('should route to course.controller.getTailoredAssignment', function() {
-      expect(routerStub.get
-        .withArgs('/:courseid/students/:studentid/assignments/:assignmentid',
-         'authService.hasRole.student',
-        'CourseCtrl.getTailoredAssignment')
       ).to.have.been.calledOnce;
     });
   });
