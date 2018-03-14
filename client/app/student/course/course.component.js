@@ -51,7 +51,7 @@ export class CourseController {
   }
 
   enroll() {
-    this.Course.enrollStudentCourse(this.courseId)
+    this.Course.enrollStudentCourse(this.courseId, this.student._id)
       .then(enroll => {
         this.isTailored = true;
         this.course = enroll.data;

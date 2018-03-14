@@ -1,8 +1,10 @@
 'use strict';
 
 import angular from 'angular';
-import 'mathlex';
+import 'mathlex_server_friendly';
+//import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
+import kas from 'kas/kas';
 
 export class ProblemCardComponent {
 
@@ -10,9 +12,10 @@ export class ProblemCardComponent {
   ast;
   latex;
   descriptionLatex;
+  attIsCorrect;
 
   /*@ngInject*/
-  constructor($location, $scope, $uibModal) {
+  constructor($location, $scope, $uibModal, Assignment, $routeParams) {
     'ngInject';
     this.$location = $location;
     this.userInput = '';
@@ -23,6 +26,9 @@ export class ProblemCardComponent {
     this.basic_operators_isClicked = false;
     this.constants_isClicked = false;
     this.logical_isClicked = false;
+    this.Assignment = Assignment;
+    this.$routeParams = $routeParams;
+    this.attIsCorrect = false;
 
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
       if(newVal) {
@@ -36,6 +42,7 @@ export class ProblemCardComponent {
       }
     });
   }
+
   click(name) {
     if(this[name]) {
       this[name] = false;
@@ -43,12 +50,17 @@ export class ProblemCardComponent {
       this[name] = true;
     }
   }
+
   load() {
+    console.log(this.myproblemspecific.description.math);
+    var tree2 = MathLex.parse('2+2');
+    console.log(tree2);
     this.descriptionLatex = MathLex.render(this.myproblemspecific.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
   }
 
   updateDisplay() {
+    console.log(this.attIsCorrect);
     try {
       this.ast = MathLex.parse(this.userInput);
       this.latex = MathLex.render(this.ast, 'latex');
@@ -63,76 +75,97 @@ export class ProblemCardComponent {
   }
 
   submitSolution(message) {
-    console.log('click work');
-    this.$uibModal.open({
-      template: require('../problemConfirmationModal/problemConfirmationModal.html'),
-      controller: 'problemConfirmationModalController as problemConfirmationModalController',
-      resolve: {
-        message() {
-          return message;
+    if(document.getElementById('text-box-problem').style.color == 'red' || document.getElementById('text-box-problem').style.length === 0) {
+      this.$uibModal.open({
+        template: require('../problemConfirmationModal/problemConfirmationModal.html'),
+        controller: 'problemConfirmationModalController as problemConfirmationModalController',
+        resolve: {
+          message() {
+            return message;
+          }
         }
+      });
+    } else {
+        this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+          this.myproblemid, this.latex)
+          .async()
+          .then(function(res) {
+            console.log(res);
+            if(res.data.result === 'success') {
+              //this.attIsCorrect = true; //not working?
+              document.getElementById('text-box-problem').style.color = 'green';
+            }
+          });
       }
-    });
+  }
+
+  mappings = {
+    sqrt: [
+      '*sqrt(x)',
+      'sqrt(x)'
+    ],
+    plus: [
+      'x+y'
+    ],
+    mult: [
+      '*x'
+    ],
+    div: [
+      '/x'
+    ],
+    equals: [
+      '= x'
+    ],
+    greater: [
+      '> x'
+    ],
+    less: [
+      '< x'
+    ],
+    pi: [
+      'pi'
+    ],
+    e: [
+      'e'
+    ],
+    infinity: [
+      'infinity'
+    ],
+    i: [
+      'i'
+    ],
+    zeta: [
+      '#Z'
+    ],
+    tau: [
+      '#tau'
+    ],
+    rightarrow: [
+      '-> x'
+    ],
+    leftarrow: [
+      '<- x'
+    ],
+    forall: [
+      'forall x -> x'
+    ],
+    exists: [
+      'exists x : x'
+    ]
+
   }
 
   append(htmlVal) {
-    if(htmlVal == 'sqrt') {
-      if(this.userInput) { //if not empty
-        this.userInput += '*sqrt(x)';
-        this.updateDisplay();
+    if(htmlVal) {
+      this.userInput += this.mappings[htmlVal][0];
+    } else {
+      if(this.mappings[htmlVal].length > 1) {
+        this.userInput += this.mappings[htmlVal][1];
       } else {
-        this.userInput += 'sqrt(x)';
-        this.updateDisplay();
+        this.userInput += this.mappings[htmlVal][0];
       }
-    } else if(htmlVal == 'plus') {
-      this.userInput += '+x';
-      this.updateDisplay();
-    } else if(htmlVal == 'mult') {
-      this.userInput += '*x';
-      this.updateDisplay();
-    } else if(htmlVal == 'div') {
-      this.userInput += '/x';
-      this.updateDisplay();
-    } else if(htmlVal == 'equals') {
-      this.userInput += '= x';
-      this.updateDisplay();
-    } else if(htmlVal == 'greater') {
-      this.userInput += '>x';
-      this.updateDisplay();
-    } else if(htmlVal == 'less') {
-      this.userInput += '<x';
-      this.updateDisplay();
-    } else if(htmlVal == 'pi') {
-      this.userInput += 'pi';
-      this.updateDisplay();
-    } else if(htmlVal == 'e') {
-      this.userInput += 'e';
-      this.updateDisplay();
-    } else if(htmlVal == 'infinity') {
-      this.userInput += 'infinity';
-      this.updateDisplay();
-    } else if(htmlVal == 'i') {
-      this.userInput += 'i';
-      this.updateDisplay();
-    } else if(htmlVal == 'zeta') {
-      this.userInput += '#Z';
-      this.updateDisplay();
-    } else if(htmlVal == 'tau') {
-      this.userInput += '#tau';
-      this.updateDisplay();
-    } else if(htmlVal == 'rightarrow') {
-      this.userInput += '-> x';
-      this.updateDisplay();
-    } else if(htmlVal == 'leftarrow') {
-      this.userInput += '<- x';
-      this.updateDisplay();
-    } else if(htmlVal == 'forall') {
-      this.userInput += 'forall x -> x';
-      this.updateDisplay();
-    } else if(htmlVal == 'exists') {
-      this.userInput += 'exists x : x';
-      this.updateDisplay();
     }
+    this.updateDisplay();
   }
 }
 
@@ -143,7 +176,9 @@ export default angular.module('directives.problemCard', [])
     controllerAs: 'problemCardController',
     bindings: {
       myproblemgeneral: '=',
-      myproblemspecific: '='
+      myproblemspecific: '=',
+      myuserid: '=',
+      myproblemid: '='
     }
   })
   .name;

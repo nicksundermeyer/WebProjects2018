@@ -21,6 +21,9 @@ var authServiceStub = {
   },
   hasPermission(role) {
     return `authService.hasPermission.${role}`;
+  },
+  hasPermissionToEnroll(role) {
+    return `authService.hasPermissionToEnroll.${role}`;
   }
 };
 
@@ -93,11 +96,11 @@ describe('Course API Router:', function() {
     });
   });
 
-  describe('POST /api/courses/:course/assignments/:assignment/problems/:problem',
+  describe('POST /api/courses/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
   function() {
     it('should route to course.controller.submitSolution', function() {
       expect(routerStub.post
-        .withArgs('/:course/assignments/:assignment/problems/:problem',
+        .withArgs('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
           'authService.hasRole.student',
           'CourseCtrl.submitSolution')
       ).to.have.been.calledOnce;
@@ -115,14 +118,14 @@ describe('Course API Router:', function() {
     });
   });
 
-  describe('POST /api/courses/:id/students', function() {
-    it('should route to course.controller.enrollStudentInCourse', function() {
-      expect(routerStub.post
-        .withArgs('/:id/students', 'authService.hasRole.student',
-        'CourseCtrl.enrollStudentInCourse')
-      ).to.have.been.calledOnce;
-    });
-  });
+  // describe('POST /api/courses/:id/students/:studentID', function() {
+  //   it('should route to course.controller.enrollStudentInCourse', function() {
+  //     expect(routerStub.post
+  //       .withArgs('/:id/students/:studentID', 'auth.hasPermissionToEnroll.teacher',
+  //       'CourseCtrl.enrollStudentInCourse')
+  //     ).to.have.been.calledOnce;
+  //   });
+  // });
 
   describe('POST /api/courses/:courseid/students/:studentid/assignments/:assignmentid', function() {
     it('should route to course.controller.getTailoredAssignment', function() {

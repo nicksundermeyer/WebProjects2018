@@ -9,6 +9,8 @@ export class AssignmentController {
   selectedProblemOverview;
   selectedProblemSpecific;
   problems;
+  userId;
+  problemId;
 
   /*@ngInject*/
   constructor($routeParams, Assignment, Course, Auth) {
@@ -27,7 +29,11 @@ export class AssignmentController {
             this.problems = this.assignment.problems;
             this.selectedProblemOverview = this.problems[0];
             this.selectedProblemSpecific = this.problems[0].problem;
-            console.log(this.problems[0]);
+            //console.log(this.problems[0]);
+            this.userId = user._id;
+            this.problemId = this.selectedProblemOverview._id;
+            // console.log(this.selectedProblemOverview);
+            // console.log(this.selectedProblemSpecific);
           });
         this.Course.getCourseInfo(this.$routeParams.courseId)
           .then(response => {
@@ -41,6 +47,7 @@ export class AssignmentController {
   changeProblem(problemId) {
     this.selectedProblemOverview = this.problems.filter(prob => prob._id == problemId)[0];
     this.selectedProblemSpecific = this.problems.filter(prob => prob._id == problemId)[0].problem;
+    this.problemId = this.selectedProblemOverview._id;
   }
 }
 

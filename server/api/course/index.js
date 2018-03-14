@@ -17,12 +17,13 @@ router.get('/:courseID/students/:studentID', auth.hasRole('student'), controller
 //create a course if a teacher
 router.post('/', auth.hasRole('teacher'), controller.create);
 //enroll in a course if student
-router.post('/:id/students', auth.hasRole('student'), controller.enrollStudentInCourse); // Add Student to course
+router.post('/:id/students/:studentID', auth.hasPermissionToEnroll('teacher'), controller.enrollStudentInCourse); // Add Student to course
 //delete course if role higher than teacher or teacher who created course
 router.delete('/:id', auth.hasPermission('teacher'), controller.destroy);
 //update course if role higher than teacher or teacher who created course
 router.put('/:id', auth.hasPermission('teacher'), controller.update);
 //submit a solution to a problem
-router.post('/:course/assignments/:assignment/problems/:problem', auth.hasRole('student'), controller.submitSolution);
+router.post('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
+auth.hasRole('student'), controller.submitSolution);
 
 module.exports = router;
