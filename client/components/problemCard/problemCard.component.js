@@ -15,6 +15,7 @@ export class ProblemCardComponent {
   attIsCorrect;
   problem;
   remainingAttempts;
+  //counter = 0;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
@@ -107,13 +108,15 @@ export class ProblemCardComponent {
   }
 
   attemptInfo(){
-    this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+    this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
+    console.log(this.remainingAttempts);
+    /*this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
       this.myproblemid)
       .then(problem => {
         this.problem = problem.data;
         this.remainingAttempts = this.problem.numberOfAllowedAttempts - this.problem.attempts.length;
         console.log(this.remainingAttempts);
-      })
+      });*/
   }
 
   mappings = {
