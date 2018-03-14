@@ -12,6 +12,7 @@ export class AssignmentController {
   userId;
   problemId;
   mobile = false;
+  isChanged;
 
   /*@ngInject*/
   constructor($routeParams, Assignment, Course, Auth) {
@@ -73,6 +74,7 @@ export class AssignmentController {
     console.log(this.problemNumber);
     this.selectedProblem = this.problemObjects[problemNumber];
     this.problemId = this.selectedProblem.overview._id;
+    this.isChanged = true;
   }
 }
 
