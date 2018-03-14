@@ -28,7 +28,7 @@ var AbstractAssignment = new Schema({
   },
   numberOfPossibleAttempts: {
     type: Number,
-    default: 1
+    default: 3
   }
 
 }, {

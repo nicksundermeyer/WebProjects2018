@@ -4,7 +4,7 @@ import angular from 'angular';
 import 'mathlex_server_friendly';
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
-import kas from 'kas/kas';
+//import kas from 'kas/kas';
 
 export class ProblemCardComponent {
 
@@ -13,6 +13,9 @@ export class ProblemCardComponent {
   latex;
   descriptionLatex;
   attIsCorrect;
+  problem;
+  remainingAttempts;
+  //counter = 0;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
@@ -52,41 +55,44 @@ export class ProblemCardComponent {
   }
 
   load() {
-    console.log(this.myproblemspecific.description.math);
-    var tree2 = MathLex.parse('2+2');
-    console.log(tree2);
+    if(this.ischanged === true) {
+      this.userInput = '';
+      this.updateDisplay();
+      this.ischanged = false;
+    }
     this.descriptionLatex = MathLex.render(this.myproblemspecific.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
+    this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
+    console.log(this.remainingAttempts);
   }
 
   updateDisplay() {
-    console.log(this.attIsCorrect);
+    //console.log(this.attIsCorrect); not sure why this doesn't work
     try {
       this.ast = MathLex.parse(this.userInput);
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
-      console.log(this.ast);
       document.getElementById('text-box-problem').style.color = 'black';
     }
     catch(e) {
-      document.getElementById('text-box-problem').style.color = 'red';
+      document.getElementById('text-box-problem').style.color = 'blue';
     }
   }
 
-  submitSolution(message) {
-    if(document.getElementById('text-box-problem').style.color == 'red' || document.getElementById('text-box-problem').style.length === 0) {
+  submitSolution() {
+    if(document.getElementById('text-box-problem').style.color == 'blue' || document.getElementById('text-box-problem').style.length === 0) {
       this.$uibModal.open({
         template: require('../problemConfirmationModal/problemConfirmationModal.html'),
         controller: 'problemConfirmationModalController as problemConfirmationModalController',
-        resolve: {
-          message() {
-            return message;
-          }
-        }
+      }).result.then(() => {
+        this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+          this.myproblemid, this.latex);
+      }, () => {
+        console.log('Cancelled');
       });
     } else {
-        this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+      this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
           this.myproblemid, this.latex)
           .async()
           .then(function(res) {
@@ -94,9 +100,23 @@ export class ProblemCardComponent {
             if(res.data.result === 'success') {
               //this.attIsCorrect = true; //not working?
               document.getElementById('text-box-problem').style.color = 'green';
+            } else{
+              document.getElementById('text-box-problem').style.color = 'red';
             }
           });
-      }
+    }
+  }
+
+  attemptInfo(){
+    this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
+    console.log(this.remainingAttempts);
+    /*this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+      this.myproblemid)
+      .then(problem => {
+        this.problem = problem.data;
+        this.remainingAttempts = this.problem.numberOfAllowedAttempts - this.problem.attempts.length;
+        console.log(this.remainingAttempts);
+      });*/
   }
 
   mappings = {
@@ -178,7 +198,8 @@ export default angular.module('directives.problemCard', [])
       myproblemgeneral: '=',
       myproblemspecific: '=',
       myuserid: '=',
-      myproblemid: '='
+      myproblemid: '=',
+      ischanged: '='
     }
   })
   .name;

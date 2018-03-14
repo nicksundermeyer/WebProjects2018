@@ -9,6 +9,7 @@ var router = new Router();
 router.get('/', controller.index);
 //get course by id
 router.get('/:id', controller.show);
+
 // Get tailored assignment
 router.get('/:courseid/students/:studentid/assignments/:assignmentid', auth.hasRole('student'), function(req, res) {
   if(config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('teacher')) {
@@ -17,10 +18,12 @@ router.get('/:courseid/students/:studentid/assignments/:assignmentid', auth.hasR
     controller.getTailoredAssignment(req, res, false);
   }
 });
+
 // Find Problem
 router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem);
 // get tailored course with the abstract course id and student id
 router.get('/:courseID/students/:studentID', auth.hasRole('student'), function(req, res) {
+
   if(config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('teacher')) {
     controller.getTailoredCourse(req, res, true);
   } else {

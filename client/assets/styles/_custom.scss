@@ -27,3 +27,11 @@ $font-family-sans-serif: Montserrat-Regular;
 $font-family-serif: Montserrat-Regular;
 
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+//custom navbar
+$bgDefault      : $dark-grey;
+$bgHighlight    : $grey;
+$colDefault     : $light-grey;
+$colHighlight   : $lightest-grey;
+$dropDown       : false;
+
