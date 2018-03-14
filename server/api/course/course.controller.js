@@ -444,7 +444,7 @@ export function getProblem(req, res) {
           asmt.AbstractAssignmentId == req.params.assignmentid);
         if(assignment) {
           let problem = assignment.problems.find(prob =>
-            prob.problem.problemId == req.params.problemid);
+            prob._id == req.params.problemid);
           if(problem) {
             return res.status(200).json(problem);
           } else {
