@@ -176,32 +176,61 @@ export function submitSolution(req, res) {
     });
 }
 
-export function getTailoredCourse(req, res) {
-  return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-    studentID: req.params.studentID })
-    .populate({path: 'abstractCourseID', select: 'name description -_id'})
-    .populate({
-      path: 'assignments',
-      select: '-problems.problem.solution',
-      populate: {
-        path: 'AbstractAssignmentId',
-        model: 'AbstractAssignment',
-        select: 'title description'
-      }
-    })
-    .exec()
-    .then(tc => {
-      if(tc) {
-        return res.json(tc).status(200);
-      } else {
-        return res.status(404).json({message: 'Tailored course not found'})
-          .end();
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(404).end();
-    });
+export function getTailoredCourse(req, res, allowSolutions) {
+  if(allowSolutions)
+  {
+    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
+      studentID: req.params.studentID })
+      .populate({path: 'abstractCourseID', select: 'name description -_id'})
+      .populate({
+        path: 'assignments',
+        populate: {
+          path: 'AbstractAssignmentId',
+          model: 'AbstractAssignment',
+          select: 'title description'
+        }
+      })
+      .exec()
+      .then(tc => {
+        if(tc) {
+          return res.json(tc).status(200);
+        } else {
+          return res.status(404).json({message: 'Tailored course not found'})
+            .end();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(404).end();
+      });
+  } else {
+    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
+      studentID: req.params.studentID })
+      .populate({path: 'abstractCourseID', select: 'name description -_id'})
+      .populate({
+        path: 'assignments',
+        select: '-problems.problem.solution',
+        populate: {
+          path: 'AbstractAssignmentId',
+          model: 'AbstractAssignment',
+          select: 'title description'
+        }
+      })
+      .exec()
+      .then(tc => {
+        if(tc) {
+          return res.json(tc).status(200);
+        } else {
+          return res.status(404).json({message: 'Tailored course not found'})
+            .end();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(404).end();
+      });
+  }
+
 }
 
 export function enrollStudentInCourse(req, res) {
@@ -355,32 +384,62 @@ function generateAssignmentsWith(course, assignment) {
 }
 
 
-export function getTailoredAssignment(req, res) {
-  // get tailored course
-  TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-    .populate({
-      path: 'assignments',
-      select: '-problems.problem.solution'
-    })
-    .exec()
-    .then(function(tailoredCourse) {
-      if(tailoredCourse) {
-        let assignment = tailoredCourse.assignments.find(asmt =>
+export function getTailoredAssignment(req, res, allowSolutions) {
+
+  if(allowSolutions)
+  {
+    // get tailored course
+    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+      .populate({
+        path: 'assignments',
+      })
+      .exec()
+      .then(function(tailoredCourse) {
+        if(tailoredCourse) {
+          let assignment = tailoredCourse.assignments.find(asmt =>
           asmt.AbstractAssignmentId == req.params.assignmentid);
-        if(assignment) {
-          return res.status(200).json(assignment);
+          if(assignment) {
+            return res.status(200).json(assignment);
+          } else {
+            return res.status(204).end();
+          }
         } else {
           return res.status(204).end();
         }
-      } else {
-        return res.status(204).end();
-      }
-    })
-    //Print errors
-    .catch(function(err) {
-      res.send(err);
-      return res.status(404).end();
-    });
+      })
+      //Print errors
+      .catch(function(err) {
+        res.send(err);
+        return res.status(404).end();
+      });
+  } else {
+    // get tailored course
+    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+      .populate({
+        path: 'assignments',
+        select: '-problems.problem.solution'
+      })
+      .exec()
+      .then(function(tailoredCourse) {
+        if(tailoredCourse) {
+          let assignment = tailoredCourse.assignments.find(asmt =>
+          asmt.AbstractAssignmentId == req.params.assignmentid);
+          if(assignment) {
+            return res.status(200).json(assignment);
+          } else {
+            return res.status(204).end();
+          }
+        } else {
+          return res.status(204).end();
+        }
+      })
+      //Print errors
+      .catch(function(err) {
+        res.send(err);
+        return res.status(404).end();
+      });
+  }
+
 }
 
 export function getProblem(req, res) {
