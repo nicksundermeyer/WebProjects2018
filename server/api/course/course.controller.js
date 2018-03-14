@@ -448,20 +448,25 @@ export function getProblem(req, res) {
           if(problem) {
             return res.status(200).json(problem);
           } else {
-            return res.status(204).end();
+            return Promise.reject('Problem not found');
           }
         } else {
-          return res.status(204).end();
+          return Promise.reject('Assignment not found');
         }
       } else {
-        return res.status(204).end();
+        return Promise.reject('Course not found');
       }
     })
     //Print errors
     .catch(function(err) {
-      res.send(err);
-      return res.status(404).end();
+      //res.send(err);
+      if(err.includes('not found')) {
+        return res.status(404).send(err.toString());
+      } else {
+        return res.status(500).send(err.toString());
+      }
     });
+
 }
 
 //only allow the course teacher or role greater than teacher permission

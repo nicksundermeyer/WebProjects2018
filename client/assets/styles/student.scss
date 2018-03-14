@@ -34,10 +34,10 @@
 
 .problem-container {
   border-radius: 10px;
-  height: 600px;
   background: #EEEEEE;
   border-color: #EEEEEE;
   color: #4b5257;
+  height: 600px;
 }
 
 .navbar-fixed-left .navbar-nav > li {
@@ -97,4 +97,10 @@ line-height: 33px;
   letter-spacing: -1px;
   font-style: normal;
   font-family: Montserrat-Light;
+}
+
+.studentImage {
+  position:absolute;
+  top:55%;
+  left:20%;
 }
