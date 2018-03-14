@@ -4,7 +4,7 @@ import angular from 'angular';
 import 'mathlex_server_friendly';
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
-import kas from 'kas/kas';
+//import kas from 'kas/kas';
 
 export class ProblemCardComponent {
 
@@ -52,30 +52,31 @@ export class ProblemCardComponent {
   }
 
   load() {
-    console.log(this.myproblemspecific.description.math);
-    var tree2 = MathLex.parse('2+2');
-    console.log(tree2);
+    if(this.ischanged === true) {
+      this.userInput = '';
+      this.updateDisplay();
+      this.ischanged = false;
+    }
     this.descriptionLatex = MathLex.render(this.myproblemspecific.description.math, 'latex');
     katex.render(this.descriptionLatex, document.getElementById('problemDisplay-problem'));
   }
 
   updateDisplay() {
-    console.log(this.attIsCorrect);
+    //console.log(this.attIsCorrect); not sure why this doesn't work
     try {
       this.ast = MathLex.parse(this.userInput);
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
-      console.log(this.ast);
       document.getElementById('text-box-problem').style.color = 'black';
     }
     catch(e) {
-      document.getElementById('text-box-problem').style.color = 'red';
+      document.getElementById('text-box-problem').style.color = 'blue';
     }
   }
 
   submitSolution() {
-    if(document.getElementById('text-box-problem').style.color == 'red' || document.getElementById('text-box-problem').style.length === 0) {
+    if(document.getElementById('text-box-problem').style.color == 'blue' || document.getElementById('text-box-problem').style.length === 0) {
       this.$uibModal.open({
         template: require('../problemConfirmationModal/problemConfirmationModal.html'),
         controller: 'problemConfirmationModalController as problemConfirmationModalController',
@@ -86,7 +87,7 @@ export class ProblemCardComponent {
         console.log('Cancelled');
       });
     } else {
-        this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
+      this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
           this.myproblemid, this.latex)
           .async()
           .then(function(res) {
@@ -94,9 +95,11 @@ export class ProblemCardComponent {
             if(res.data.result === 'success') {
               //this.attIsCorrect = true; //not working?
               document.getElementById('text-box-problem').style.color = 'green';
+            } else{
+              document.getElementById('text-box-problem').style.color = 'red';
             }
           });
-      }
+    }
   }
 
   mappings = {
@@ -178,7 +181,8 @@ export default angular.module('directives.problemCard', [])
       myproblemgeneral: '=',
       myproblemspecific: '=',
       myuserid: '=',
-      myproblemid: '='
+      myproblemid: '=',
+      ischanged: '='
     }
   })
   .name;
