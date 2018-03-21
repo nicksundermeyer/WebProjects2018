@@ -1,0 +1,24 @@
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>This is a student page!</h1>
+  </div>
+</header>
+ 
+<div class="container">
+      <div class=" col-md-12">
+          <img class="studentImage center-block" src={{studentController.gravatarUrl}} />
+      </div>
+      <div class="col-md-12 student-discovery">
+          <a href="/student/course"><h2><u>Course Discovery</u></h2></a>
+      </div>
+      <div class= "col-md-12">
+        <div class="container info">
+          <br>
+          
+        </div>
+        <div ng-repeat="aCourse in studentController.courses" class="center-block">
+            <course-card mycourse="aCourse"></course-card>
+        </div>
+      </div>
+    </div>
+  </div>

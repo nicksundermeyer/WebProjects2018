@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import compose from 'composable-middleware';
 import User from '../api/user/user.model';
+import AbstractCourse from '../api/course/abstractCourse.model';
 
 var validateJwt = expressJwt({
   secret: config.secrets.session
@@ -29,13 +30,18 @@ export function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      User.findById(req.user._id).exec()
+      return User.findById(req.user._id).exec()
         .then(user => {
           if(!user) {
             return res.status(401).end();
           }
           req.user = user;
+          req.role = user.role;
           next();
+          //This block needs a return value or bluebird complaints of a runaway promisse
+          //since we are attaching the user to the request, it makes sense returning the request
+          //returning - return next() - or just next() - does not fix the runaway promisse issue
+          return req;
         })
         .catch(err => next(err));
     });
@@ -59,6 +65,73 @@ export function hasRole(roleRequired) {
       }
     });
 }
+
+/**
+ * Only allow permision to defined role
+ * specifically teacher or higher
+ */
+export function hasPermission(roleRequired) {
+  if(!roleRequired) {
+    throw new Error('Required role needs to be set');
+  }
+
+  return compose()
+    .use(isAuthenticated())
+    .use(function meetsRequirements(req, res, next) {
+      //grab the course in question
+      return AbstractCourse.findById(req.params.id).exec()
+        .then(course => {
+            //if the course actually exists
+          if(course) {
+            //if the role of the current user is bigger than the role required
+            //or the current user is the teacher assigned to the course, success
+            //otherwise forbid access
+            if(config.userRoles.indexOf(req.user.role) > config.userRoles.indexOf(roleRequired) || course.teacherID.equals(req.user._id)) {
+              next();
+              return req;
+            } else {
+              return res.status(403).send('Forbidden');
+            }
+          } else {
+            //if the course does not exists or was just deleted
+            return res.status(404).end();
+          }
+        })
+        .catch(err => next(err));
+    });
+}
+
+export function hasPermissionToEnroll(roleRequired) {
+  if(!roleRequired) {
+    throw new Error('Required role needs to be set');
+  }
+
+  return compose()
+    .use(isAuthenticated())
+    .use(function meetsRequirements(req, res, next) {
+      //grab the course in question
+      return AbstractCourse.findById(req.params.id).exec()
+        .then(course => {
+        //if the course actually exists
+        if(course) {
+          //if the role of the current user is bigger than the role required
+          //or the current user is the teacher assigned to the course, success
+          //otherwise forbid access
+          if(config.userRoles.indexOf(req.user.role) > config.userRoles.indexOf(roleRequired) || course.teacherID.equals(req.user._id) || req.params.studentID == req.user._id) {
+            next();
+            return req;
+          } else {
+            return res.status(403).send('Forbidden');
+          }
+        } else {
+          //if the course does not exists or was just deleted
+          return res.status(404).end();
+    }
+    })
+    .catch(err => next(err));
+    });
+}
+
 
 /**
  * Returns a jwt token signed by the app secret

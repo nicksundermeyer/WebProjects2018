@@ -1,13 +1,21 @@
 $icon-font-path: '/assets/fonts/bootstrap/';
+@import '../assets/styles/variables';
+@import '../assets/styles/custom';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
 $fa-font-path: '/assets/fonts/font-awesome/';
 @import '~font-awesome/scss/font-awesome';
 
 // @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
+//@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800);
 
 /**
  * App-wide Styles
  */
+
+html {
+  background: #F7F7F7;
+}
 
 .browserupgrade {
   margin: 0.2em 0;
@@ -18,8 +26,20 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 
 // Component styles are injected through gulp
 /* inject:scss */
-@import 'admin/admin';
-@import 'main/main';
-@import '../components/footer/footer';
-@import '../components/modal/modal';
+@import '../assets/styles/custom';
+@import '../assets/styles/variables';
+@import '../assets/styles/about';
+@import '../assets/styles/admin';
+@import '../assets/styles/font';
+@import '../assets/styles/main';
+@import '../assets/styles/course';
+@import '../assets/styles/student';
+@import '../assets/styles/teacher';
+@import '../assets/styles/assignment';
+@import '../assets/styles/assignmentCard';
+@import '../assets/styles/courseCard';
+@import '../assets/styles/footer';
+@import '../assets/styles/modal';
+@import '../assets/styles/navbar';
+@import '../assets/styles/problemCard';
 /* endinject */

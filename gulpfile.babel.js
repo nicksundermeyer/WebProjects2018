@@ -137,7 +137,7 @@ let transpileServer = lazypipe()
 let mocha = lazypipe()
     .pipe(plugins.mocha, {
         reporter: 'spec',
-        timeout: 5000,
+        timeout: 50000,
         require: [
             './mocha.conf'
         ]
@@ -473,6 +473,7 @@ gulp.task('build', cb => {
         'revReplaceWebpack',
         cb);
 });
+gulp.task('default', ['build']);
 
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], {dot: true}));
 

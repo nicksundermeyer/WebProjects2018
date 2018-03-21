@@ -28,8 +28,8 @@ export default class SignupController {
         password: this.user.password
       })
         .then(() => {
-          // Account created, redirect to home
-          this.$location.path('/');
+          // Account created, redirect
+          this.$location.path('/student/course');
         })
         .catch(err => {
           err = err.data;

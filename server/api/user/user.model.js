@@ -4,6 +4,8 @@ import crypto from 'crypto';
 mongoose.Promise = require('bluebird');
 import mongoose, {Schema} from 'mongoose';
 import {registerEvents} from './user.events';
+import shared from './../../config/environment/shared';
+//import TailoredCourse from '../course/tailoredCourse.model';
 
 var UserSchema = new Schema({
   name: String,
@@ -13,15 +15,25 @@ var UserSchema = new Schema({
     required: true
   },
   role: {
-    type: String,
-    default: 'user'
+    //Role hierarchy: guest < user < student < teacher < researcher < admin
+    type: String, enum: shared.userRoles,
+    default: 'student'
   },
   password: {
     type: String,
     required: true
   },
+
+
   provider: String,
-  salt: String
+  salt: String,
+
+}, {
+  usePushEach: true,
+  //timestamps in mongoose automatically adds
+  //createdAt and updatedAt fields with the type Date
+  //for audit purposed in our case
+  timestamps: true
 });
 
 /**
