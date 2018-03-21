@@ -30,9 +30,15 @@ var AbstractCourseSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'AbstractAssignment',
     default: null
-  }]
+  }],
 
-}, { usePushEach: true });
+}, {
+  usePushEach: true,
+  //timestamps in mongoose automatically adds
+  //createdAt and updatedAt fields with the type Date
+  //for audit purposed in our case
+  timestamps: true
+});
 
 
 registerEvents(AbstractCourseSchema);

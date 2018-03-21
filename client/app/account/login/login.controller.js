@@ -13,9 +13,10 @@ export default class LoginController {
 
 
   /*@ngInject*/
-  constructor(Auth, $location) {
+  constructor(Auth, $location, UserServ) {
     this.Auth = Auth;
     this.$location = $location;
+    this.UserServ = UserServ;
   }
 
   login(form) {
@@ -27,8 +28,25 @@ export default class LoginController {
         password: this.user.password
       })
         .then(() => {
-          // Logged in, redirect to home
-          this.$location.path('/');
+          // Logged in, redirect
+          this.Auth.getCurrentUser()
+            .then(user => {
+              this.UserServ.getUsersCourses(user._id)
+                .then(courses => {
+                  if(courses.data.length > 0) {
+                    this.$location.path('/student');
+                  }
+                  else {
+                    this.$location.path('/student/course');
+                  }
+                })
+                .catch(() => {
+                  this.$location.path('/');
+                });
+            })
+            .catch(() => {
+              this.$location.path('/');
+            });
         })
         .catch(err => {
           this.errors.login = err.message;

@@ -1,7 +1,8 @@
 $icon-font-path: '/assets/fonts/bootstrap/';
-@import 'variables';
-@import 'custom';
+@import '../assets/styles/variables';
+@import '../assets/styles/custom';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
 $fa-font-path: '/assets/fonts/font-awesome/';
 @import '~font-awesome/scss/font-awesome';
 
@@ -25,19 +26,20 @@ html {
 
 // Component styles are injected through gulp
 /* inject:scss */
-@import 'custom';
-@import 'variables';
-@import 'about/about';
-@import 'admin/admin';
-@import 'font';
-@import 'main/main';
-@import 'student/course/course';
-@import 'student/student';
-@import 'teacher/teacher';
-@import '../components/assignmentCard/assignmentCard';
-@import '../components/courseCard/courseCard';
-@import '../components/footer/footer';
-@import '../components/modal/modal';
-@import '../components/navbar/navbar';
-@import '../components/problemCard/problemCard';
+@import '../assets/styles/custom';
+@import '../assets/styles/variables';
+@import '../assets/styles/about';
+@import '../assets/styles/admin';
+@import '../assets/styles/font';
+@import '../assets/styles/main';
+@import '../assets/styles/course';
+@import '../assets/styles/student';
+@import '../assets/styles/teacher';
+@import '../assets/styles/assignment';
+@import '../assets/styles/assignmentCard';
+@import '../assets/styles/courseCard';
+@import '../assets/styles/footer';
+@import '../assets/styles/modal';
+@import '../assets/styles/navbar';
+@import '../assets/styles/problemCard';
 /* endinject */

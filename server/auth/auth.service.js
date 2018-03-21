@@ -101,6 +101,37 @@ export function hasPermission(roleRequired) {
     });
 }
 
+export function hasPermissionToEnroll(roleRequired) {
+  if(!roleRequired) {
+    throw new Error('Required role needs to be set');
+  }
+
+  return compose()
+    .use(isAuthenticated())
+    .use(function meetsRequirements(req, res, next) {
+      //grab the course in question
+      return AbstractCourse.findById(req.params.id).exec()
+        .then(course => {
+        //if the course actually exists
+        if(course) {
+          //if the role of the current user is bigger than the role required
+          //or the current user is the teacher assigned to the course, success
+          //otherwise forbid access
+          if(config.userRoles.indexOf(req.user.role) > config.userRoles.indexOf(roleRequired) || course.teacherID.equals(req.user._id) || req.params.studentID == req.user._id) {
+            next();
+            return req;
+          } else {
+            return res.status(403).send('Forbidden');
+          }
+        } else {
+          //if the course does not exists or was just deleted
+          return res.status(404).end();
+    }
+    })
+    .catch(err => next(err));
+    });
+}
+
 
 /**
  * Returns a jwt token signed by the app secret

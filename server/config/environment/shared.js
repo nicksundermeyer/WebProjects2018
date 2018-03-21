@@ -49,19 +49,69 @@ allCategories = arrayUnique(allCategories);
 var aboutData = {
   contributors: [
     {
+      name: 'Dr. Daniel Pittman',
+      email: 'daniel.pittman@du.edu',
+      bio: 'Instructor and Scrum Master',
+      image: 'http://www.example.com/route/to/image'
+    }, {
       name: 'Evan Hicks',
       email: 'evan.hicks@du.edu',
-      bio: 'Evan was the lead developer on the UI side of the project.',
+      bio: 'UI Team Lead Developer',
       image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Wei Cheng',
+      email: 'wei.cheng@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
     }, {
       name: 'Josh Hoeg',
       email: 'josh.hoeg@du.edu',
-      bio: 'Josh was another lead developer on the UI team for this project.',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Amy Karlzen',
+      email: 'amy.karlzen@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Shivani Punde',
+      email: 'shivani.punde@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Jesse Ruder-Hook',
+      email: 'jesse.ruder-hook@du.edu',
+      bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
       name: 'Joseph Wainwright',
       email: 'joseph.wainwright@du.edu',
-      bio: 'This is a biography about Joseph, one of the developers on the UI Team.',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Justin Martz',
+      email: 'justin.martz@du.edu',
+      bio: 'Server Team Lead Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Zachary Burmeister',
+      email: 'zachary.burmeister@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Simao Nziaka',
+      email: 'simao.nziaka@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Michael Stephens',
+      email: 'michael.stephens@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Anh Tran',
+      email: 'anh.tran@du.edu',
+      bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
     }
   ],

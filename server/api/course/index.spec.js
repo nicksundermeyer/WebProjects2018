@@ -19,8 +19,11 @@ var authServiceStub = {
   hasRole(role) {
     return `authService.hasRole.${role}`;
   },
-  hasPermission(role){
+  hasPermission(role) {
     return `authService.hasPermission.${role}`;
+  },
+  hasPermissionToEnroll(role) {
+    return `authService.hasPermissionToEnroll.${role}`;
   }
 };
 
@@ -31,8 +34,7 @@ var CourseCtrlStub = {
   update: 'CourseCtrl.update',
   destroy: 'CourseCtrl.destroy',
   submitSolution: 'CourseCtrl.submitSolution',
-  getTailoredCourse: 'CourseCtrl.getTailoredCourse',
-  enrollStudentInCourse: 'CourseCtrl.enrollStudentInCourse'
+  getProblem: 'CourseCtrl.getProblem'
 };
 
 // require the index with our stubbed out modules
@@ -50,6 +52,7 @@ describe('Course API Router:', function() {
   it('should return an express router instance', function() {
     expect(courseIndex).to.equal(routerStub);
   });
+
   describe('GET api/courses', function() {
     it('should route to course.controller.index', function() {
       expect(routerStub.get
@@ -79,7 +82,7 @@ describe('Course API Router:', function() {
       expect(routerStub.delete
         .withArgs('/:id', 'authService.hasPermission.teacher', 'CourseCtrl.destroy')
       ).to.have.been.calledOnce;
-  });
+    });
   });
 
   describe('PUT /api/courses/:id', function() {
@@ -90,31 +93,23 @@ describe('Course API Router:', function() {
     });
   });
 
-  describe('POST /api/courses/:course/assignments/:assignment/problems/:problem',
+  describe('POST /api/courses/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
   function() {
     it('should route to course.controller.submitSolution', function() {
       expect(routerStub.post
-        .withArgs('/:course/assignments/:assignment/problems/:problem',
+        .withArgs('/:courseId/students/:studentId/assignments/:assignmentId/problems/:problemId',
           'authService.hasRole.student',
           'CourseCtrl.submitSolution')
       ).to.have.been.calledOnce;
     });
   });
 
-  describe('GET /api/courses/mycourses/:id', function() {
-    it('should route to course.controller.getTailoredCourse', function() {
+  describe('POST /api/courses/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', function() {
+    it('should route to course.controller.getProblem', function() {
       expect(routerStub.get
-        .withArgs('/:courseID/students/:studentID', 'authService.hasRole.student',
-        'CourseCtrl.getTailoredCourse')
-      ).to.have.been.calledOnce;
-    });
-  });
-
-  describe('POST /api/courses/:id/students', function() {
-    it('should route to course.controller.enrollStudentInCourse', function() {
-      expect(routerStub.post
-        .withArgs('/:id/students', 'authService.hasRole.student',
-        'CourseCtrl.enrollStudentInCourse')
+        .withArgs('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid',
+         'authService.hasRole.student',
+        'CourseCtrl.getProblem')
       ).to.have.been.calledOnce;
     });
   });

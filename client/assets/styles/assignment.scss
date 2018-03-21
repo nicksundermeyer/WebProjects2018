@@ -1,0 +1,33 @@
+.left-nav {
+  background-color: $black;
+}
+.left-nav-item {
+  background-color: $dark-grey;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 20px;
+}
+
+.left-nav-header {
+  background-color: $black;
+  color: $white;
+}
+
+.nav-button-container {
+  position: absolute;
+  bottom: 10px;
+}
+
+.nav-button-number {
+  margin: 5px;
+}
+
+.left-button {
+  background-color: $orange;
+  color: $white;
+}
+
+.right-button {
+  background-color: $orange;
+  color: $white;
+}
