@@ -166,13 +166,19 @@ export function submitSolution(req, res) {
         return res.json(tailoredCourse).status(200)
           .end();
       } else {
-        return res.status(404).json({message: 'Tailored course not found'})
-          .end();
+        return Promise.reject('Tailored course not found');
+
       }
     })
     .catch(err => {
-      res.json(err);
-      return res.status(404).end();
+      if(err.includes('not found')){
+        res.status(404).json({message: err.toString())
+          .end();
+      }
+      else{
+        res.json(err);
+        return res.status(404).end();
+      }
     });
 }
 
@@ -255,10 +261,15 @@ export function enrollStudentInCourse(req, res) {
             }
           })
           .catch(function() {
+            return Promise.reject('Invalid Course ID: ');
+          });
+        }}).catch(function(err) {
+          if(err.includes("Course")){
             return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
-          });}}).catch(function() {
-            return res.json('invalid student ID').status(400).end();
-          });}
+          }else{
+            return res.json('Invalid Student ID').status(400).end();
+          }
+        });}
 
 
 /**
