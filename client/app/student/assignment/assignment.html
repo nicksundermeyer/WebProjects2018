@@ -27,8 +27,8 @@
                     myuserid="assignmentController.userId"
                     myproblemid="assignmentController.problemId"
                     ischanged="assignmentController.isChanged"></problem-card>
-      <div class = "nav-button-container col-xl-offset-5 col-xl-6 col-lg-offset-5 col-lg-6 col-md-offset-5 col-md-6 col-sm-offset-5 col-sm-6 col-xs-offset-4 col-xs-6">
-        <div class = "row">
+      <div class = "nav-button-container">
+        <div class = "row col-xl-offset-5 col-xl-6 col-lg-offset-5 col-lg-6 col-md-offset-5 col-md-6 col-sm-offset-5 col-sm-6 col-xs-offset-4 col-xs-6">
           <button ng-click="assignmentController.left()" class="btn left-button"><i class="glyphicon glyphicon-menu-left"></i></button>
           <h3 class="nav-button-number">{{assignmentController.selectedProblem.number + 1}}</h3>
           <button ng-click="assignmentController.right()" class="btn right-button"><i class="glyphicon glyphicon-menu-right"></i></button>
