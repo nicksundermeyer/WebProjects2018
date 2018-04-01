@@ -177,59 +177,40 @@ export function submitSolution(req, res) {
 }
 
 export function getTailoredCourse(req, res, allowSolutions) {
+  var options=  {
+    path: 'assignments',
+    populate: {
+      path: 'AbstractAssignmentId',
+      model: 'AbstractAssignment',
+      select: 'title description'
+    }
+  };
   if(allowSolutions)
   {
+    options.select='-problems.problem.solution';
+  };
     return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
       studentID: req.params.studentID })
       .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
+      .populate(options)
       .exec()
       .then(tc => {
         if(tc) {
           return res.json(tc).status(200);
         } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
+          return Promise.reject('Tailored course not found');
         }
       })
       .catch(err => {
         console.log(err);
-        return res.status(404).end();
-      });
-  } else {
-    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-      studentID: req.params.studentID })
-      .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
-      .exec()
-      .then(tc => {
-        if(tc) {
-          return res.json(tc).status(200);
+        if(err.includes('not found')){}
+          res.status(404).json({message: err.toString()})
+          .end();
         } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
+          return res.status(404).end();
         }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(404).end();
       });
-  }
+
 
 }
 
