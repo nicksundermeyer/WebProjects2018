@@ -172,7 +172,7 @@ export function submitSolution(req, res) {
     })
     .catch(err => {
       if(err.includes('not found')){
-        res.status(404).json({message: err.toString())
+        res.status(404).json({message: err.toString()})
           .end();
       }
       else{
@@ -264,7 +264,7 @@ export function enrollStudentInCourse(req, res) {
             return Promise.reject('Invalid Course ID: ');
           });
         }}).catch(function(err) {
-          if(err.includes("Course")){
+          if(err.includes("Invalid Course")){
             return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
           }else{
             return res.json('Invalid Student ID').status(400).end();
@@ -428,62 +428,38 @@ function addProblems(course, databaseProblems, additionalProblems) {
 
 
 export function getTailoredAssignment(req, res, allowSolutions) {
+  var options = {
+    path: 'assignments',
+  };
 
-  if(allowSolutions)
-  {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
-  } else {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution'
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
+  if(allowSolutions){
+    options.select = '-problems.problem.solution';
   }
 
+    // get tailored course
+    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+      .populate(options)
+      .exec()
+      .then(function(tailoredCourse) {
+        if(tailoredCourse) {
+          let assignment = tailoredCourse.assignments.find(asmt =>
+          asmt.AbstractAssignmentId == req.params.assignmentid);
+          if(assignment) {
+            return res.status(200).json(assignment);
+          } else {
+            return res.status(204).end();
+          }
+        } else {
+          return res.status(204).end();
+        }
+      })
+      //Print errors
+      .catch(function(err) {
+        res.send(err);
+        return res.status(404).end();
+      });
 }
+
 
 export function getProblem(req, res) {
   // get tailored course
