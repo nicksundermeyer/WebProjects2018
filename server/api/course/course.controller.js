@@ -209,7 +209,7 @@ export function getTailoredCourse(req, res, allowSolutions) {
       })
       .catch(err => {
         console.log(err);
-        if(err.includes('not found')){}
+        if(err.includes('not found')){
           res.status(404).json({message: err.toString()})
           .end();
         } else {
