@@ -47,12 +47,12 @@ export default function seedDatabaseIfNeeded() {
           Problem.find({}).remove()
             .then(() => {
               problemController.create({
-                'protocol': 'dpg',
-                'version': '0.1',
-                'problem': {
-                  'subject': subject.subject,
+                protocol: 'dpg',
+                version: '0.1',
+                problem: {
+                  subject: subject.subject,
                   category,
-                  'depth': 1
+                  depth: 1
                 }
               }).catch(erro => {
                 console.log(erro);
@@ -84,8 +84,8 @@ function createAbstractCourses(teacher) {
             categories: [category],
             teacherID: teacher._id
 
-          }).then(createdCourse => {
-            return AbstractAssignment.create({
+          }).then(createdCourse =>
+            AbstractAssignment.create({
               title: 'Assignment 1',
               description: 'This focuses on ' + category + ' operations',
               minNumProblems: 5,
@@ -96,8 +96,8 @@ function createAbstractCourses(teacher) {
               createdCourse.save();
               console.log('finished populating Abstract Courses');
               return createTailoredCourse(createdCourse);
-            });
-          })
+            })
+          )
           .catch(err => console.log('error populating Abstract Courses', err));
         });
     }//end for of.
@@ -128,8 +128,8 @@ function addAssignmentsToTailoredCourse(abstractCourse, tailoredCourse) {
 
 function createTailoredCourse(abstractCourse) {
   return TailoredCourse.find({}).remove()
-    .then(() => {
-      return TailoredCourse.create({
+    .then(() =>
+      TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,
@@ -139,6 +139,5 @@ function createTailoredCourse(abstractCourse) {
         return tc;
       })
       .then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
-      .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err));
-    });
-}//end create Tailored Course
+      .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err)));
+}

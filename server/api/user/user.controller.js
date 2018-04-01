@@ -26,20 +26,15 @@ function handleError(res, statusCode) {
  */
 export function index(req, res) {
   return User.find({}, '-salt -password').exec()
-    .then(users => {
-      return res.status(200).json(users);
-    })
+    .then(users => res.status(200).json(users)
+    )
     .catch(handleError(res));
 }
 
 export function getUsersCourses(req, res) {
   TailoredCourse.find({ studentID: req.params.id}, '-studentID').populate({path: 'abstractCourseID', select: 'name description _id'})
     .exec()
-    .then(tc => {
-      return res.json(tc).status(200);
-    }).catch(() => {
-    return res.status(404);
-  });
+    .then(tc => res.json(tc).status(200)).catch(() => res.status(404));
 }
 
 /**

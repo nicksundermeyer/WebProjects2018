@@ -115,15 +115,17 @@ var aboutData = {
       image: 'http://www.example.com/path/to/image'
     }
   ],
-  description: 'This project was developed as part of Dr. Daniel Pittman\'s Web Development Projects course in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive web application for Dr. GauthierDickey\'s research into problem creation and generation for educational purposes.'
+  description: 'This project was developed as part of Dr. Daniel Pittman\'s Web Development Projects course '
+  + 'in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive '
+  + 'web application for Dr. GauthierDickey\'s research into problem creation and generation for educational purposes.'
 };
 
 exports = module.exports = {
   problemEngineUrl: 'https://problem-engine.herokuapp.com/problems',
   // List of user roles
   userRoles: ['guest', 'user', 'student', 'teacher', 'researcher', 'admin'],
-  subjects: subjects,
-  allCategories: allCategories,
-  allSubjects: allSubjects,
-  aboutData: aboutData
+  subjects,
+  allCategories,
+  allSubjects,
+  aboutData
 };

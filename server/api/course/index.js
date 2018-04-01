@@ -23,7 +23,6 @@ router.get('/:courseid/students/:studentid/assignments/:assignmentid', auth.hasR
 router.get('/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid', auth.hasRole('student'), controller.getProblem);
 // get tailored course with the abstract course id and student id
 router.get('/:courseID/students/:studentID', auth.hasRole('student'), function(req, res) {
-
   if(config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('teacher')) {
     controller.getTailoredCourse(req, res, true);
   } else {

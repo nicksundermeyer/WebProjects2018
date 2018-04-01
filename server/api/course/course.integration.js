@@ -58,7 +58,7 @@ describe('Course API:', function() {
         .expect(200)
         .expect('Content-type', 'application/json; charset=utf-8')
         .end((err, res) => {
-          if (err) {
+          if(err) {
             return done(err);
           }
           getCourses = res.body;
