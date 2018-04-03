@@ -13,7 +13,7 @@ var genUser = function() {
 };
 
 describe('User Model', function() {
-  beforeAll(function() {
+  before(function() {
     // Clear users before testing
     return User.remove();
   });

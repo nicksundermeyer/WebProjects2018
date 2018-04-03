@@ -33,6 +33,8 @@ export class ProblemCardComponent {
     this.$routeParams = $routeParams;
     this.attIsCorrect = false;
 
+
+    /*$watch is checking if newVal is true then load virtual machine */
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
       if(newVal) {
         vm.load();
@@ -66,6 +68,7 @@ export class ProblemCardComponent {
     console.log(this.remainingAttempts);
   }
 
+  /*Try and Catch to see if parsing and rendering works ok*/
   updateDisplay() {
     //console.log(this.attIsCorrect); not sure why this doesn't work
     try {
