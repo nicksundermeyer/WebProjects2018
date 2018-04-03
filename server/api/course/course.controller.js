@@ -166,70 +166,57 @@ export function submitSolution(req, res) {
         return res.json(tailoredCourse).status(200)
           .end();
       } else {
-        return res.status(404).json({message: 'Tailored course not found'})
-          .end();
+        return Promise.reject('Tailored course not found');
+
       }
     })
     .catch(err => {
-      res.json(err);
-      return res.status(404).end();
+      if(err.includes('not found')){
+        res.status(404).json({message: err.toString()})
+          .end();
+      }
+      else{
+        res.json(err);
+        return res.status(404).end();
+      }
     });
 }
 
 export function getTailoredCourse(req, res, allowSolutions) {
+  var options=  {
+    path: 'assignments',
+    populate: {
+      path: 'AbstractAssignmentId',
+      model: 'AbstractAssignment',
+      select: 'title description'
+    }
+  };
   if(allowSolutions)
   {
+    options.select='-problems.problem.solution';
+  };
     return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
       studentID: req.params.studentID })
       .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
+      .populate(options)
       .exec()
       .then(tc => {
         if(tc) {
           return res.json(tc).status(200);
         } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
+          return Promise.reject('Tailored course not found');
         }
       })
       .catch(err => {
         console.log(err);
-        return res.status(404).end();
-      });
-  } else {
-    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-      studentID: req.params.studentID })
-      .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
-      .exec()
-      .then(tc => {
-        if(tc) {
-          return res.json(tc).status(200);
+        if(err.includes('not found')){
+          res.status(404).json({message: err.toString()})
+          .end();
         } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
+          return res.status(404).end();
         }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(404).end();
       });
-  }
+
 
 }
 
@@ -274,10 +261,15 @@ export function enrollStudentInCourse(req, res) {
             }
           })
           .catch(function() {
+            return Promise.reject('Invalid Course ID: ');
+          });
+        }}).catch(function(err) {
+          if(err.includes("Invalid Course")){
             return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
-          });}}).catch(function() {
-            return res.json('invalid student ID').status(400).end();
-          });}
+          }else{
+            return res.json('Invalid Student ID').status(400).end();
+          }
+        });}
 
 
 /**
@@ -436,62 +428,38 @@ function addProblems(course, databaseProblems, additionalProblems) {
 
 
 export function getTailoredAssignment(req, res, allowSolutions) {
+  var options = {
+    path: 'assignments',
+  };
 
-  if(allowSolutions)
-  {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
-  } else {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution'
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
+  if(allowSolutions){
+    options.select = '-problems.problem.solution';
   }
 
+    // get tailored course
+    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+      .populate(options)
+      .exec()
+      .then(function(tailoredCourse) {
+        if(tailoredCourse) {
+          let assignment = tailoredCourse.assignments.find(asmt =>
+          asmt.AbstractAssignmentId == req.params.assignmentid);
+          if(assignment) {
+            return res.status(200).json(assignment);
+          } else {
+            return res.status(204).end();
+          }
+        } else {
+          return res.status(204).end();
+        }
+      })
+      //Print errors
+      .catch(function(err) {
+        res.send(err);
+        return res.status(404).end();
+      });
 }
+
 
 export function getProblem(req, res) {
   // get tailored course
