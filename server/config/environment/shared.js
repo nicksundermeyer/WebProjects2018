@@ -64,6 +64,16 @@ var aboutData = {
       bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
+      name: 'Dalton Crutchfield',
+      email: 'dalton.crutchfield@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Eitan Dunn',
+      email: 'eitan.dunn@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
       name: 'Josh Hoeg',
       email: 'josh.hoeg@du.edu',
       bio: 'UI Team Developer',
@@ -74,6 +84,11 @@ var aboutData = {
       bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
+      name: 'Grant Kochmann',
+      email: 'grant.kochmann@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
       name: 'Shivani Punde',
       email: 'shivani.punde@du.edu',
       bio: 'UI Team Developer',
@@ -83,6 +98,21 @@ var aboutData = {
       email: 'jesse.ruder-hook@du.edu',
       bio: 'UI Team Developer',
       image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Amarinder Singh Sidhu',
+      email: 'amarinder.sidhu@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Terese Specker',
+      email: 'terese.specker@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Nick Sundermeyer',
+      email: 'nicholas.sundermeyer@du.edu',
+      bio: 'UI Team Developer',
+      image: 'http://www.example.com/route/to/image'
     }, {
       name: 'Joseph Wainwright',
       email: 'joseph.wainwright@du.edu',
@@ -99,10 +129,35 @@ var aboutData = {
       bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
     }, {
+      name: 'Madison Eaton',
+      email: 'madison.eaton@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Andres Espineira',
+      email: 'andres.espineira@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Tresdon Jones',
+      email: 'tresdon.jones@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
       name: 'Simao Nziaka',
       email: 'simao.nziaka@du.edu',
       bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Avery Sand',
+      email: 'avery.sand@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Tyler Stanley',
+      email: 'paul.stanley@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
     }, {
       name: 'Michael Stephens',
       email: 'michael.stephens@du.edu',
@@ -113,6 +168,16 @@ var aboutData = {
       email: 'anh.tran@du.edu',
       bio: 'Server Team Developer',
       image: 'http://www.example.com/path/to/image'
+    }, {
+      name: 'Peter Valesares',
+      email: 'peter.valesares@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
+    }, {
+      name: 'Kevin Zheng',
+      email: 'kevin.zheng@du.edu',
+      bio: 'Server Team Developer',
+      image: 'http://www.example.com/route/to/image'
     }
   ],
   description: 'This project was developed as part of Dr. Daniel Pittman\'s Web Development Projects course '
