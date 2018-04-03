@@ -11,8 +11,10 @@
   <!--<div class="text-box-problem">-->
   <input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
   <!--</div>-->
-  <div class="submit-button-problem">
-    <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo()" type="button" class="btn btn-primary" ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
+  <div class="submit-button-problem" ng-controller="AlertCtrl">
+    <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo();" type="button" class="btn btn-primary" ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
+    <button type="button" class='btn btn-default' ng-click="addAlert('danger', 'Test alert')">Add Alert</button>
+    <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
   </div>
   <br>
   <br>
@@ -21,6 +23,9 @@
   </div>
   <button class="btn btn-default button-toggler col-md-12 col-lg-4" ng-click="problemCardController.click('basic_operators_isClicked')"> Basic Operators </button>
   <button type="button" class="button-toggler btn btn-default col-md-12 col-lg-4" ng-click="problemCardController.click('constants_isClicked')"> Constants </button>
+    <div ng-controller="AlertCtrl">
+
+    </div>
   <button type="button" class="button-toggler btn btn-default col-md-12 col-lg-4" ng-click="problemCardController.click('logical_isClicked')"> Logical Connectives </button>
   <div class="operators-container" ng-show="problemCardController.basic_operators_isClicked">
 

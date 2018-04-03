@@ -38,14 +38,14 @@ import util from '../components/util/util.module';
 import courseService from '../services/course/course.module';
 import assignmentService from '../services/assignment/assignment.module';
 import userService from '../services/user/user.module';
-
+import alert from '../components/alert/alert.component';
 
 import './app.scss';
 
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
 
   account, admin, 'validation.match', courseService, assignmentService, userService, navbar, about, footer, assignment, course,
-  courseCard, assignmentCard, problemCard, problemConfirmationModal, courseDiscovery, typeahead, main, constants, util, student, teacher
+  courseCard, assignmentCard, problemCard, problemConfirmationModal, courseDiscovery, typeahead, main, constants, util, student, teacher, alert
 ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

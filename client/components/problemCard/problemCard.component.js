@@ -103,6 +103,8 @@ export class ProblemCardComponent {
             if(res.data.result === 'success') {
               //this.attIsCorrect = true; //not working?
               document.getElementById('text-box-problem').style.color = 'green';
+              
+              
             } else{
               document.getElementById('text-box-problem').style.color = 'red';
             }
