@@ -11,7 +11,6 @@ export class AssignmentController {
   problemObjects;
   userId;
   problemId;
-  mobile = false;
   isChanged;
 
   /*@ngInject*/
@@ -24,10 +23,6 @@ export class AssignmentController {
   }
 
   $onInit() {
-    if(window.screen.width <= 360) { // 768px portrait
-      this.mobile = true;
-    }
-
     this.Auth.getCurrentUser()
       .then(user => {
         this.Assignment.getAssignmentInfo(this.$routeParams.courseId, user._id, this.$routeParams.assignmentId)
