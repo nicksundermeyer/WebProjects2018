@@ -4,7 +4,7 @@ import student from './student.component';
 import {
   StudentController
 } from './student.component';
-
+//this creates the component StudentComponent by running it through the beforeEach function on the student
 describe('Component: StudentComponent', function() {
   beforeEach(angular.mock.module(student));
 
@@ -12,7 +12,7 @@ describe('Component: StudentComponent', function() {
   var studentComponent;
   var $httpBackend;
 
-  // Initialize the controller and a mock scope
+  // Initialize the controller and scope
   beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope) {
     $httpBackend = _$httpBackend_;
     $httpBackend.expectGET('/api/things')
