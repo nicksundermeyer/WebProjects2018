@@ -245,7 +245,7 @@ export function enrollStudentInCourse(req, res) {
                     }
                   })
                   .then(tcNoSolutions => {
-                    res.json(tcNoSolutions).status(201);
+                    return res.json(tcNoSolutions).status(201);
                   });
               });
             } else {
@@ -336,15 +336,15 @@ function generateAssignmentsWith(course, assignment) {
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
         //fetching existing problems there is a possibility that a newly generated problem would be fetched
         //as an existing problems and there could be duplicate problems.
-        addProblems(course, results, numberOfNew)
+        return addProblems(course, results, numberOfNew)
           .then(newProblems => {
-            results.concat(newProblems);
+            return results.concat(newProblems);
           });
       }).then(promises => {
         //Create new assignment populated with appropriate fields and our final array of problems
         //Promises becomes finalProblems, which we then save in the assignment.
 
-        Promise.all(promises).then(finalProblems => {
+        return Promise.all(promises).then(finalProblems => {
           TailoredAssignment.create({
             AbstractAssignmentId: assign._id,
             problems: finalProblems
