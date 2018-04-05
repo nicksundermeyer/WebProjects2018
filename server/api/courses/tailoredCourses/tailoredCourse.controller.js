@@ -1,7 +1,7 @@
 'use strict';
 
 import AbstractCourse from './../abstractCourses/abstractCourse.model';
-import * as problemController from './../problem/problem.controller';
+import * as problemController from './../problems/problem.controller';
 import shared from './../../config/environment/shared';
 import AbstractAssignment from './../abstractCourses/abstractAssignment.model';
 import TailoredAssignment from './tailoredAssignment.model';

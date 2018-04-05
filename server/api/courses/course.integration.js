@@ -2,7 +2,7 @@
 
 /* globals describe, expect, it, beforeEach, afterEach, before */
 
-import User from '../user/user.model';
+import User from '../users/user.model';
 
 var app = require('../..');
 import request from 'supertest';
@@ -114,4 +114,3 @@ describe('Course API:', function() {
     });
   });
 });
-

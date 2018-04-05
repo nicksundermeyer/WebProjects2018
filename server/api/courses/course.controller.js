@@ -1,11 +1,11 @@
 'use strict';
 
-import AbstractCourse from './abstractCourse.model';
-import * as problemController from '../problem/problem.controller';
+import AbstractCourse from './abstractCourses/abstractCourse.model';
+import * as problemController from './problems/problem.controller';
 import shared from './../../config/environment/shared';
-import AbstractAssignment from './abstractAssignment.model';
-import TailoredAssignment from './tailoredAssignment.model';
-import Problem from '../problem/problem.model';
+import AbstractAssignment from './abstractCourses/abstractAssignment.model';
+import TailoredAssignment from './tailoredCourses/tailoredAssignment.model';
+import Problem from '../problems/problem.model';
 import TailoredCourse from './tailoredCourse.model';
 import User from '../user/user.model';
 import KAS from 'kas/kas';
