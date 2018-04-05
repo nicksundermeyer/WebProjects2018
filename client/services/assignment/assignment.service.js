@@ -1,6 +1,7 @@
 
 export function AssignmentService($http) {
   'ngInject';
+  //create assignments returning courses,courseId,studentid,assignmentid
   var Assignment = {
 
     getAssignmentInfo(courseId, studentId, assignmentId) {
@@ -15,6 +16,7 @@ export function AssignmentService($http) {
         }
       };
     },
+    //Gives info about the problem
     getProblemInfo(courseId, studentId, assignmentId, problemId) {
       return $http.get('/api/courses/' + courseId + '/students/' + studentId + '/assignments/' + assignmentId + '/problems/' + problemId);
     }

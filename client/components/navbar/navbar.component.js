@@ -10,7 +10,7 @@ export class NavbarComponent {
   }];
 
   isCollapsed = true;
-
+//initialize variables
   constructor($location, Auth) {
     'ngInject';
 
@@ -21,7 +21,7 @@ export class NavbarComponent {
     this.isTeacher = Auth.isTeacherSync;
     this.getCurrentUser = Auth.getCurrentUserSync;
   }
-
+//if active return path
   isActive(route) {
     return route === this.$location.path();
   }
