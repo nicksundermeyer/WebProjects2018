@@ -4,7 +4,12 @@
  */
 
 'use strict';
+<<<<<<< HEAD
 //
+=======
+console.log("seed.js 7");
+
+>>>>>>> 78bc1478bc2775bb5885b13e19b235e47bd45df3
 import User from '../api/users/user.model';
 
 

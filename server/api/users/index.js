@@ -1,4 +1,8 @@
 'use strict';
+<<<<<<< HEAD
+=======
+console.log('users index.js');
+>>>>>>> 78bc1478bc2775bb5885b13e19b235e47bd45df3
 import {Router} from 'express';
 import * as controller from './user.controller';
 import * as auth from '../../auth/auth.service';

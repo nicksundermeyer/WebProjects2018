@@ -1,5 +1,5 @@
 'use strict';
-
+//creates the AdminController class and the constructore/delete functions
 export default class AdminController {
   /*@ngInject*/
   constructor(User) {

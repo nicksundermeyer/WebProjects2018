@@ -1,8 +1,8 @@
 'use strict';
-
+//exports the function to get the route and imports the $routeProvider into the route function
 export default function routes($routeProvider) {
   'ngInject';
-
+  //sets the route providers corresponding controllers and templates
   $routeProvider.when('/login', {
     template: require('./login/login.html'),
     controller: 'LoginController',

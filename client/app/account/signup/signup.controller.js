@@ -1,7 +1,7 @@
 'use strict';
 
 import angular from 'angular';
-
+//creates the default signup controller
 export default class SignupController {
   user = {
     name: '',
@@ -11,17 +11,17 @@ export default class SignupController {
   errors = {};
   submitted = false;
 
-
   /*@ngInject*/
   constructor(Auth, $location) {
     this.Auth = Auth;
     this.$location = $location;
   }
-
+  //Submits the signup form
   register(form) {
     this.submitted = true;
-
+    //makes sure the form is valid
     if(form.$valid) {
+      //returns the created user
       return this.Auth.createUser({
         name: this.user.name,
         email: this.user.email,

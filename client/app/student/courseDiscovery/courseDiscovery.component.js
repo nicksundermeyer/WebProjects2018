@@ -1,7 +1,7 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
 import routing from '../student.routes';
-
+//this class allows users to discover new courses
 export class CourseDiscoveryController {
 
   courses = [];
@@ -49,7 +49,7 @@ export class CourseDiscoveryController {
   deleteThing(thing) {
     this.$http.delete(`/api/things/${thing._id}`);
   }
-
+  //this filters courses based on the search input by comparing it to
   filterCourse(search) {
     this.selectedCourses = this.courses;
     let filteredCourses = this.selectedCourses.filter(course => {
