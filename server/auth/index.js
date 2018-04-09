@@ -1,4 +1,5 @@
 'use strict';
+
 import express from 'express';
 import config from '../config/environment';
 import User from '../api/users/user.model';

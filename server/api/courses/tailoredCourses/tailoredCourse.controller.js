@@ -2,12 +2,12 @@
 
 import AbstractCourse from './../abstractCourses/abstractCourse.model';
 import * as problemController from './../problems/problem.controller';
-import shared from './../../config/environment/shared';
+import shared from './../../../config/environment/shared';
 import AbstractAssignment from './../abstractCourses/abstractAssignment.model';
 import TailoredAssignment from './tailoredAssignment.model';
 import Problem from './../problems/problem.model';
 import TailoredCourse from './tailoredCourse.model';
-import User from './../users/user.model';
+import User from './../../users/user.model';
 import KAS from 'kas/kas';
 var MathLex = require('mathlex_server_friendly');
 

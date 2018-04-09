@@ -4,14 +4,23 @@
  */
 
 'use strict';
+//
 import User from '../api/users/user.model';
+
+
 import AbstractCourse from '../api/courses/abstractCourses/abstractCourse.model';
 import TailoredCourse from '../api/courses/tailoredCourses/tailoredCourse.model';
+
 import AbstractAssignment from '../api/courses/abstractCourses/abstractAssignment.model';
+
 import TailoredAssignment from '../api/courses/tailoredCourses/tailoredAssignment.model';
+
 import config from './environment/';
+
 import shared from './environment/shared';
+
 import Problem from '../api/courses/problems/problem.model';
+
 import * as problemController from '../api/courses/problems/problem.controller';
 
 export default function seedDatabaseIfNeeded() {
