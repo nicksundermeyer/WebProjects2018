@@ -1,6 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
+console.log("we get here somehow");
 var AbstractAssignment = new Schema({
 
   title: {
