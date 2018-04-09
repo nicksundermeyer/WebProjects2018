@@ -3,6 +3,7 @@
  */
 
 'use strict';
+console.log("express.js 6");
 
 import express from 'express';
 import favicon from 'serve-favicon';

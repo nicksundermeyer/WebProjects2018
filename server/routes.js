@@ -3,6 +3,7 @@
  */
 
 'use strict';
+console.log("routes.js line 6");
 
 import errors from './components/errors';
 import path from 'path';

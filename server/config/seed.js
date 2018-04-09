@@ -4,6 +4,8 @@
  */
 
 'use strict';
+console.log("seed.js 7");
+
 import User from '../api/users/user.model';
 import AbstractCourse from '../api/courses/abstractCourses/abstractCourse.model';
 import TailoredCourse from '../api/courses/tailoredCourses/tailoredCourse.model';
