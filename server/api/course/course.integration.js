@@ -107,11 +107,12 @@ describe('Course API:', function() {
       expect(newCourse.subjects).to.equal('booleanLogic');
       expect(newCourse.categories).to.equal('or');
       //expect(newCourse.assignments[0].title).to.equal('assignment 1');
-      // expect(newCourse.assignment.description).to.equal('find trees');
-      // expect(newCourse.assignment.minNumProblems).to.equal(5);
+      //expect(newCourse.assignment.description).to.equal('find trees');
+      //expect(newCourse.assignment.minNumProblems).to.equal(5);
       // expect(newCourse.assignment.maxNumProblems).to.equal(10);
       // expect(newCourse.assignment.newProblemPercentage).to.equal(17);
     });
+  });
   });
 });
 
