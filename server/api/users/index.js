@@ -1,5 +1,5 @@
 'use strict';
-
+console.log('users index.js');
 import {Router} from 'express';
 import * as controller from './user.controller';
 import * as auth from '../../auth/auth.service';

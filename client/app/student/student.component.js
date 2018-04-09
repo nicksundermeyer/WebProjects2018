@@ -2,7 +2,7 @@ import angular from 'angular';
 import gravatar from 'gravatar';
 const ngRoute = require('angular-route');
 import routing from './student.routes';
-
+//This class gets the student's course information and other student information
 export class StudentController {
 
   courses = [];
@@ -22,7 +22,7 @@ export class StudentController {
       .then(student => {
         //the gravatar implementation should build a url from the email given from the student size 320 px
         this.gravatarUrl = gravatar.url(student.email, {s: '320', r: 'x', d: 'retro'});
-
+        //gets all the user course information
         this.UserServ.getUsersCourses(student._id)
           .then(response => {
             this.courses = [];
@@ -44,7 +44,7 @@ export class StudentController {
       });
   }
 }
-
+//this creates the default module for 'webProjectsApp.student' and takes the [ngRoute]
 export default angular.module('webProjectsApp.student', [ngRoute])
   .config(routing)
   .component('student', {

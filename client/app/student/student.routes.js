@@ -1,5 +1,5 @@
 'use strict';
-
+//this functions gets the routes from the student to the certain courses and assignments
 export default function routes($routeProvider) {
   'ngInject';
 

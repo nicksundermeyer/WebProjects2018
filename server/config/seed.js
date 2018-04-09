@@ -4,15 +4,17 @@
  */
 
 'use strict';
-import User from '../api/user/user.model';
-import AbstractCourse from '../api/course/abstractCourse.model';
-import TailoredCourse from '../api/course/tailoredCourse.model';
-import AbstractAssignment from '../api/course/abstractAssignment.model';
-import TailoredAssignment from '../api/course/tailoredAssignment.model';
+console.log("seed.js 7");
+
+import User from '../api/users/user.model';
+import AbstractCourse from '../api/courses/abstractCourses/abstractCourse.model';
+import TailoredCourse from '../api/courses/tailoredCourses/tailoredCourse.model';
+import AbstractAssignment from '../api/courses/abstractCourses/abstractAssignment.model';
+import TailoredAssignment from '../api/courses/tailoredCourses/tailoredAssignment.model';
 import config from './environment/';
 import shared from './environment/shared';
-import Problem from '../api/problem/problem.model';
-import * as problemController from '../api/problem/problem.controller';
+import Problem from '../api/courses/problems/problem.model';
+import * as problemController from '../api/courses/problems/problem.controller';
 
 export default function seedDatabaseIfNeeded() {
   if(config.seedDB) {
@@ -47,12 +49,12 @@ export default function seedDatabaseIfNeeded() {
           Problem.find({}).remove()
             .then(() => {
               problemController.create({
-                'protocol': 'dpg',
-                'version': '0.1',
-                'problem': {
-                  'subject': subject.subject,
+                protocol: 'dpg',
+                version: '0.1',
+                problem: {
+                  subject: subject.subject,
                   category,
-                  'depth': 1
+                  depth: 1
                 }
               }).catch(erro => {
                 console.log(erro);
@@ -82,8 +84,8 @@ function createAbstractCourses(teacher) {
             categories: [category],
             teacherID: teacher._id
 
-          }).then(createdCourse => {
-            return AbstractAssignment.create({
+          }).then(createdCourse =>
+            AbstractAssignment.create({
               title: 'Assignment 1',
               description: 'This focuses on ' + category + ' operations',
               minNumProblems: 5,
@@ -93,8 +95,8 @@ function createAbstractCourses(teacher) {
               createdCourse.assignments.push(newAssignment);
               createdCourse.save();
               return createTailoredCourse(createdCourse);
-            });
-          })
+            })
+          )
           .catch(err => console.log('error populating Abstract Courses', err));
         });
     }//end for of.
@@ -125,8 +127,8 @@ function addAssignmentsToTailoredCourse(abstractCourse, tailoredCourse) {
 
 function createTailoredCourse(abstractCourse) {
   return TailoredCourse.find({}).remove()
-    .then(() => {
-      return TailoredCourse.create({
+    .then(() =>
+      TailoredCourse.create({
         abstractCourseID: abstractCourse._id,
         studentID: null,
         subjects: abstractCourse.subjects,
@@ -135,6 +137,7 @@ function createTailoredCourse(abstractCourse) {
         addAssignmentsToTailoredCourse(abstractCourse, tc);
         return tc;
       })
+
       .catch(err => console.log('ERROR: error populating Tailored Courses based on Abstract Courses', err));
-    });
+    );
 }//end create Tailored Course

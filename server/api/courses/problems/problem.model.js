@@ -1,8 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './problem.events';
-
+ import {registerEvents} from './../course.events';
 var ProblemSchema = new Schema({
   protocol: {
     type: String,
