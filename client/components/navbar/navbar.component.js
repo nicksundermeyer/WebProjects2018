@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 'use strict';
 /* eslint no-sync: 0 */
 
@@ -9,19 +10,20 @@ export class NavbarComponent {
     link: '/'
   }];
 
-  isCollapsed = true;
-//initialize variables
+  isCollapsed = true;         //menu will collapse
+
+  /* initialize variables in the constructor*/
   constructor($location, Auth) {
     'ngInject';
 
     this.$location = $location;
-    this.isLoggedIn = Auth.isLoggedInSync;
-    this.isAdmin = Auth.isAdminSync;
-    this.isStudent = Auth.isStudentSync;
-    this.isTeacher = Auth.isTeacherSync;
-    this.getCurrentUser = Auth.getCurrentUserSync;
+    this.isLoggedIn = Auth.isLoggedInSync;    //see if logged in
+    this.isAdmin = Auth.isAdminSync;           //see if its admin
+    this.isStudent = Auth.isStudentSync;        //see if student
+    this.isTeacher = Auth.isTeacherSync;        //see if teacher
+    this.getCurrentUser = Auth.getCurrentUserSync; //get the current user
   }
-//if active return path
+  /* if route is active return path location */
   isActive(route) {
     return route === this.$location.path();
   }

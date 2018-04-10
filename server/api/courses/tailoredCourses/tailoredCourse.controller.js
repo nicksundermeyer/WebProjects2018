@@ -1,100 +1,16 @@
 'use strict';
 
-import AbstractCourse from './abstractCourse.model';
-import * as problemController from '../problem/problem.controller';
-import shared from './../../config/environment/shared';
-import AbstractAssignment from './abstractAssignment.model';
+import AbstractCourse from './../abstractCourses/abstractCourse.model';
+import * as problemController from './../problems/problem.controller';
+import shared from './../../../config/environment/shared';
+import AbstractAssignment from './../abstractCourses/abstractAssignment.model';
 import TailoredAssignment from './tailoredAssignment.model';
-import Problem from '../problem/problem.model';
+import Problem from './../problems/problem.model';
 import TailoredCourse from './tailoredCourse.model';
-import User from '../user/user.model';
-import kas from 'kas/kas';
+import User from './../../users/user.model';
+import KAS from 'kas/kas';
 var MathLex = require('mathlex_server_friendly');
 
-export function index(req, res) {
-  AbstractCourse.find()
-    .populate('assignments')
-    .exec()
-    .then(function(courses) {
-      return res.status(200).json(courses);
-    })
-    //Print errors
-    .catch(function(err) {
-      res.status(500);
-      res.send(err);
-    });
-}
-
-export function show(req, res) {
-  AbstractCourse.findById(req.params.id)
-    .populate('assignments')
-    .exec()
-    .then(function(course) {
-      //return an OK status and the course, if course exists
-      return res.status(200).json(course);
-    })
-    .catch(function(err) {
-      //if course does not exists return a not found status
-      res.send(err);
-      return res.status(404).end();
-    });
-}
-
-export function create(req, res) {
-  let course = req.body;
-  AbstractCourse.create(course)
-    .then(function(createdCourse) {
-      //any role higher than teacher
-      //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
-      //so id should not be just grabber from the current user
-      if(req.user.role === 'teacher') {
-        //set teacher id if current user is actually a teacher
-        createdCourse.teacherID = req.user._id;
-      }
-      createdCourse.save();
-      return res.status(201).json(createdCourse);
-    })
-    //Print errors
-    .catch(function(err) {
-      res.send(err);
-      return res.status(400).end();
-    });
-}
-
-export function update(req, res) {
-  AbstractCourse.findById(req.params.id).exec()
-    .then(course => {
-      if(course) {
-        //update these paths
-        course.name = req.body.name;
-        course.description = req.body.description;
-        //save course
-        course.save();
-        //return an OK status and the course
-        return res.status(200).send(course);
-      }
-    })
-    .catch(err => {
-      //otherwise return a not found status
-      res.send(err);
-      return res.status(404).end();
-    });
-}
-
-export function destroy(req, res) {
-  AbstractCourse.findById(req.params.id).exec()
-    .then(course => {
-      //if course found delete course. Permanently
-      course.remove();
-      //return a no content status
-      return res.status(204).end();
-    })
-    .catch(err => {
-      //return a not found status
-      res.send(err);
-      return res.status(404).end();
-    });
-}
 
 //********************************************************
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
@@ -122,18 +38,18 @@ export function submitSolution(req, res) {
                 // we need a number of attempts allowed for each problem
                 if(_problem.attempts.length < _problem.numberOfAllowedAttempts) {
                   _problem.attempts.push({
-                    'date': Date.now(),
-                    'attempt': req.body,
-                    'correct': null});
+                    date: Date.now(),
+                    attempt: req.body,
+                    correct: null});
 
-                  var sol_as_tree = _problem.problem.solution.math;
-                  var sol_as_latex = global.MathLex.render(sol_as_tree, 'latex');
+                  var solAsTree = _problem.problem.solution.math;
+                  var solAsLatex = MathLex.render(solAsTree, 'latex');
 
                   var att = req.body;
                   var expr1 = KAS.parse(att.latexSol).expr; //submitted answer
                   console.log(expr1.print());
 
-                  var expr2 = KAS.parse(sol_as_latex).expr; //stored solution
+                  var expr2 = KAS.parse(solAsLatex).expr; //stored solution
                   console.log(expr2.print());
 
                   if(KAS.compare(expr1, expr2).equal) {
@@ -153,7 +69,6 @@ export function submitSolution(req, res) {
 
             //save the changes made in the problem
             _assignment.save();
-          } else {
           }
           return _assignment;
         });
@@ -166,73 +81,53 @@ export function submitSolution(req, res) {
         return res.json(tailoredCourse).status(200)
           .end();
       } else {
-        return res.status(404).json({message: 'Tailored course not found'})
-          .end();
+        return Promise.reject('Tailored course not found');
       }
     })
     .catch(err => {
-      res.json(err);
-      return res.status(404).end();
-    });
+      if(typeof err == 'string' && err.includes('not found')) {
+        res.status(404).json({message: err.toString()})
+          .end();
+      } else {
+        res.json(err);
+        return res.status(404).end();
+      }});
 }
 
 export function getTailoredCourse(req, res, allowSolutions) {
-  if(allowSolutions)
-  {
-    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-      studentID: req.params.studentID })
-      .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
-      .exec()
-      .then(tc => {
-        if(tc) {
-          return res.json(tc).status(200);
-        } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(404).end();
-      });
-  } else {
-    return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
-      studentID: req.params.studentID })
-      .populate({path: 'abstractCourseID', select: 'name description -_id'})
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution',
-        populate: {
-          path: 'AbstractAssignmentId',
-          model: 'AbstractAssignment',
-          select: 'title description'
-        }
-      })
-      .exec()
-      .then(tc => {
-        if(tc) {
-          return res.json(tc).status(200);
-        } else {
-          return res.status(404).json({message: 'Tailored course not found'})
-            .end();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(404).end();
-      });
+  var options = {
+    path: 'assignments',
+    populate: {
+      path: 'AbstractAssignmentId',
+      model: 'AbstractAssignment',
+      select: 'title description'
+    }
+  };
+  if(allowSolutions) {
+    options.select = '-problems.problem.solution';
   }
-
+  return TailoredCourse.findOne({abstractCourseID: req.params.courseID,
+      studentID: req.params.studentID })
+      .populate({path: 'abstractCourseID', select: 'name description -_id'})
+      .populate(options)
+      .exec()
+      .then(tc => {
+        if(tc) {
+          return res.json(tc).status(200);
+        } else {
+          return Promise.reject('Tailored course not found');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        if(typeof err == 'string' && err.includes('not found')) {
+          res.status(404).json({message: err.toString()})
+          .end();
+        } else {
+          return res.status(404).end();
+        }
+      });
 }
-
 
 
 export function enrollStudentInCourse(req, res) {
@@ -274,10 +169,15 @@ export function enrollStudentInCourse(req, res) {
             }
           })
           .catch(function() {
-            return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
-          });}}).catch(function() {
-            return res.json('invalid student ID').status(400).end();
-          });}
+            return Promise.reject('Invalid Course ID: ');
+          });
+      }}).catch(function(err) {
+        if(typeof err == 'string' && err.includes('Invalid Course')) {
+          return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
+        } else {
+          return res.json('Invalid Student ID').status(400).end();
+        }
+      });}
 
 
 /**
@@ -336,17 +236,17 @@ function generateAssignmentsWith(course, assignment) {
       var numberOfProblems = Math.floor(Math.random() * assign.maxNumProblems) + assign.minNumProblems;
       var numberOfNew = Math.floor(numberOfProblems * (assign.newProblemPercentage / 100));
 
-      Problem.count({ }, function (err, count) {
+      Problem.count({ }, function(err, count) {
         if(count == 0) {
           numberOfNew = numberOfProblems;
-        } else if (count < (numberOfProblems-numberOfNew)) {
-          numberOfNew = numberOfNew + ((numberOfProblems-numberOfNew)-count);
+        } else if(count < numberOfProblems - numberOfNew) {
+          numberOfNew = numberOfNew + (numberOfProblems - numberOfNew) - count;
         }
       });
       //Query the Problem table in the database. $limit is going to limit the number of results so we only fetch
       //the amount of existing problems we need
       Problem.aggregate(
-        [{$match: {'problem.category': course.categories}}, {$limit: (numberOfProblems - numberOfNew)}]
+        [{$match: {'problem.category': course.categories}}, {$limit: numberOfProblems - numberOfNew}]
       ).then(results => {
         //Results is an array with numberOfProblems - numberOfNew matching problems
         //It was important to call this BEFORE we create new problems. If we didn't create problems after
@@ -355,8 +255,7 @@ function generateAssignmentsWith(course, assignment) {
         return addProblems(course, results, numberOfNew)
           .then(newProblems => {
             return results.concat(newProblems);
-          }) ;
-
+          });
       }).then(promises => {
         //Create new assignment populated with appropriate fields and our final array of problems
         //Promises becomes finalProblems, which we then save in the assignment.
@@ -384,11 +283,11 @@ function generateAssignmentsWith(course, assignment) {
 }
 
 function addProblems(course, databaseProblems, additionalProblems) {
- console.log("Add Problems");
+  console.log('Add Problems');
   var results = [];
   for(let i = 0; i < additionalProblems; i++) {
     //Add on to the array of existing problems with numberOfNew new problems
-    console.log("Problem " + i);
+    console.log('Problem ' + i);
     results.push(problemController.create({
       protocol: 'dpg',
       version: '0.1',
@@ -402,100 +301,70 @@ function addProblems(course, databaseProblems, additionalProblems) {
   return Promise.all(results)
     .then(problems => {
         // iterate over problems, remove duplicates, compare against database problems
-        var newProblemIDs = new Set();
+      var newProblemIDs = new Set();
         // Get problem ids from db pulled problems
-        var dbProblemIDs = databaseProblems.map(problem => {
-          return problem.problem.problemId
-        });
-        var dbProblemIdsSet = new Set(dbProblemIDs);
+      var dbProblemIDs = databaseProblems.map(problem => problem.problem.problemId);
+      var dbProblemIdsSet = new Set(dbProblemIDs);
         // Check all new problems for duplicates from the generator
-        var reducedProblems =  problems.filter(item => {
-          var k = item.problem.problemId;
-          if(newProblemIDs.has(k) || dbProblemIdsSet.has(k)) {
-            return false;
-          } else {
-            newProblemIDs.add(k);
-            return item;
-          }
-
-        });
-        return reducedProblems;
+      var reducedProblems = problems.filter(item => {
+        var k = item.problem.problemId;
+        if(newProblemIDs.has(k) || dbProblemIdsSet.has(k)) {
+          return false;
+        } else {
+          newProblemIDs.add(k);
+          return item;
+        }
+      });
+      return reducedProblems;
     })
     .then(reducedProblems => {
-      if (reducedProblems.length < additionalProblems) {
+      if(reducedProblems.length < additionalProblems) {
         return addProblems(course, databaseProblems.concat(reducedProblems), additionalProblems - reducedProblems.length)
-          .then(moreProblems => {
-            return reducedProblems.concat(moreProblems);
-          })
+          .then(moreProblems => reducedProblems.concat(moreProblems));
       } else {
         return reducedProblems;
       }
     });
-
 }
 
 
 export function getTailoredAssignment(req, res, allowSolutions) {
+  var options = {
+    path: 'assignments'
+  };
 
-  if(allowSolutions)
-  {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
-  } else {
-    // get tailored course
-    TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
-      .populate({
-        path: 'assignments',
-        select: '-problems.problem.solution'
-      })
-      .exec()
-      .then(function(tailoredCourse) {
-        if(tailoredCourse) {
-          let assignment = tailoredCourse.assignments.find(asmt =>
-          asmt.AbstractAssignmentId == req.params.assignmentid);
-          if(assignment) {
-            return res.status(200).json(assignment);
-          } else {
-            return res.status(204).end();
-          }
-        } else {
-          return res.status(204).end();
-        }
-      })
-      //Print errors
-      .catch(function(err) {
-        res.send(err);
-        return res.status(404).end();
-      });
+  if(allowSolutions) {
+    options.select = '-problems.problem.solution';
   }
 
+    // get tailored course
+  TailoredCourse.findOne({abstractCourseID: req.params.courseid, studentID: req.params.studentid })
+      .populate(options)
+      .exec()
+      .then(function(tailoredCourse) {
+        if(tailoredCourse) {
+          let assignment = tailoredCourse.assignments.find(asmt =>
+          asmt.AbstractAssignmentId == req.params.assignmentid);
+          if(assignment) {
+            return res.status(200).json(assignment);
+          } else {
+            return res.status(204).end();
+          }
+        } else {
+          return res.status(204).end();
+        }
+      })
+      //Print errors
+      .catch(function(err) {
+        res.send(err);
+        return res.status(404).end();
+      });
 }
+
 
 export function getProblem(req, res) {
   // get tailored course
-  TailoredCourse.findOne({'abstractCourseID': req.params.courseid, 'studentID': req.params.studentid })
+  TailoredCourse.findOne({abstractCourseID: req.params.courseid, studentID: req.params.studentid })
     .populate({
       path: 'assignments',
       select: '-problems.problem.solution'
@@ -523,22 +392,10 @@ export function getProblem(req, res) {
     //Print errors
     .catch(function(err) {
       //res.send(err);
-      if(err.includes('not found')) {
+      if(typeof err == 'string' && err.includes('not found')) {
         return res.status(404).send(err.toString());
       } else {
         return res.status(500).send(err.toString());
       }
     });
-
-}
-
-//only allow the course teacher or role greater than teacher permission
-export function hasPermission(req, course) {
-  return new Promise(function(resolve, reject) {
-    if(shared.userRoles.indexOf(req.user.role) > shared.userRoles.indexOf('teacher') || course.teacherID.equals(req.user._id)) {
-      resolve();
-    } else {
-      reject();
-    }
-  });
 }

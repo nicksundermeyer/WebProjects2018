@@ -2,7 +2,7 @@
 
 /* globals describe, expect, it, beforeEach, afterEach, before */
 
-import User from '../user/user.model';
+import User from '../users/user.model';
 
 var app = require('../..');
 import request from 'supertest';
@@ -58,7 +58,7 @@ describe('Course API:', function() {
         .expect(200)
         .expect('Content-type', 'application/json; charset=utf-8')
         .end((err, res) => {
-          if (err) {
+          if(err) {
             return done(err);
           }
           getCourses = res.body;
@@ -114,4 +114,3 @@ describe('Course API:', function() {
     });
   });
 });
-

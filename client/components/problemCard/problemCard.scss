@@ -31,7 +31,7 @@
 //in description
 .problemDisplay-problem{
   text-align: center;
-  position: absolute;
+  // position: absolute;
   top: -55px;
 }
 
@@ -67,6 +67,6 @@
  // margin-top: 60px;
 }
 
-.button-toggler{
-  margin-top: 10px;
+.constants-container, .operators-container, .logical-container{
+  margin: 10px 0px;
 }
