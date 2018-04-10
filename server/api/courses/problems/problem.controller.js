@@ -1,7 +1,7 @@
 'use strict';
 
 import Problem from './problem.model';
-import shared from './../../config/environment/shared';
+import shared from './../../../config/environment/shared';
 
 export function index(req, res) {
   Problem.find()
@@ -54,4 +54,3 @@ export function create(req) {
       });
   });
 }
-

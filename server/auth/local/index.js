@@ -3,6 +3,7 @@
 import express from 'express';
 import passport from 'passport';
 import {signToken} from '../auth.service';
+console.log("local/index.js 6");
 
 var router = express.Router();
 

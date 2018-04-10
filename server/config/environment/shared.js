@@ -189,8 +189,8 @@ exports = module.exports = {
   problemEngineUrl: 'https://problem-engine.herokuapp.com/problems',
   // List of user roles
   userRoles: ['guest', 'user', 'student', 'teacher', 'researcher', 'admin'],
-  subjects,
-  allCategories,
-  allSubjects,
-  aboutData
+  subjects: subjects,
+  allCategories: allCategories,
+  allSubjects: allSubjects,
+  aboutData: aboutData
 };

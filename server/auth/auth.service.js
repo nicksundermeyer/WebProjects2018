@@ -3,8 +3,8 @@ import config from '../config/environment';
 import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import compose from 'composable-middleware';
-import User from '../api/user/user.model';
-import AbstractCourse from '../api/course/abstractCourse.model';
+import User from '../api/users/user.model';
+import AbstractCourse from '../api/courses/abstractCourses/abstractCourse.model';
 
 var validateJwt = expressJwt({
   secret: config.secrets.session
