@@ -8,9 +8,8 @@ import TailoredAssignment from './tailoredAssignment.model';
 import Problem from './../problems/problem.model';
 import TailoredCourse from './tailoredCourse.model';
 import User from './../../users/user.model';
-import KAS from 'kas/kas';
-var MathLex = require('mathlex_server_friendly');
-
+require('kas/kas');
+require('mathlex_server_friendly');
 
 //********************************************************
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
@@ -31,7 +30,6 @@ export function submitSolution(req, res) {
         //into the attempts array
         tailoredCourse.assignments.filter(_assignment => {
           if(_assignment.AbstractAssignmentId == req.params.assignmentId) {
-            console.log('here0');
             _assignment.problems.filter(_problem => {
               if(_problem._id == req.params.problemId) {
                 //push the attempts to problem
@@ -43,16 +41,15 @@ export function submitSolution(req, res) {
                     correct: null});
 
                   var solAsTree = _problem.problem.solution.math;
-                  var solAsLatex = MathLex.render(solAsTree, 'latex');
-
+                  var solAsLatex = global.MathLex.render(solAsTree, 'latex');
                   var att = req.body;
-                  var expr1 = KAS.parse(att.latexSol).expr; //submitted answer
+                  var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
                   console.log(expr1.print());
 
-                  var expr2 = KAS.parse(solAsLatex).expr; //stored solution
+                  var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
                   console.log(expr2.print());
 
-                  if(KAS.compare(expr1, expr2).equal) {
+                  if(global.KAS.compare(expr1, expr2).equal) {
                     //console.log('right answer! It is working!');
                     return res.send({result: 'success'});
                   } else {
@@ -78,19 +75,19 @@ export function submitSolution(req, res) {
         //return the entire course for now
         //the idea is to write the logic to check the attempts
         //and compare them to the solution here
-        return res.json(tailoredCourse).status(200)
-          .end();
+        // return res.json(tailoredCourse).status(200)
+        //   .end();
       } else {
         return Promise.reject('Tailored course not found');
       }
     })
     .catch(err => {
+      console.log(err);
       if(typeof err == 'string' && err.includes('not found')) {
         res.status(404).json({message: err.toString()})
           .end();
       } else {
-        res.json(err);
-        return res.status(404).end();
+        return res.status(400).json(err.toString());
       }});
 }
 

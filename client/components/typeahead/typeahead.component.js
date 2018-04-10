@@ -15,7 +15,7 @@ export class TypeaheadComponent {
   }
 
 }
-
+//define directives.typehead module
 export default angular.module('directives.typeahead', [])
   .component('typeahead', {
     template: require('./typeahead.html'),
