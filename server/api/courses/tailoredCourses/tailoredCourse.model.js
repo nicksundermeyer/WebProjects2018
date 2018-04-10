@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import shared from './../../config/environment/shared';
+import shared from './../../../config/environment/shared';
 
 var TailoredCourseSchema = new Schema({
   //grabs information from abstract course

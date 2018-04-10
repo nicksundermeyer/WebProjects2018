@@ -1,7 +1,7 @@
 'use strict';
 
 import User from './user.model';
-import TailoredCourse from '../course/tailoredCourse.model';
+import TailoredCourse from '../courses/tailoredCourses/tailoredCourse.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 

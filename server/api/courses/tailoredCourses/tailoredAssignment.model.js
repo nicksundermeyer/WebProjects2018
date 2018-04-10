@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
-import Problem from './../problem/problem.model';
+import Problem from './../problems/problem.model';
 
 var TailoredAssignment = new Schema({
   //abstract assignment id
