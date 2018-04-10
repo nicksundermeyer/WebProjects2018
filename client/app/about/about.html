@@ -14,6 +14,7 @@
         <h3 class="center black">Contributors and Contact Information</h3>
           <table class="center">
             <tr ng-repeat="x in aboutController.aboutData.contributors">
+              <td class="black"><img src= {{x.image}} title = {{x.name}} style= "width:48px;height:48px;"></td>
               <td class="black">{{x.name}}</td>
               <td class="black"><a href="mailto:{{x.email}}" class="link"><u>{{x.email}}</u></a></td>
               <td class="black">{{x.bio}}</td>
