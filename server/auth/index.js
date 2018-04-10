@@ -1,5 +1,4 @@
 'use strict';
-console.log("auth/index.js 2");
 
 import express from 'express';
 import config from '../config/environment';

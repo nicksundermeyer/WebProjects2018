@@ -85,7 +85,7 @@ export function submitSolution(req, res) {
       }
     })
     .catch(err => {
-      if(err.includes('not found')) {
+      if(typeof err == 'string' && err.includes('not found')) {
         res.status(404).json({message: err.toString()})
           .end();
       } else {
@@ -120,7 +120,7 @@ export function getTailoredCourse(req, res, allowSolutions) {
       })
       .catch(err => {
         console.log(err);
-        if(err.includes('not found')) {
+        if(typeof err == 'string' && err.includes('not found')) {
           res.status(404).json({message: err.toString()})
           .end();
         } else {
@@ -172,7 +172,7 @@ export function enrollStudentInCourse(req, res) {
             return Promise.reject('Invalid Course ID: ');
           });
       }}).catch(function(err) {
-        if(err.includes('Invalid Course')) {
+        if(typeof err == 'string' && err.includes('Invalid Course')) {
           return res.json('Invalid Course ID: '.concat(req.params.id)).status(400).end();
         } else {
           return res.json('Invalid Student ID').status(400).end();
@@ -392,7 +392,7 @@ export function getProblem(req, res) {
     //Print errors
     .catch(function(err) {
       //res.send(err);
-      if(err.includes('not found')) {
+      if(typeof err == 'string' && err.includes('not found')) {
         return res.status(404).send(err.toString());
       } else {
         return res.status(500).send(err.toString());
