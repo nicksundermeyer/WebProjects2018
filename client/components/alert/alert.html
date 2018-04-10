@@ -1,1 +1,3 @@
-<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+<!-- <button type="button" class='btn btn-default' ng-click="addAlert('success', 'Wow!')">Add Alert</button> -->
+<!-- <p>{{alertController.success}}</p> -->
+<div uib-alert ng-repeat="alert in alertController.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alertController.closeAlert($index)">{{alert.msg}}</div>

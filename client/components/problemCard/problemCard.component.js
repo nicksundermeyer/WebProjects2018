@@ -101,12 +101,11 @@ export class ProblemCardComponent {
           .then(function(res) {
             console.log(res);
             if(res.data.result === 'success') {
-              //this.attIsCorrect = true; //not working?
               document.getElementById('text-box-problem').style.color = 'green';
-              
-              
+              this.attIsCorrect = true;
             } else{
               document.getElementById('text-box-problem').style.color = 'red';
+              this.attIsCorrect = false;
             }
           });
     }

@@ -7,26 +7,25 @@ export class AlertComponent {
   constructor($scope) {
     'ngInject';
     this.$scope = $scope;
+    this.alerts = [];
+  }
+
+  addAlert(type, msg) {
+    this.alerts.push({type: type, msg: msg});
+  };
+
+  closeAlert(index) {
+    this.alerts.splice(index, 1);
   }
 }
 
-function AlertCtrl ($scope) {
-  $scope.alerts = [];
-
-  // { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-  // { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-
-  $scope.addAlert = function(type, msg) {
-    $scope.alerts.push({type: type, msg: msg});
-  };
-
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-}
-
-AlertCtrl.$inject = ["$scope"];
-
 export default angular.module('directives.alert', [])
-  .controller('AlertCtrl', AlertCtrl)
+  .component('alert', {
+    template: require('./alert.html'),
+    controller: AlertComponent,
+    controllerAs: 'alertController',
+    bindings: {
+      success: '='
+    }
+  })
   .name;
