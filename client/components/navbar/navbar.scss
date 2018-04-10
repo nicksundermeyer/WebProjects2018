@@ -17,7 +17,7 @@
   .navbar-brand {
     color: $light-grey;
     &:hover, &:focus {
-      color: $lightest-grey;
+      color: $light-grey;
     }
   }
   .navbar-text {
@@ -30,23 +30,29 @@
     }
   }
   .navbar-nav {
-    .nav-link {
+
+    a:hover{
+      background-color:$dark-grey;
+    }
+
+      .nav-link {
       color: $dark-grey;
       border-radius: .25rem;
       margin: 0 0.25em;
       &:not(.disabled) {
         &:hover, &:focus {
-          color: $gray;
+         color: $gray;
         }
       }
     }
+
     .navbar-toggle {
-      border-color: $gray;
+     border-color: $gray;
       &:hover, &:focus {
         background-color: $gray;
       }
       .navbar-toggler-icon {
-        color: $light-grey;
+        color: $dark-grey;
       }
     }
     .navbar-collapse,
@@ -56,8 +62,9 @@
     .navbar-link {
       color: $light-grey;
       &:hover {
-        color: $lightest-grey;
+        color: $dark-grey;
       }
     }
   }
 }
+

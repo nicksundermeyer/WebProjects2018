@@ -11,6 +11,7 @@ export class CourseCardComponent {
 
 }
 
+//binding mycourse to = operator
 export default angular.module('directives.courseCard', [])
   .component('courseCard', {
     template: require('./courseCard.html'),

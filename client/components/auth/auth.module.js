@@ -23,7 +23,7 @@ function addInterceptor($httpProvider) {
 
   $httpProvider.interceptors.push('authInterceptor');
 }
-
+//validating bussiness roles using factory
 export default angular.module('webProjectsApp.auth', [constants, util, ngCookies, ngRoute])
   .factory('authInterceptor', authInterceptor)
   .run(routerDecorator)
