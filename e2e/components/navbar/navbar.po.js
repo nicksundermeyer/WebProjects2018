@@ -4,7 +4,7 @@
  */
 
 'use strict';
-
+//creating navigation bar component
 var NavbarComponent = function() {
   this.navbar = element(by.css('.navbar'));
   this.navbarHeader = this.navbar.element(by.css('.navbar-header'));
