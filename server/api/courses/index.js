@@ -1,4 +1,4 @@
-console.log("courses index.js");
+
 import {Router} from 'express';
 import * as abstractCourseController from './abstractCourses/abstractCourse.controller';
 import * as tailoredCourseController from './tailoredCourses/tailoredCourse.controller';

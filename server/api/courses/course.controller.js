@@ -115,7 +115,6 @@ export function submitSolution(req, res) {
         //into the attempts array
         tailoredCourse.assignments.filter(_assignment => {
           if(_assignment.AbstractAssignmentId == req.params.assignmentId) {
-            console.log('here0');
             _assignment.problems.filter(_problem => {
               if(_problem._id == req.params.problemId) {
                 //push the attempts to problem
@@ -124,17 +123,18 @@ export function submitSolution(req, res) {
                   _problem.attempts.push({
                     date: Date.now(),
                     attempt: req.body,
-                    correct: null});
+                    correct: null
+                  });
 
                   var solAsTree = _problem.problem.solution.math;
                   var solAsLatex = MathLex.render(solAsTree, 'latex');
 
                   var att = req.body;
                   var expr1 = KAS.parse(att.latexSol).expr; //submitted answer
-                  console.log(expr1.print());
+                  //console.log(expr1.print());
 
                   var expr2 = KAS.parse(solAsLatex).expr; //stored solution
-                  console.log(expr2.print());
+                  //console.log(expr2.print());
 
                   if(KAS.compare(expr1, expr2).equal) {
                     //console.log('right answer! It is working!');
@@ -147,7 +147,6 @@ export function submitSolution(req, res) {
                 //save the changes made to attempts
                 _problem.save();
               }
-              console.log('gets here too!');
               return _problem;
             });
 
@@ -215,15 +214,11 @@ export function getTailoredCourse(req, res, allowSolutions) {
 
 
 export function enrollStudentInCourse(req, res) {
-  console.log('this function');
 //find the user to be enrolled in course
   return User.findById(req.params.studentID)
     .exec()
     .then(function(student) {
       if(student) {
-        console.log('found student');
-
-
         //Find the course with the ID passed into the URL
         return AbstractCourse.findById(req.params.id)
           .exec()
@@ -297,7 +292,6 @@ function createCourseAndAddStudent(user, course) {
     //Save the newly created tailoredCourse object to the database and return it
     return tailoredCourse.save();
   }).catch(err => {
-    console.log(err);
     console.log('Error creating tailored assignment', err);
   });
 }//end create tailored course
@@ -367,11 +361,11 @@ function generateAssignmentsWith(course, assignment) {
 }
 
 function addProblems(course, databaseProblems, additionalProblems) {
-  console.log('Add Problems');
+  //console.log('Add Problems');
   var results = [];
   for(let i = 0; i < additionalProblems; i++) {
     //Add on to the array of existing problems with numberOfNew new problems
-    console.log('Problem ' + i);
+   // console.log('Problem ' + i);
     results.push(problemController.create({
       protocol: 'dpg',
       version: '0.1',
