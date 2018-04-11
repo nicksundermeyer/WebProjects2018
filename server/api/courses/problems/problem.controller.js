@@ -50,7 +50,7 @@ export function create(req) {
         resolve(problem);
       })
       .catch(function(err) {
-        reject('Could not instantiate Axios ' + err);
+        //reject('Could not instantiate Axios ' + err);
       });
   });
 }
