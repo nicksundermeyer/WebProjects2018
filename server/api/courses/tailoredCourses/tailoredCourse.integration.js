@@ -1,6 +1,7 @@
-'use strict';
+/*
+ 'use strict';
 
-/* globals describe, expect, it, beforeEach, afterEach, before */
+ // globals describe, expect, it, beforeEach, afterEach, before
 
 import User from '../users/user.model';
 
@@ -113,5 +114,7 @@ describe('Course API:', function() {
       // expect(newCourse.assignment.newProblemPercentage).to.equal(17);
     });
   });
-  });
 });
+});
+
+ */
