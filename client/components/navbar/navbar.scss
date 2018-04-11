@@ -1,6 +1,10 @@
 .navbar a {
   color: $lightest-grey;
   font-size: x-large;
+  font-family: Arial;
+  list-style: none;
+  display: block;
+  text-align: justify;
 }
 
 .navbar-brand {
@@ -11,6 +15,29 @@
   height: 60px;
 }
 
+.right-nav{
+  list-style-type: none;
+  ul {
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+
+  li {
+    float: right;
+  }
+
+  li a {
+   // display: block;
+    text-align: center;
+    padding:  15px;
+    text-decoration: none;
+  }
+  li a:hover {
+    background-color: $lightest-grey;
+}}
 .navbar {
   background-color: $black;
   border-radius: 0;
@@ -24,6 +51,7 @@
   }
   .navbar-text {
     color: $light-grey;
+
     a {
       color: $lightest-grey;
       &:hover, &:focus {
@@ -54,6 +82,7 @@
         color: $dark-grey;
       }
     }
+
     .navbar-collapse,
     .navbar-form {
       border-color: $light-grey;
@@ -66,4 +95,6 @@
     }
   }
 }
+
+
 
