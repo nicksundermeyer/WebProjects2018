@@ -10,7 +10,7 @@ export class NavbarComponent {
     link: '/'
   }];
 
-  isCollapsed = true;         //menu will collapse
+  isNavCollapsed = true;         //menu will collapse
 
   /* initialize variables in the constructor*/
   constructor($location, Auth) {
