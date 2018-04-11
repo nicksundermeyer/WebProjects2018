@@ -32,7 +32,7 @@ export class ProblemCardComponent {
     this.Assignment = Assignment;
     this.$routeParams = $routeParams;
     this.attIsCorrect = false;
-
+    this.alerts = [];
 
     /*$watch is checking if newVal is true then load virtual machine */
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
@@ -98,14 +98,16 @@ export class ProblemCardComponent {
       this.Assignment.submitSolution(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
           this.myproblemid, this.latex)
           .async()
-          .then(function(res) {
-            console.log(res);
+          .then((res) => {
+            // console.log(res);
             if(res.data.result === 'success') {
               document.getElementById('text-box-problem').style.color = 'green';
-              this.attIsCorrect = true;
+              // console.log("test correct");
+              this.addAlert('success', 'Correct!');
             } else{
               document.getElementById('text-box-problem').style.color = 'red';
-              this.attIsCorrect = false;
+              // console.log("test incorrect");
+              this.addAlert('danger', 'Incorrect!');
             }
           });
     }
@@ -113,7 +115,7 @@ export class ProblemCardComponent {
 
   attemptInfo(){
     this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
-    console.log(this.remainingAttempts);
+    // console.log(this.remainingAttempts);
     /*this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
       this.myproblemid)
       .then(problem => {
@@ -180,6 +182,7 @@ export class ProblemCardComponent {
   }
 
   append(htmlVal) {
+    console.log("test");
     if(htmlVal) {
       this.userInput += this.mappings[htmlVal][0];
     } else {
@@ -190,6 +193,16 @@ export class ProblemCardComponent {
       }
     }
     this.updateDisplay();
+  }
+
+  addAlert(type, msg){
+    console.log('added alert');
+    this.alerts.push({type: type, msg: msg});
+  }
+
+  closeAlert(index) {
+    console.log("closed alert");
+    this.alerts.splice(index, 1);
   }
 }
 
