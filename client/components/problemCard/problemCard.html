@@ -13,8 +13,7 @@
   <!--</div>-->
   <div class="submit-button-problem">
     <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo();" type="button" class="btn btn-primary" ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
-    <!-- <alert success='problemCardController.attIsCorrect'></alert> -->
-    <div uib-alert ng-repeat="alert in problemCardController.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="problemCardController.closeAlert($index)">{{alert.msg}}</div>
+    <div uib-alert ng-repeat="alert in problemCardController.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="problemCardController.closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
   </div>
   <br>
   <br>

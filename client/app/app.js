@@ -39,14 +39,13 @@ import util from '../components/util/util.module';
 import courseService from '../services/course/course.module';
 import assignmentService from '../services/assignment/assignment.module';
 import userService from '../services/user/user.module';
-import alert from '../components/alert/alert.component';
 
 import './app.scss';
 //this creates the 'webProjectsApp' module and takes in the imported resources
 angular.module('webProjectsApp', [ngCookies, ngResource, ngSanitize, ngRoute, uiBootstrap, _Auth,
 
   account, admin, 'validation.match', courseService, assignmentService, userService, navbar, about, footer, assignment, course,
-  courseCard, assignmentCard, problemCard, problemConfirmationModal, courseDiscovery, typeahead, main, constants, util, student, teacher, alert
+  courseCard, assignmentCard, problemCard, problemConfirmationModal, courseDiscovery, typeahead, main, constants, util, student, teacher
 ])
   //this makes the default config and run
   .config(routeConfig)
