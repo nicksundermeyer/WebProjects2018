@@ -124,7 +124,8 @@ function addAssignmentsToTailoredCourse(abstractCourse, tailoredCourse) {
     .then(tcAssignment => {
       tailoredCourse.assignments.push(tcAssignment);
       tailoredCourse.save();
-      console.log('Tailored course assignment added to the course');
+      //
+      //console.log('Tailored course assignment added to the course');
       return tailoredCourse;
     })
     .catch(err => console.log('error creating Tailored Courses assignment', err));
@@ -145,6 +146,6 @@ function createTailoredCourse(abstractCourse) {
         return tc;
       })
 
-      .catch(err => console.log('ERROR: error populating Tailored Courses based on Abstract Courses', err));
+      .catch(err => console.log('ERROR: error populating Tailored Courses based on Abstract Courses', err))
     );
 }//end create Tailored Course
