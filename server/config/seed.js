@@ -25,6 +25,7 @@ import * as problemController from '../api/courses/problems/problem.controller';
 
 export default function seedDatabaseIfNeeded() {
   if(config.seedDB) {
+    console.log('Seeding database...');
     //for every role on shared user roles, create a user for that role.
     for(let role of shared.userRoles) {
       User.find({}).remove()
@@ -36,7 +37,6 @@ export default function seedDatabaseIfNeeded() {
             email: role + '@example.com',
             password: 'ps-' + role
           }).then(user => {
-            console.log('finished populating users');
             //if user created is a teacher
             //grab the teacher and pass it so that abstracted courses have a teacher id
             if(user.role === 'teacher') {
@@ -69,8 +69,6 @@ export default function seedDatabaseIfNeeded() {
             })
             .catch(err => console.log('error populating Problems', err));
         }
-
-        console.log('Finished populating a problem set');
       }//end for of.
     }//end populating problems
   }//end if
@@ -103,7 +101,6 @@ function createAbstractCourses(teacher) {
             }).then(newAssignment => {
               createdCourse.assignments.push(newAssignment);
               createdCourse.save();
-              console.log('finished populating Abstract Courses');
               return createTailoredCourse(createdCourse);
             })
           )
@@ -127,7 +124,8 @@ function addAssignmentsToTailoredCourse(abstractCourse, tailoredCourse) {
     .then(tcAssignment => {
       tailoredCourse.assignments.push(tcAssignment);
       tailoredCourse.save();
-      console.log('Tailored course assignment added to the course');
+      //
+      //console.log('Tailored course assignment added to the course');
       return tailoredCourse;
     })
     .catch(err => console.log('error creating Tailored Courses assignment', err));
@@ -147,6 +145,7 @@ function createTailoredCourse(abstractCourse) {
         addAssignmentsToTailoredCourse(abstractCourse, tc);
         return tc;
       })
-      .then(() => console.log('finished populating Tailored Courses based on Abstract Courses'))
-      .catch(err => console.log('error populating Tailored Courses based on Abstract Courses', err)));
-}
+
+      .catch(err => console.log('ERROR: error populating Tailored Courses based on Abstract Courses', err))
+    );
+}//end create Tailored Course

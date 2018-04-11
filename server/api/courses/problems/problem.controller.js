@@ -49,8 +49,8 @@ export function create(req) {
         problem.save();
         resolve(problem);
       })
-      .catch(function() {
-        reject('Axios is so tilting');
+      .catch(function(err) {
+        //reject('Could not instantiate Axios ' + err);
       });
   });
 }
