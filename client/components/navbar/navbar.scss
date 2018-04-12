@@ -3,7 +3,7 @@
 }
 
 .navbar {
-  background-color: $dark-grey;
+  background-color: $blue;
   // background-color: $blue;
   border-radius: 0;
   color: $white;
@@ -41,14 +41,12 @@
   .navbar-header{
     .navbar-toggle {
       border-color: $white;
-      background-color: $dark-grey;
-      // background-color: $blue;
+      background-color: $blue;
       &:hover {
         background-color: $white;
 
         .icon-bar{
-          background-color: $dark-grey;
-          // background-color: $blue;
+          background-color: $blue;
         }
       }
       .icon-bar {
