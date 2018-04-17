@@ -1,11 +1,11 @@
-/*
+
  'use strict';
 
  // globals describe, expect, it, beforeEach, afterEach, before
 
-import User from '../users/user.model';
+import User from '../../users/user.model';
 
-var app = require('../..');
+var app = require('../../..');
 import request from 'supertest';
 
 describe('Course API:', function() {
@@ -107,7 +107,7 @@ describe('Course API:', function() {
       expect(newCourse.description).to.equal('how to make fire');
       expect(newCourse.subjects).to.equal('booleanLogic');
       expect(newCourse.categories).to.equal('or');
-      //expect(newCourse.assignments[0].title).to.equal('assignment 1');
+      expect(newCourse.assignments[0].title).to.equal('assignment 1');
       //expect(newCourse.assignment.description).to.equal('find trees');
       //expect(newCourse.assignment.minNumProblems).to.equal(5);
       // expect(newCourse.assignment.maxNumProblems).to.equal(10);
@@ -115,6 +115,6 @@ describe('Course API:', function() {
     });
   });
 });
-});
 
- */
+
+
