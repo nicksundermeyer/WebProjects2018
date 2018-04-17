@@ -17,10 +17,9 @@ export class ProblemConfirmationModalController {
     this.$uibModalInstance.close();
   }
 }
-
 export default angular.module('directives.problemConfirmationModal', [])
   .controller('problemConfirmationModalController', ProblemConfirmationModalController)
-  .config(['$qProvider', function($qProvider) {
+  .config(['$qProvider', function($qProvider) {    //Once the module is defined .config is used to configure routing for the application
     $qProvider.errorOnUnhandledRejections(false);
   }])
   .name;

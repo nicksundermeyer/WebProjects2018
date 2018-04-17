@@ -3,6 +3,7 @@
  */
 
 'use strict';
+console.log("errors/index.js 6");
 
 module.exports[404] = function pageNotFound(req, res) {
   var viewFilePath = '404';

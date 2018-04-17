@@ -4,7 +4,7 @@
  */
 
 'use strict';
-
+//creating login page
 var LoginPage = function() {
   var form = this.form = element(by.css('.form'));
   form.email = form.element(by.model('vm.user.email'));

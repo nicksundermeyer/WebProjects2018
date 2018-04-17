@@ -1,7 +1,7 @@
 'use strict';
 
 import Problem from './problem.model';
-import shared from './../../config/environment/shared';
+import shared from './../../../config/environment/shared';
 
 export function index(req, res) {
   Problem.find()
@@ -49,10 +49,8 @@ export function create(req) {
         problem.save();
         resolve(problem);
       })
-      .catch(function() {
-        reject('Axios is so tilting');
+      .catch(function(err) {
+        reject('Could not instantiate Axios ' + err);
       });
   });
-
 }
-
