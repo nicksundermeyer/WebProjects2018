@@ -9,21 +9,24 @@
 </a> -->
 <div class = "container">
   <div class="row">
-      <div class="left-nav navbar navbar-inverse col-sm-4 col-xs-12">
-          <ul class=" nav navbar-nav">
-            <li class="left-nav-header">
-              <h3>{{assignmentController.course.name}}</h3>
-            </li>
-            <li class = "left-nav-item" ng-repeat="aProblem in assignmentController.problemObjects">
-              <a href = "#" ng-click="assignmentController.changeProblem(aProblem.number)">
-                <div class="col-xs-12">
-                  <h4><i class="glyphicon glyphicon-ok-circle"></i> Problem {{$index + 1}}</h4></span>
-                  </div>
-              </a>
-            </li>
-          </ul>
+      <div class="left-nav navbar navbar-inverse col-lg-3 col-md-12">
+        <div class="scroll">
+            <ul class=" nav navbar-nav">
+                <li class="left-nav-header">
+                  <h3>{{assignmentController.course.name}}</h3>
+                </li>
+                <li class = "left-nav-item" ng-repeat="aProblem in assignmentController.problemObjects">
+                  <a href = "#" ng-click="assignmentController.changeProblem(aProblem.number)">
+                    <div class="col-xs-12">
+                      <h4><i class="glyphicon glyphicon-ok-circle"></i> Problem {{$index + 1}}</h4></span>
+                      </div>
+                  </a>
+                </li>
+              </ul>
         </div>
-    <div class="problem-container col-sm-8 col-xs-12">
+
+        </div>
+    <div class="problem-container col-lg-9 col-md-12">
       <problem-card myproblemspecific="assignmentController.selectedProblem.specific"
                     myproblemgeneral="assignmentController.selectedProblem.overview"
                     myuserid="assignmentController.userId"
