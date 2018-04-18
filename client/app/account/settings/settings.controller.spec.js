@@ -11,13 +11,13 @@ var form = { //Mocking the form object
 }
 
 var user = {
-  oldPassword: "password",
-  newPassword: ""
+  oldPassword: "oldpassword",
+  newPassword: "newpassword"
 }
 
 var Auth = {
   changePassword (oldPw, newPw){
-    this.password = newPw;
+    this.user.newPassword = newPw;
   }
 }
 
@@ -39,7 +39,7 @@ describe("Tests for settings.controller", function () {
 
     //Every 'it' is a test that is run. The string parameter is the description
     //and the expect is the actual test.
-    it("", function(){
+    it("Test change password", function(){
       settingsComponent.changePassword(form);
       expect()
     });

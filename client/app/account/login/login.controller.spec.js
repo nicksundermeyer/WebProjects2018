@@ -7,7 +7,12 @@ import {
 
 var form = { //Spoofing the form object
   valid: True
-}
+};
+
+var user = {
+  email: 'test@email.com',
+  password: 'test123'
+};
 
 describe("Tests for login.controller", function () {
   beforeEach(angular.module.mock(login)); //Mocking angular
@@ -31,8 +36,8 @@ describe("Tests for login.controller", function () {
     });
 
     it("Form valid check", function(){
-      expect(loginComponent.email != null);
-      expect(loginComponent.password != null);
+      expect(loginComponent.email == 'test@email.com');
+      expect(loginComponent.password == 'test123');
     })
 
   }));
