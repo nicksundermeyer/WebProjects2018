@@ -236,8 +236,8 @@ var aboutData = {
     }
   ],
   description:
-    "This project was developed as part of Dr. Daniel Pittman's Web Development Projects course"
-    + "in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive" +
+    "This project was developed as part of Dr. Daniel Pittman's Web Development Projects course" +
+    "in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive" +
     "web application for Dr. GauthierDickey's research into problem creation and generation for educational purposes."
 };
 
