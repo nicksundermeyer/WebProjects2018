@@ -1,7 +1,7 @@
 'use strict';
 
 import mongoose, {Schema} from 'mongoose';
- import {registerEvents} from './../course.events';
+import {registerEvents} from './../course.events';
 var ProblemSchema = new Schema({
   protocol: {
     type: String,
@@ -14,47 +14,39 @@ var ProblemSchema = new Schema({
     default: '.01'
   },
   problem: {
-
-
     problemId: {
       type: String,
       default: null,
       required: true
     },
-
     description: {
       type: Object,
       default: null,
       required: true
     },
-
     depth: {
       type: Number,
       default: 1,
       required: true
     },
-
     subject: {
       type: String,
       default: null,
       required: true
     },
-
     category: {
       type: String,
       default: null,
       required: true
     },
-
     solution: {
       type: Object,
       default: null,
       required: true
     },
   },
+
 // max number of attempts per problem, should come from abstract assignment
-
-
   numberOfAllowedAttempts: {
     type: Number,
     default: 3
@@ -87,7 +79,6 @@ var ProblemSchema = new Schema({
   //for audit purposed in our case
   timestamps: true
 }, { minimize: false });
-
 
 registerEvents(ProblemSchema);
 export default mongoose.model('Problem', ProblemSchema);

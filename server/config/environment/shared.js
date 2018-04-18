@@ -49,7 +49,7 @@ allCategories = arrayUnique(allCategories);
 var aboutData = {
   contributors: [
     {
-      name: 'Chris Gauthier-Dickey',
+      name: 'Chris GauthierDickey',
       email: 'chrisg@cs.du.edu',
       bio: 'Product Owner',
       quarterCont: 'Ongoing'
