@@ -3,14 +3,13 @@
 // https://stackoverflow.com/questions/1584370/how-to-merge-two-arrays-in-javascript-and-de-duplicate-items
 function arrayUnique(array) {
   var a = array.concat();
-  for (var i = 0; i < a.length; ++i) {
-    for (var j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j]) {
+  for(var i = 0; i < a.length; ++i) {
+    for(var j = i + 1; j < a.length; ++j) {
+      if(a[i] === a[j]) {
         a.splice(j--, 1);
       }
     }
   }
-
   return a;
 }
 
@@ -47,11 +46,7 @@ allCategories = arrayUnique(allCategories);
 var aboutData = {
   contributors: [
     {
-<<<<<<< HEAD
-      name: 'Chris GauthierDickey',
-=======
       name: 'Dr. Chris GauthierDickey',
->>>>>>> upstream/sprint-02
       email: 'chrisg@cs.du.edu',
       bio: 'Product Owner',
       quarterCont: 'Ongoing',
@@ -241,8 +236,8 @@ var aboutData = {
     }
   ],
   description:
-    "This project was developed as part of Dr. Daniel Pittman's Web Development Projects course " +
-    'in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive ' +
+    "This project was developed as part of Dr. Daniel Pittman's Web Development Projects course"
+    + "in Winter Quarter 2018. The goal of the this MVP (minimum viable product) is a rich and responsive" +
     "web application for Dr. GauthierDickey's research into problem creation and generation for educational purposes."
 };
 
