@@ -1,12 +1,11 @@
 'use strict';
 
-import login from './login.controller';
-import {
-  LoginController
-} from './login.controller';
+import login from './login.component';
+import { LoginController } from './login.component';
 
-var form = { //Spoofing the form object
-  valid: True
+var form = {
+  //Spoofing the form object
+  valid: true
 };
 
 var user = {
@@ -14,31 +13,39 @@ var user = {
   password: 'test123'
 };
 
-describe("Tests for login.controller", function () {
-  beforeEach(angular.module.mock(login)); //Mocking angular
+describe('Tests for login.controller', function() {
+  beforeEach(angular.mock.module(login)); //Mocking angular
 
   var scope;
-  var loginComponent;
+  var loginController;
   var $httpBackend;
 
-  beforeEach(inject(function(_$httpBackend_, $http, $componentController, $rootScope){
-    scope = $rootScope.$new();
+  beforeEach(
+    inject(function(
+      _$httpBackend_,
+      $componentController,
+      $rootScope,
+      _$location_
+    ) {
+      scope = $rootScope.$new();
 
-    loginComponent = $componentController('login', {
-      $http,
-      $scope: scope
-    });
-
-    //Every 'it' is a test that is running. The string parameter is the description
-    //and the expect is the actual test.
-    it("Submitted is true", function(){
-      expect(loginComponent.submitted == true)
-    });
-
-    it("Form valid check", function(){
-      expect(loginComponent.email == 'test@email.com');
-      expect(loginComponent.password == 'test123');
+      loginController = $componentController('login', {
+        $location: _$location_,
+        $scope: scope,
+        Auth: {},
+        UserServ: {}
+      });
     })
+  );
 
-  }));
-})
+  //Every 'it' is a test that is running. The string parameter is the description
+  //and the expect is the actual test.
+  it('Submitted is true', function() {
+    expect(loginController.submitted == true);
+  });
+
+  // it("Form valid check", function(){
+  //   expect(loginComponent.email == 'test@email.com');
+  //   expect(loginComponent.password == 'test123');
+  // })
+});
