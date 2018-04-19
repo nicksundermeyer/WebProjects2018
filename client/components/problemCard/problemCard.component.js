@@ -15,7 +15,6 @@ export class ProblemCardComponent {
   attIsCorrect;
   problem;
   remainingAttempts;
-  //counter = 0;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
@@ -70,15 +69,13 @@ export class ProblemCardComponent {
 
   /*Try and Catch to see if parsing and rendering works ok*/
   updateDisplay() {
-    //console.log(this.attIsCorrect); not sure why this doesn't work
     try {
       this.ast = MathLex.parse(this.userInput);
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString();  //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
       document.getElementById('text-box-problem').style.color = 'black';
-    }
-    catch(e) {
+    } catch(e) {
       document.getElementById('text-box-problem').style.color = 'blue';
     }
   }
@@ -99,14 +96,11 @@ export class ProblemCardComponent {
           this.myproblemid, this.latex)
           .async()
           .then((res) => {
-            // console.log(res);
             if(res.data.result === 'success') {
               document.getElementById('text-box-problem').style.color = 'green';
-              // console.log("test correct");
               this.addAlert('success', 'Correct!');
-            } else{
+            } else {
               document.getElementById('text-box-problem').style.color = 'red';
-              // console.log("test incorrect");
               this.addAlert('danger', 'Incorrect!');
             }
           });
@@ -115,14 +109,6 @@ export class ProblemCardComponent {
 
   attemptInfo(){
     this.remainingAttempts = this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
-    // console.log(this.remainingAttempts);
-    /*this.Assignment.getProblemInfo(this.$routeParams.courseId, this.myuserid, this.$routeParams.assignmentId,
-      this.myproblemid)
-      .then(problem => {
-        this.problem = problem.data;
-        this.remainingAttempts = this.problem.numberOfAllowedAttempts - this.problem.attempts.length;
-        console.log(this.remainingAttempts);
-      });*/
   }
 
   mappings = {
@@ -182,7 +168,7 @@ export class ProblemCardComponent {
   }
 
   append(htmlVal) {
-    console.log("test");
+    console.log('test');
     if(htmlVal) {
       this.userInput += this.mappings[htmlVal][0];
     } else {
@@ -195,13 +181,13 @@ export class ProblemCardComponent {
     this.updateDisplay();
   }
 
-  addAlert(type, msg){
+  addAlert(type, msg) {
     console.log('added alert');
     this.alerts.push({type: type, msg: msg});
   }
 
   closeAlert(index) {
-    console.log("closed alert");
+    console.log('closed alert');
     this.alerts.splice(index, 1);
   }
 }

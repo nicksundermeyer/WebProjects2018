@@ -2,7 +2,7 @@
   height: 60px;
 }
 
-.navbar {
+.navbar-default {
   background-color: $blue;
   // background-color: $blue;
   border-radius: 0;
@@ -91,5 +91,22 @@
   }
 }
 
+.left-nav{
+  background-color: $black;
+  border-radius: 20px;
+  height: 70vh;
+  vertical-align: top;
+  overflow-y: auto;
 
+  .nav{
+    margin: 0;
 
+    .left-nav-item{
+      background-color: $blue;
+    }
+  }
+}
+
+.left-nav::-webkit-scrollbar { 
+  display: none;  // Safari and Chrome
+}
