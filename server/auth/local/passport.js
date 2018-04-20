@@ -1,6 +1,5 @@
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
-console.log("passport.js 3");
 
 function localAuthenticate(User, email, password, done) {
   User.findOne({

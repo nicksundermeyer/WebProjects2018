@@ -124,7 +124,7 @@ describe('Course API Router:', function() {
   describe('POST /api/courses/:courseId/students/:studentId', function() {
     it('should route to tailoredCourse.controller.enrollStudentInCourse', function() {
       expect(routerStub.post
-        .withArgs('/:courseId/students/:studentId',
+        .withArgs('/:id/students/:studentID',
           'authService.hasPermissionToEnroll.teacher',
           'TailoredCourseCtrl.enrollStudentInCourse')
       ).to.have.been.calledOnce;
@@ -134,7 +134,7 @@ describe('Course API Router:', function() {
   describe('GET /api/courses/:courseId/students/:studentId', function() {
     it('should route to tailoredCourse.controller.getTailoredCourse', function() {
       expect(routerStub.get
-        .withArgs('/:courseId/students/:studentId',
+        .withArgs('/:courseID/students/:studentID',
           'authService.hasRole.student')
       ).to.have.been.calledOnce;
     });
