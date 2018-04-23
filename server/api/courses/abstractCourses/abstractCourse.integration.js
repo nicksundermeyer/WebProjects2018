@@ -34,12 +34,6 @@ describe('Abstract Course Tests', function() {
     categories: ['addition']
   };
 
-  var invalidCoursePayload = {
-    title: 'wrong field name',
-    help_field: 'this class does not exist, do not pay for it',
-    extra_field: true
-  };
-
   var teacherPayload = {
     name: 'Fake Teacher',
     email: 'teacher@example.com',
@@ -217,7 +211,9 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('Should delete the course');
+      it('Should delete the course', function () {
+        expect(JSON.stringify(response)).to.equal(JSON.stringify({}));
+      });
     });
 
     describe('Create a course using an invalid payload', function () {
@@ -227,7 +223,11 @@ describe('Abstract Course Tests', function() {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
-          .send(invalidCoursePayload)
+          .send({
+            title: 'wrong field name',
+            help_field: 'this class does not exist, do not pay for it',
+            extra_field: true
+          })
           .expect(400)
           .expect('Content-type', 'application/json; charset=utf-8')
           .end(function (err, res) {
@@ -238,7 +238,7 @@ describe('Abstract Course Tests', function() {
       });
 
       it('should not allow us to create a course using invalid parameters', function () {
-        expect(courseResponse).to.be.an('undefined');
+        expect(JSON.stringify(courseResponse)).to.equal(JSON.stringify({}));
       });
     });
 
@@ -322,7 +322,7 @@ describe('Abstract Course Tests', function() {
         request(app)
           .delete('/api/courses/' + courseResponse._id)
           .set('authorization', `Bearer ${studentAuthToken}`)
-          .expect(500)
+          .expect(403)
           .end(function(err, res) {
             if(err) return done(err);
             deleteResponse = res.body;
@@ -330,7 +330,9 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('Should not allow us to delete a course as a student');
+      it('Should not allow us to delete a course as a student', function() {
+        expect(JSON.stringify(deleteResponse)).to.equal(JSON.stringify({}));
+      });
     });
   });
 
