@@ -8,8 +8,20 @@ import User from '../../users/user.model';
 var app = require('../../..');
 import request from 'supertest';
 
-describe('Course API:', function() {
-  var newCourse;
+describe('Tailored Course Tests:', function() {
+  var newCourse = {
+      name: 'survival class',
+      description: 'how to make fire',
+      subjects: ['booleanLogic'],
+      categories: ['or'],
+      assignment: [{
+        title: 'assignment 1',
+        description: 'find trees',
+        minNumProblems: 5,
+        maxNumProblems: 10,
+        newProblemPercentage: 17
+      }]
+  };
   var token;
 
   //login
@@ -19,10 +31,10 @@ describe('Course API:', function() {
     before(function() {
       return User.remove().then(function() {
         user = new User({
-          name: 'Fake Teacher',
-          email: 'teacher@example.com',
-          password: 'ps-teacher',
-          role: 'teacher'
+          name: 'Fake Student',
+          email: 'student@example.com',
+          password: 'ps-student',
+          role: 'student'
         });
 
         return user.save();
@@ -33,8 +45,8 @@ describe('Course API:', function() {
       request(app)
         .post('/auth/local')
         .send({
-          email: 'teacher@example.com',
-          password: 'ps-teacher'
+          email: 'student@example.com',
+          password: 'ps-student'
         })
         .expect(200)
         .expect('Content-Type', /json/)
@@ -49,71 +61,11 @@ describe('Course API:', function() {
     });
   });
 
-  //show all courses
-  describe('GET api/courses', function() {
-    var getCourses;
+  // enroll in a course if a student
+  describe('Enroll in Course', function() {
 
-    beforeEach(function(done) {
-      request(app)
-        .get('/api/courses')
-        .expect(200)
-        .expect('Content-type', 'application/json; charset=utf-8')
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          getCourses = res.body;
-          done();
-        });
-    });
-
-    it('should respond with a json array', function() {
-      expect(getCourses).to.be.instanceOf(Array);
-    });
   });
 
-  //create a course if a teacher
-  describe('POST api/courses', function() {
-    beforeEach(function(done) {
-      request(app)
-        .post('/api/courses')
-        .set('authorization', `Bearer ${token}`)
-        .send({
-          name: 'survival class',
-          description: 'how to make fire',
-          subjects: ['booleanLogic'],
-          categories: ['or'],
-          assignment: [{
-            title: 'assignment 1',
-            description: 'find trees',
-            minNumProblems: 5,
-            maxNumProblems: 10,
-            newProblemPercentage: 17
-          }]
-        })
-        .expect(201)
-        .expect('Content-type', 'application/json; charset=utf-8')
-        .end((err, res) => {
-          if(err) {
-            console.log('Bearer ' + token);
-            return done(err);
-          }
-          newCourse = res.body;
-          done();
-        });
-    });
-    it('should respond with the newly created thing', function() {
-      expect(newCourse.name).to.equal('survival class');
-      expect(newCourse.description).to.equal('how to make fire');
-      expect(newCourse.subjects).to.equal('booleanLogic');
-      expect(newCourse.categories).to.equal('or');
-      //expect(newCourse.assignment.length).to.equal(1);
-      //expect(newCourse.assignment.description).to.equal('find trees');
-      //expect(newCourse.assignment.minNumProblems).to.equal(5);
-      // expect(newCourse.assignment.maxNumProblems).to.equal(10);
-      // expect(newCourse.assignment.newProblemPercentage).to.equal(17);
-    });
-  });
 });
 
 

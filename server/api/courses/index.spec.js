@@ -125,7 +125,7 @@ describe('Course API Router:', function() {
     it('should route to tailoredCourse.controller.enrollStudentInCourse', function() {
       expect(routerStub.post
         .withArgs('/:id/students/:studentID',
-          'authService.hasPermissionToEnroll.teacher',
+          'authService.hasPermissionToEnroll.student',
           'TailoredCourseCtrl.enrollStudentInCourse')
       ).to.have.been.calledOnce;
     });
