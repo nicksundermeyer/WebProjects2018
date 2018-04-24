@@ -4,6 +4,7 @@
   margin: 10px;
   border-radius: 20px;
   width: 100%;
+  position: relative;
 }
 
 .card-header-problem{
@@ -31,6 +32,7 @@
 .problemDisplay-problem{
   text-align: center;
   top: -55px;
+  position: relative;
 }
 
 .text-box-problem {
@@ -44,10 +46,12 @@
 
 .operators-container{
   text-align: center;
+  position: relative;
 }
 
 .constants-container, .operators-container, .logical-container{
   margin: 10px 0px;
+  position: relative;
 }
 
 .alert{
@@ -55,4 +59,6 @@
   top: 5%;
   right: 5%;
   width: 30%;
+  z-index: 100;
+  font-size: 24px;
 }
