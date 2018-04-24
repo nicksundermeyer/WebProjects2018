@@ -206,4 +206,4 @@ export default angular.module('directives.problemCard', [])
     }
   })
   .name;
-// mathquill integration
+
