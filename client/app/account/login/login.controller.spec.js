@@ -1,7 +1,7 @@
 'use strict';
 
-import login from './login.component';
-import { LoginController } from './login.component';
+import login from './index';
+import { LoginController } from './login.controller';
 
 var form = {
   //Spoofing the form object
@@ -18,18 +18,14 @@ describe('Tests for login.controller', function() {
 
   var scope;
   var loginController;
-  var $httpBackend;
+  var $controller;
 
   beforeEach(
-    inject(function(
-      _$httpBackend_,
-      $componentController,
-      $rootScope,
-      _$location_
-    ) {
+    inject(function(_$httpBackend_, _$controller_, $rootScope, _$location_) {
       scope = $rootScope.$new();
+      $controller = _$controller_;
 
-      loginController = $componentController('login', {
+      loginController = $controller('LoginController', {
         $location: _$location_,
         $scope: scope,
         Auth: {},
@@ -40,8 +36,8 @@ describe('Tests for login.controller', function() {
 
   //Every 'it' is a test that is running. The string parameter is the description
   //and the expect is the actual test.
-  it('Submitted is true', function() {
-    expect(loginController.submitted == true);
+  it('Submitted is false', function() {
+    expect(loginController.submitted).to.equal(false);
   });
 
   // it("Form valid check", function(){

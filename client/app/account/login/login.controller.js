@@ -1,9 +1,6 @@
 'use strict';
 //creates the default login controller
-import angular from 'angular';
-import AuthService from '../../../components/auth/auth.module';
-import UserService from '../../../services/user/user.module';
-export class LoginController {
+export default class LoginController {
   user = {
     name: '',
     email: '',
@@ -58,7 +55,3 @@ export class LoginController {
   }
   $onInit() {}
 }
-
-export default angular
-  .module('webProjectsApp.login', [AuthService, UserService])
-  .controller('LoginController', LoginController).name;
