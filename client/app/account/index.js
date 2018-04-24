@@ -4,7 +4,7 @@ import angular from 'angular';
 const ngRoute = require('angular-route');
 
 import routing from './account.routes';
-import login from './login/login.component';
+import login from './login';
 import settings from './settings';
 import signup from './signup';
 //creates the 'webProjectApp.account' module and imports the ngRoute, login, settings, and signup for the module
