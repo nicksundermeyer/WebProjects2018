@@ -41,24 +41,21 @@ export function show(req, res) {
 }
 
 export function create(req, res) {
-  let course = req.body;
-  AbstractCourse.create(course)
-    .then(function(createdCourse) {
-      //any role higher than teacher
-      //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
-      //so id should not be just grabber from the current user
-      if(req.user.role === 'teacher') {
-        //set teacher id if current user is actually a teacher
-        createdCourse.teacherID = req.user._id;
-      }
-      createdCourse.save();
-      return res.status(201).json(createdCourse);
-    })
-    //Print errors
-    .catch(function(err) {
-      res.send(err);
-      return res.status(400).end();
+  //any role higher than teacher
+  //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
+  //so id should not be just grabber from the current user
+  var newCourse = new AbstractCourse(req.body);
+  if(req.user.role === 'teacher') {
+    //set teacher id if current user is actually a teacher
+    newCourse.teacherID = req.user._id;
+    newCourse.save(function (err) {
+      if(err) return res.status(400).json({});
+      return res.status(201).json(newCourse);
     });
+  }
+  else {
+    return res.status(403).end(); // Return 403 forbidden if not a teacher
+  }
 }
 
 export function update(req, res) {

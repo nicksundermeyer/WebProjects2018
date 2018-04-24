@@ -20,62 +20,82 @@ import request from 'supertest';
 var app = require('../../..');
 
 describe('Abstract Course Tests', function() {
-  var coursePayload = {
+  var validCoursePayload = {
     name: 'survival class',
     description: 'how to make fire',
     subjects: ['booleanLogic'],
-    categories: ['or'],
-    assignment: [{
-      title: 'assignment 1',
-      description: 'find trees',
-      minNumProblems: 5,
-      maxNumProblems: 10,
-      newProblemPercentage: 17
-    }]
+    categories: ['or']
   };
 
-  var courseResponse;
+  var updatedCoursePayload = {
+    name: 'updated class name',
+    description: 'updated description',
+    subjects: ['algebra'],
+    categories: ['addition']
+  };
+
+  var teacherPayload = {
+    name: 'Fake Teacher',
+    email: 'teacher@example.com',
+    password: 'ps-teacher',
+    role: 'teacher'
+  };
+
+  var studentPayload = {
+    name: 'Fake Student',
+    email: 'student@example.com',
+    password: 'ps-student',
+    role: 'student'
+  };
+
+  var teacherAuthToken, studentAuthToken, student, teacher;
+
+  // Clear users and create a teacher and student to use duration of tests
+  before(function (done) {
+      User.remove().then(function () {
+      teacher = new User(teacherPayload);
+      student = new User(studentPayload);
+      student.save();
+      teacher.save(done);
+    });
+  });
+
+  before(function (done) {
+    request(app)
+      .post('/auth/local')
+      .send(teacherPayload)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if(err) throw err;
+        teacherAuthToken = res.body.token;
+        done();
+      });
+  });
+
+  before(function (done) {
+    request(app)
+      .post('/auth/local')
+      .send(studentPayload)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if(err) throw err;
+        studentAuthToken = res.body.token;
+        done();
+      });
+  });
+
 
   /* Test as a teacher */
-  describe('Test Abstract courses as a teacher', function () {
-    var teacher;
-    var teacherAuthToken;
+  describe('Test Abstract courses API as a teacher', function () {
 
-    var teacherPayload = {
-      name: 'Fake Teacher',
-      email: 'teacher@example.com',
-      password: 'ps-teacher',
-      role: 'teacher'
-    };
-
-    // Clear users before testing
-    before(function () {
-      return User.remove().then(function () {
-        teacher = new User(teacherPayload);
-        return teacher.save();
-      });
+    it('Should validate we logged in by checking that the token exists', function () {
+      expect(teacherAuthToken).to.be.an('string');
     });
 
-    before(function (done) {
-      request(app)
-        .post('/auth/local')
-        .send(teacherPayload)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) throw err;
-          teacherAuthToken = res.body.token;
-          done();
-        });
-    });
-
-    it('should validate token exists', function () {
-      expect(teacherAuthToken).to.not.be.an('undefined');
-    });
-
-    //
     describe('Get all courses', function () {
-      var getCourses;
+      var courses;
 
       beforeEach(function (done) {
         request(app)
@@ -86,24 +106,25 @@ describe('Abstract Course Tests', function() {
             if (err) {
               return done(err);
             }
-            getCourses = res.body;
+            courses = res.body;
             done();
           });
       });
 
-      it('should respond with a json array', function () {
-        expect(getCourses).to.be.instanceOf(Array);
+      it('should respond with a json array of courses', function () {
+        expect(courses).to.be.instanceOf(Array);
       });
     });
 
-    //create a course if a teacher
-    describe('Create a course', function () {
+
+    describe('Create a course using a valid payload', function () {
+      var courseResponse;
 
       beforeEach(function (done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
-          .send(coursePayload)
+          .send(validCoursePayload)
           .expect(201)
           .expect('Content-type', 'application/json; charset=utf-8')
           .then(data => {
@@ -112,57 +133,126 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('should respond with the newly created thing', function () {
-        expect(courseResponse.name).to.equal('survival class');
-        expect(courseResponse.description).to.equal('how to make fire');
-        expect(courseResponse.subjects).to.equal('booleanLogic');
-        expect(courseResponse.categories).to.equal('or');
+      it('Should respond with the newly created course', function () {
+        expect(courseResponse.name).to.equal(validCoursePayload.name);
+        expect(courseResponse.description).to.equal(validCoursePayload.description);
+        expect(courseResponse.subjects).to.equal(validCoursePayload.subjects[0]);
+        expect(courseResponse.categories).to.equal(validCoursePayload.categories[0]);
+      });
+    });
+
+    describe('Update a course', function () {
+      var originalCourseResponse, updatedCourseResponse;
+
+      // Create the course
+      before(function (done) {
+        request(app)
+          .post('/api/courses')
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .send(validCoursePayload)
+          .expect(201)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            originalCourseResponse = res.body;
+            done();
+          });
       });
 
+      // Update the Course
+      beforeEach(function (done) {
+        request(app)
+          .put('/api/courses/' + originalCourseResponse._id)
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .send(updatedCoursePayload)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if(err) return done(err);
+            updatedCourseResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should respond with the updated course details', function () {
+        expect(updatedCourseResponse.name).to.equal(updatedCoursePayload.name);
+        expect(updatedCourseResponse.description).to.equal(updatedCoursePayload.description);
+      });
+    });
+
+    describe('Delete a course', function () {
+      var response;
+
+      // Create the course
+      before(function (done) {
+        request(app)
+          .post('/api/courses')
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .set('Content-type', 'application/json; charset=utf-8')
+          .send(validCoursePayload)
+          .expect(201)
+          .end(function(err, res) {
+            if (err) return done(err);
+            response = res.body;
+            done();
+          });
+      });
+
+      // Delete the Course
+      beforeEach(function (done) {
+        request(app)
+          .delete('/api/courses/' + response._id)
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(204)
+          .end(function(err, res) {
+            if(err) return done(err);
+            response = res.body;
+            done();
+          });
+      });
+
+      it('Should delete the course', function () {
+        expect(JSON.stringify(response)).to.equal(JSON.stringify({}));
+      });
+    });
+
+    describe('Create a course using an invalid payload', function () {
+      var courseResponse;
+
+      beforeEach(function (done) {
+        request(app)
+          .post('/api/courses')
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .send({
+            title: 'wrong field name',
+            help_field: 'this class does not exist, do not pay for it',
+            extra_field: true
+          })
+          .expect(400)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function (err, res) {
+            if (err) return done(err);
+            courseResponse = res.body;
+            done();
+          });
+      });
+
+      it('should not allow us to create a course using invalid parameters', function () {
+        expect(JSON.stringify(courseResponse)).to.equal(JSON.stringify({}));
+      });
     });
 
   });
 
   /* Test as a student */
   describe('Test Abstract courses as a student', function () {
-    var student;
-    var studentAuthToken;
 
-    var studentPayload = {
-      name: 'Fake Student',
-      email: 'student@example.com',
-      password: 'ps-student',
-      role: 'student'
-    };
-
-    // Clear users before testing
-    before(function () {
-      return User.remove().then(function () {
-        student = new User(studentPayload);
-        return student.save();
-      });
-    });
-
-    before(function (done) {
-      request(app)
-        .post('/auth/local')
-        .send(studentPayload)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) throw err;
-          studentAuthToken = res.body.token;
-          done();
-        });
-    });
-
-    it('should validate token exists', function () {
+    it('should validate we logged in by checking that the auth token exists', function () {
       expect(studentAuthToken).to.not.be.an('undefined');
     });
 
-    //
     describe('Get all courses', function () {
-      var getCourses;
+      var courses;
 
       beforeEach(function (done) {
         request(app)
@@ -173,22 +263,24 @@ describe('Abstract Course Tests', function() {
             if (err) {
               return done(err);
             }
-            getCourses = res.body;
+            courses = res.body;
             done();
           });
       });
 
-      it('should respond with a json array', function () {
-        expect(getCourses).to.be.instanceOf(Array);
+      it('should respond with a json array of courses', function () {
+        expect(courses).to.be.instanceOf(Array);
       });
     });
 
-    describe('Create a course', function () {
+    describe('Try creating a course as a student', function () {
+      var courseResponse;
+
       beforeEach(function (done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${studentAuthToken}`)
-          .send(coursePayload)
+          .send(validCoursePayload)
           .expect(403)
           .expect('Content-type', 'text/html; charset=utf-8"')
           .end(data => {
@@ -197,8 +289,49 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('should block us from creating a course', function () {
+      it('should respond with a 403 forbidden when we try to create a course', function () {
         expect(courseResponse).to.be.an('undefined');
+      });
+    });
+
+    describe('Try deleting a course as a student', function () {
+      var courseResponse, deleteResponse;
+
+      // Create the course (must do as a teacher)
+      before(function (done) {
+        request(app)
+          .post('/api/courses')
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .set('Content-type', 'application/json; charset=utf-8')
+          .send({
+            name: "Course to be deleted",
+            description: "not around for long",
+            subjects: ["algebra"],
+            categories: ["multiplication"]
+          })
+          .expect(201)
+          .end(function(err, res) {
+            if (err) return done(err);
+            courseResponse = res.body;
+            done();
+          });
+      });
+
+      // Delete the Course
+      beforeEach(function (done) {
+        request(app)
+          .delete('/api/courses/' + courseResponse._id)
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(403)
+          .end(function(err, res) {
+            if(err) return done(err);
+            deleteResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should not allow us to delete a course as a student', function() {
+        expect(JSON.stringify(deleteResponse)).to.equal(JSON.stringify({}));
       });
     });
   });
