@@ -1,34 +1,123 @@
-/*
- 'use strict';
+'use strict';
 
- // globals describe, expect, it, beforeEach, afterEach, before
+// globals describe, expect, it, beforeEach, afterEach, before
 
-import User from '../users/user.model';
+import User from '../../users/user.model';
 
-var app = require('../..');
+var app = require('../../..');
 import request from 'supertest';
 
-describe('Course API:', function() {
-  var newCourse;
-  var token;
+describe('Tailored Course Tests:', function() {
+  var validCoursePayload = {
+    id: '12345',
+    name: 'survival class',
+    description: 'how to make fire',
+    subjects: ['booleanLogic'],
+    categories: ['or']
+  };
 
-  //login
-  describe('Login /auth/local', function() {
-    var user;
-    // Clear users before testing
-    before(function() {
-      return User.remove().then(function() {
-        user = new User({
-          name: 'Fake Teacher',
-          email: 'teacher@example.com',
-          password: 'ps-teacher',
-          role: 'teacher'
+  var existingStudent = {
+    id: '12345',
+    name: 'Fake Student2',
+    email: 'student2@example.com',
+    password: 'ps-student2',
+    role: 'student'
+  };
+
+  var teacherPayload = {
+    name: 'Fake Teacher',
+    email: 'teacher@example.com',
+    password: 'ps-teacher',
+    role: 'teacher'
+  };
+
+  var studentPayload = {
+    name: 'Fake Student',
+    email: 'student@example.com',
+    password: 'ps-student',
+    role: 'student'
+  };
+
+  var studentToken, teacherToken, student2Token, tcSolutionsResponse;
+
+  // Clear users and create a teacher and student to use duration of tests
+  before(function(done) {
+    User.remove().then(function() {
+      var teacher = new User(teacherPayload);
+      var student = new User(studentPayload);
+      student.save();
+      teacher.save(done);
+    });
+  });
+
+  // Bad Student login
+  describe('Bad Student Login Attempt /auth/local', function() {
+    before(function(done) {
+      request(app)
+        .post('/auth/local')
+        .send({
+          email: 'student@example.com',
+          password: 'pss-student'
+        })
+        .expect(401)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          studentToken = res.body.token;
+          done();
         });
-
-        return user.save();
-      });
     });
 
+    it('should validate token does not exist', function() {
+      expect(studentToken).to.be.an('undefined');
+    });
+  });
+
+  // Good Student login
+  describe('Good Student Login Attempt /auth/local', function() {
+    before(function(done) {
+      request(app)
+        .post('/auth/local')
+        .send({
+          email: 'student@example.com',
+          password: 'ps-student'
+        })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          studentToken = res.body.token;
+          done();
+        });
+    });
+
+    it('should validate token exists', function() {
+      expect(studentToken).to.not.be.an('undefined');
+    });
+  });
+
+  // Bad Teacher login
+  describe('Bad Teacher Login Attempt /auth/local', function() {
+    before(function(done) {
+      request(app)
+        .post('/auth/local')
+        .send({
+          email: 'teacherr@example.com',
+          password: 'ps-teacher'
+        })
+        .expect(401)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          teacherToken = res.body.token;
+          done();
+        });
+    });
+
+    it('should validate token does not exist', function() {
+      expect(teacherToken).to.be.an('undefined');
+    });
+  });
+
+  // Good Teacher login
+  describe('Good Teacher Login Attempt /auth/local', function() {
     before(function(done) {
       request(app)
         .post('/auth/local')
@@ -39,82 +128,52 @@ describe('Course API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          token = res.body.token;
+          teacherToken = res.body.token;
           done();
         });
     });
 
     it('should validate token exists', function() {
-      expect(token).to.not.be.an('undefined');
+      expect(teacherToken).to.not.be.an('undefined');
     });
   });
 
-  //show all courses
-  describe('GET api/courses', function() {
-    var getCourses;
+  // Access  a Different Student's Tailored Course
+  describe("Access  a Different Student's Tailored Course", function() {
+    var TC;
 
-    beforeEach(function(done) {
+    before(function(done) {
       request(app)
-        .get('/api/courses')
-        .expect(200)
-        .expect('Content-type', 'application/json; charset=utf-8')
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          getCourses = res.body;
-          done();
-        });
-    });
-
-    it('should respond with a json array', function() {
-      expect(getCourses).to.be.instanceOf(Array);
-    });
-  });
-
-  //create a course if a teacher
-  describe('POST api/courses', function() {
-    beforeEach(function(done) {
-      request(app)
-        .post('/api/courses')
-        .set('authorization', `Bearer ${token}`)
+        .post('/auth/local')
         .send({
-          name: 'survival class',
-          description: 'how to make fire',
-          subjects: ['booleanLogic'],
-          categories: ['or'],
-          assignment: [{
-            title: 'assignment 1',
-            description: 'find trees',
-            minNumProblems: 5,
-            maxNumProblems: 10,
-            newProblemPercentage: 17
-          }]
+          email: 'student2@example.com',
+          password: 'ps-student2'
         })
-        .expect(201)
-        .expect('Content-type', 'application/json; charset=utf-8')
+        .expect(200)
+        .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
-            console.log('Bearer ' + token);
-            return done(err);
-          }
-          newCourse = res.body;
+          student2Token = res.body.token;
           done();
         });
     });
-    it('should respond with the newly created thing', function() {
-      expect(newCourse.name).to.equal('survival class');
-      expect(newCourse.description).to.equal('how to make fire');
-      expect(newCourse.subjects).to.equal('booleanLogic');
-      expect(newCourse.categories).to.equal('or');
-      //expect(newCourse.assignments[0].title).to.equal('assignment 1');
-      //expect(newCourse.assignment.description).to.equal('find trees');
-      //expect(newCourse.assignment.minNumProblems).to.equal(5);
-      // expect(newCourse.assignment.maxNumProblems).to.equal(10);
-      // expect(newCourse.assignment.newProblemPercentage).to.equal(17);
+
+    beforeEach(function(done) {
+      request(app)
+        .get('/api/courses/12345/students/12345')
+        .set('authorization', `Bearer ${student2Token}`)
+        .expect(401)
+        .expect('Content-type', 'text/html; charset=utf-8')
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          TC = res.body;
+          done();
+        });
+    });
+
+    it('should respond with unauthorized', function() {
+      expect().to.be.an('undefined');
     });
   });
 });
-});
-
- */
