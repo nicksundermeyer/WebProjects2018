@@ -11,7 +11,6 @@ export default class LoginController {
   };
   submitted = false;
 
-
   /*@ngInject*/
   constructor(Auth, $location, UserServ) {
     this.Auth = Auth;
@@ -23,7 +22,7 @@ export default class LoginController {
     //shows that the for is submitted
     this.submitted = true;
     //checks if the email and password are correct and the form was filled out correctly
-    if(form.$valid) {
+    if (form.$valid) {
       this.Auth.login({
         email: this.user.email,
         password: this.user.password
@@ -35,10 +34,9 @@ export default class LoginController {
               this.UserServ.getUsersCourses(user._id)
                 //redirecnts to the appropriate file depending on the user id
                 .then(courses => {
-                  if(courses.data.length > 0) {
+                  if (courses.data.length > 0) {
                     this.$location.path('/student');
-                  }
-                  else {
+                  } else {
                     this.$location.path('/student/course');
                   }
                 })
@@ -55,4 +53,5 @@ export default class LoginController {
         });
     }
   }
+  $onInit() {}
 }
