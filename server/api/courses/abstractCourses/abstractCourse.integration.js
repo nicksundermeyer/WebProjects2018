@@ -51,8 +51,8 @@ describe('Abstract Course Tests', function() {
   var teacherAuthToken, studentAuthToken, student, teacher;
 
   // Clear users and create a teacher and student to use duration of tests
-  before(function (done) {
-      User.remove().then(function () {
+  before(function(done) {
+    User.remove().then(function() {
       teacher = new User(teacherPayload);
       student = new User(studentPayload);
       student.save();
@@ -60,44 +60,42 @@ describe('Abstract Course Tests', function() {
     });
   });
 
-  before(function (done) {
+  before(function(done) {
     request(app)
       .post('/auth/local')
       .send(teacherPayload)
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
-        if(err) throw err;
+        if (err) throw err;
         teacherAuthToken = res.body.token;
         done();
       });
   });
 
-  before(function (done) {
+  before(function(done) {
     request(app)
       .post('/auth/local')
       .send(studentPayload)
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
-        if(err) throw err;
+        if (err) throw err;
         studentAuthToken = res.body.token;
         done();
       });
   });
 
-
   /* Test as a teacher */
-  describe('Test Abstract courses API as a teacher', function () {
-
-    it('Should validate we logged in by checking that the token exists', function () {
+  describe('Test Abstract courses API as a teacher', function() {
+    it('Should validate we logged in by checking that the token exists', function() {
       expect(teacherAuthToken).to.be.an('string');
     });
 
-    describe('Get all courses', function () {
+    describe('Get all courses', function() {
       var courses;
 
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .get('/api/courses')
           .expect(200)
@@ -111,16 +109,15 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('should respond with a json array of courses', function () {
+      it('should respond with a json array of courses', function() {
         expect(courses).to.be.instanceOf(Array);
       });
     });
 
-
-    describe('Create a course using a valid payload', function () {
+    describe('Create a course using a valid payload', function() {
       var courseResponse;
 
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
@@ -133,19 +130,25 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('Should respond with the newly created course', function () {
+      it('Should respond with the newly created course', function() {
         expect(courseResponse.name).to.equal(validCoursePayload.name);
-        expect(courseResponse.description).to.equal(validCoursePayload.description);
-        expect(courseResponse.subjects).to.equal(validCoursePayload.subjects[0]);
-        expect(courseResponse.categories).to.equal(validCoursePayload.categories[0]);
+        expect(courseResponse.description).to.equal(
+          validCoursePayload.description
+        );
+        expect(courseResponse.subjects).to.equal(
+          validCoursePayload.subjects[0]
+        );
+        expect(courseResponse.categories).to.equal(
+          validCoursePayload.categories[0]
+        );
       });
     });
 
-    describe('Update a course', function () {
+    describe('Update a course', function() {
       var originalCourseResponse, updatedCourseResponse;
 
       // Create the course
-      before(function (done) {
+      before(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
@@ -160,7 +163,7 @@ describe('Abstract Course Tests', function() {
       });
 
       // Update the Course
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .put('/api/courses/' + originalCourseResponse._id)
           .set('authorization', `Bearer ${teacherAuthToken}`)
@@ -168,23 +171,25 @@ describe('Abstract Course Tests', function() {
           .expect(200)
           .expect('Content-type', 'application/json; charset=utf-8')
           .end(function(err, res) {
-            if(err) return done(err);
+            if (err) return done(err);
             updatedCourseResponse = res.body;
             done();
           });
       });
 
-      it('Should respond with the updated course details', function () {
+      it('Should respond with the updated course details', function() {
         expect(updatedCourseResponse.name).to.equal(updatedCoursePayload.name);
-        expect(updatedCourseResponse.description).to.equal(updatedCoursePayload.description);
+        expect(updatedCourseResponse.description).to.equal(
+          updatedCoursePayload.description
+        );
       });
     });
 
-    describe('Delete a course', function () {
+    describe('Delete a course', function() {
       var response;
 
       // Create the course
-      before(function (done) {
+      before(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
@@ -199,27 +204,27 @@ describe('Abstract Course Tests', function() {
       });
 
       // Delete the Course
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .delete('/api/courses/' + response._id)
           .set('authorization', `Bearer ${teacherAuthToken}`)
           .expect(204)
           .end(function(err, res) {
-            if(err) return done(err);
+            if (err) return done(err);
             response = res.body;
             done();
           });
       });
 
-      it('Should delete the course', function () {
+      it('Should delete the course', function() {
         expect(JSON.stringify(response)).to.equal(JSON.stringify({}));
       });
     });
 
-    describe('Create a course using an invalid payload', function () {
+    describe('Create a course using an invalid payload', function() {
       var courseResponse;
 
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
@@ -230,31 +235,29 @@ describe('Abstract Course Tests', function() {
           })
           .expect(400)
           .expect('Content-type', 'application/json; charset=utf-8')
-          .end(function (err, res) {
+          .end(function(err, res) {
             if (err) return done(err);
             courseResponse = res.body;
             done();
           });
       });
 
-      it('should not allow us to create a course using invalid parameters', function () {
+      it('should not allow us to create a course using invalid parameters', function() {
         expect(JSON.stringify(courseResponse)).to.equal(JSON.stringify({}));
       });
     });
-
   });
 
   /* Test as a student */
-  describe('Test Abstract courses as a student', function () {
-
-    it('should validate we logged in by checking that the auth token exists', function () {
+  describe('Test Abstract courses as a student', function() {
+    it('should validate we logged in by checking that the auth token exists', function() {
       expect(studentAuthToken).to.not.be.an('undefined');
     });
 
-    describe('Get all courses', function () {
+    describe('Get all courses', function() {
       var courses;
 
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .get('/api/courses')
           .expect(200)
@@ -268,15 +271,15 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('should respond with a json array of courses', function () {
+      it('should respond with a json array of courses', function() {
         expect(courses).to.be.instanceOf(Array);
       });
     });
 
-    describe('Try creating a course as a student', function () {
+    describe('Try creating a course as a student', function() {
       var courseResponse;
 
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${studentAuthToken}`)
@@ -289,25 +292,25 @@ describe('Abstract Course Tests', function() {
           });
       });
 
-      it('should respond with a 403 forbidden when we try to create a course', function () {
+      it('should respond with a 403 forbidden when we try to create a course', function() {
         expect(courseResponse).to.be.an('undefined');
       });
     });
 
-    describe('Try deleting a course as a student', function () {
+    describe('Try deleting a course as a student', function() {
       var courseResponse, deleteResponse;
 
       // Create the course (must do as a teacher)
-      before(function (done) {
+      before(function(done) {
         request(app)
           .post('/api/courses')
           .set('authorization', `Bearer ${teacherAuthToken}`)
           .set('Content-type', 'application/json; charset=utf-8')
           .send({
-            name: "Course to be deleted",
-            description: "not around for long",
-            subjects: ["algebra"],
-            categories: ["multiplication"]
+            name: 'Course to be deleted',
+            description: 'not around for long',
+            subjects: ['algebra'],
+            categories: ['multiplication']
           })
           .expect(201)
           .end(function(err, res) {
@@ -318,13 +321,13 @@ describe('Abstract Course Tests', function() {
       });
 
       // Delete the Course
-      beforeEach(function (done) {
+      beforeEach(function(done) {
         request(app)
           .delete('/api/courses/' + courseResponse._id)
           .set('authorization', `Bearer ${studentAuthToken}`)
           .expect(403)
           .end(function(err, res) {
-            if(err) return done(err);
+            if (err) return done(err);
             deleteResponse = res.body;
             done();
           });
@@ -335,6 +338,4 @@ describe('Abstract Course Tests', function() {
       });
     });
   });
-
 });
-
