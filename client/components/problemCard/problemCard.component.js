@@ -122,7 +122,6 @@ export class ProblemCardComponent {
       )
         .async()
         .then(res => {
-          console.log(res);
           if (res.data.result === 'success') {
             document.getElementById('text-box-problem').style.color = 'green';
             this.addAlert('success', 'Correct!');
@@ -130,14 +129,14 @@ export class ProblemCardComponent {
             document.getElementById('text-box-problem').style.color = 'red';
             this.addAlert('danger', 'Incorrect!');
           }
-          this.remainingAttempts =
-            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
         });
     }
   }
 
   attemptInfo() {
-    this.remainingAttempts = this.remainingAttempts; //this.myproblemgeneral.numberOfAllowedAttempts - this.myproblemgeneral.attempts.length;
+    this.remainingAttempts =
+      this.myproblemgeneral.numberOfAllowedAttempts -
+      this.myproblemgeneral.attempts.length;
   }
 
   mappings = {
@@ -199,4 +198,3 @@ export default angular
       ischanged: '='
     }
   }).name;
-// mathquill integration

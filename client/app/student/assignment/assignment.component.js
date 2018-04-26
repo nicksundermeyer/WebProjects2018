@@ -41,13 +41,7 @@ export class AssignmentController {
             this.problemObjects.push(prob);
             counter++;
           });
-          if (!localStorage.getItem('ProblemNumber')) {
-            this.selectedProblem = this.problemObjects[0];
-          } else {
-            this.selectedProblem = this.problemObjects[
-              localStorage.getItem('ProblemNumber')
-            ];
-          }
+          this.selectedProblem = this.problemObjects[0];
           this.userId = user._id;
           this.problemId = this.selectedProblem.overview._id;
         });
@@ -78,7 +72,11 @@ export class AssignmentController {
     this.selectedProblem = this.problemObjects[problemNumber];
     this.problemId = this.selectedProblem.overview._id;
     this.isChanged = true;
-    localStorage.setItem('ProblemNumber', problemNumber);
+  }
+
+  //Used in css to highlight current selected problem
+  isProblem(problemNumber) {
+    return this.selectedProblem.number == problemNumber;
   }
 }
 //this creates the assignment and takes the [ngRoute]

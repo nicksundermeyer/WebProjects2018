@@ -1,7 +1,7 @@
 .left-nav {
   background-color: $black;
 }
-.left-nav-item {
+.left-nav-assign-item {
   background-color: $dark-grey;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -30,4 +30,8 @@
 .right-button {
   background-color: $orange;
   color: $white;
+}
+
+.highlight {
+  background-color: $blue;
 }
