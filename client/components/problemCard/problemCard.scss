@@ -4,12 +4,20 @@
   margin: 10px;
   border-radius: 20px;
   width: 100%;
+  position: relative;
 }
 
 .card-header-problem{
   height: 50px;
   background-color: lightblue;
   margin-bottom: 10px;
+}
+
+.problem-container {
+  border-radius: 10px;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
 }
 
 .description-problem-problem{
@@ -31,6 +39,7 @@
 .problemDisplay-problem{
   text-align: center;
   top: -55px;
+  position: relative;
 }
 
 .text-box-problem {
@@ -44,9 +53,19 @@
 
 .operators-container{
   text-align: center;
+  position: relative;
 }
 
-.constants-container, .operators-container, .logical-container{
+.constants-container{
+  margin: 10px 0px;
+  position: relative;
+}
+.operators-container{
+  position: relative;
+  margin:10px 0px;
+}
+.logical-container{
+  position:relative;
   margin: 10px 0px;
 }
 
@@ -55,4 +74,6 @@
   top: 5%;
   right: 5%;
   width: 30%;
+  z-index: 100;
+  font-size: 24px;
 }
