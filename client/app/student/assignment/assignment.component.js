@@ -3,7 +3,6 @@ const ngRoute = require('angular-route');
 import routing from '../student.routes';
 //this class functions as the question UI and manages moving from question to question
 export class AssignmentController {
-
   assignment;
   course;
   selectedProblem;
@@ -25,29 +24,31 @@ export class AssignmentController {
   $onInit() {
     this.Auth.getCurrentUser()
       .then(user => {
-        this.Assignment.getAssignmentInfo(this.$routeParams.courseId, user._id, this.$routeParams.assignmentId)
-          .then(response => {
-            this.assignment = response.data;
-            this.problems = this.assignment.problems;
-            var counter = 0;
-            this.problems.forEach(problem => {
-              let prob = {
-                number: counter,
-                overview: problem,
-                specific: problem.problem
-              }
-              this.problemObjects.push(prob);
-              counter++;
-            });
-            this.selectedProblem = this.problemObjects[0];
-            this.userId = user._id;
-            this.problemId = this.selectedProblem.overview._id;
+        this.Assignment.getAssignmentInfo(
+          this.$routeParams.courseId,
+          user._id,
+          this.$routeParams.assignmentId
+        ).then(response => {
+          this.assignment = response.data;
+          this.problems = this.assignment.problems;
+          var counter = 0;
+          this.problems.forEach(problem => {
+            let prob = {
+              number: counter,
+              overview: problem,
+              specific: problem.problem
+            };
+            this.problemObjects.push(prob);
+            counter++;
           });
+          this.selectedProblem = this.problemObjects[0];
+          this.userId = user._id;
+          this.problemId = this.selectedProblem.overview._id;
+        });
         //gets the course info for the user
-        this.Course.getCourseInfo(this.$routeParams.courseId)
-          .then(response => {
-            this.course = response.data;
-          });
+        this.Course.getCourseInfo(this.$routeParams.courseId).then(response => {
+          this.course = response.data;
+        });
       })
       .catch(err => {
         console.error(err);
@@ -55,13 +56,13 @@ export class AssignmentController {
   }
   //goes to the left problem
   left() {
-    if(this.selectedProblem.number > 0) {
+    if (this.selectedProblem.number > 0) {
       this.changeProblem(this.selectedProblem.number - 1);
     }
   }
   //goes to the right problem
   right() {
-    if(this.selectedProblem.number < (this.problemObjects.length - 1)) {
+    if (this.selectedProblem.number < this.problemObjects.length - 1) {
       this.changeProblem(this.selectedProblem.number + 1);
     }
   }
@@ -72,14 +73,19 @@ export class AssignmentController {
     this.problemId = this.selectedProblem.overview._id;
     this.isChanged = true;
   }
+
+  //Used in css to highlight current selected problem
+  isProblem(problemNumber) {
+    return this.selectedProblem.number == problemNumber;
+  }
 }
 //this creates the assignment and takes the [ngRoute]
-export default angular.module('webProjectsApp.assignment', [ngRoute])
+export default angular
+  .module('webProjectsApp.assignment', [ngRoute])
   //this gets the config of the route as well as the template, controller, and controllerAs components as well as the name
   .config(routing)
   .component('assignment', {
     template: require('./assignment.html'),
     controller: AssignmentController,
     controllerAs: 'assignmentController'
-  })
-  .name;
+  }).name;

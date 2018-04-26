@@ -13,6 +13,13 @@
   margin-bottom: 10px;
 }
 
+.problem-container {
+  border-radius: 10px;
+  background: #EEEEEE;
+  border-color: #EEEEEE;
+  color: #4b5257;
+}
+
 .description-problem-problem{
   background-color: lightcyan;
   color: black;
@@ -49,9 +56,17 @@
   position: relative;
 }
 
-.constants-container, .operators-container, .logical-container{
+.constants-container{
   margin: 10px 0px;
   position: relative;
+}
+.operators-container{
+  position: relative;
+  margin:10px 0px;
+}
+.logical-container{
+  position:relative;
+  margin: 10px 0px;
 }
 
 .alert{
