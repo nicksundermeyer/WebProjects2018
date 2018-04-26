@@ -2,7 +2,7 @@
 // Needs implementation for different levels
 var bunyan = require('bunyan');
 var log = bunyan.createLogger({
-  name: "bunyan-log",
+  name: 'bunyan-log',
   streams: [
     {
       level: 'trace',
@@ -31,8 +31,4 @@ var log = bunyan.createLogger({
   ]
 });
 
-
-
-//let logger = require('./../../utils/logger'); //path to my logger
-
-
+module.exports = log;

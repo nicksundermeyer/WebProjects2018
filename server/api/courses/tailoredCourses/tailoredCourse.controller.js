@@ -11,6 +11,7 @@ import User from './../../users/user.model';
 import KAS from 'kas/kas';
 require('kas/kas');
 require('mathlex_server_friendly');
+let logger = require('./../../../config/bunyan'); //path to my logger
 
 //********************************************************
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
@@ -48,10 +49,12 @@ export function submitSolution(req, res) {
                   var solAsLatex = global.MathLex.render(solAsTree, 'latex');
                   var att = req.body;
                   var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
-                  console.log(expr1.print());
+                  //console.log(expr1.print());
+                  logger.info(expr1.print());
 
                   var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
-                  console.log(expr2.print());
+                  //console.log(expr2.print());
+                  logger.info(expr2.print());
 
                   if (global.KAS.compare(expr1, expr2).equal) {
                     //console.log('right answer! It is working!');
@@ -72,7 +75,6 @@ export function submitSolution(req, res) {
                 //save the changes made to attempts
                 _problem.save();
               }
-              console.log('gets here too!');
               return _problem;
             });
 
@@ -94,7 +96,8 @@ export function submitSolution(req, res) {
       }
     })
     .catch(err => {
-      console.log(err);
+      //console.log(err);
+      logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
         res
           .status(404)
@@ -134,6 +137,7 @@ export function getTailoredCourse(req, res, allowSolutions) {
     })
     .catch(err => {
       console.log(err);
+      logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
         res
           .status(404)
@@ -146,14 +150,12 @@ export function getTailoredCourse(req, res, allowSolutions) {
 }
 
 export function enrollStudentInCourse(req, res) {
-  console.log('this function');
   //find the user to be enrolled in course
   return User.findById(req.params.studentID)
     .exec()
     .then(function(student) {
       if (student) {
-        console.log('found student');
-
+        logger.info('found student');
         //Find the course with the ID passed into the URL
         return AbstractCourse.findById(req.params.id)
           .exec()

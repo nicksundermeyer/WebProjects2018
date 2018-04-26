@@ -2,6 +2,7 @@
 
 import Problem from './problem.model';
 import shared from './../../../config/environment/shared';
+let logger = require('./../../../config/bunyan'); //path to my logger
 
 export function index(req, res) {
   Problem.find()
@@ -20,7 +21,7 @@ export function show(req, res) {
   Problem.findById(req.params.id)
     .exec()
     .then(function(problem) {
-      if(problem) {
+      if (problem) {
         return res.status(200).json(problem);
       } else {
         return res.status(204).end();
@@ -39,8 +40,12 @@ export function create(req) {
       .post(shared.problemEngineUrl, req)
       .then(function(response) {
         var problem = new Problem();
-        problem.problem.description = JSON.parse(JSON.stringify(response.data.problem.description));
-        problem.problem.solution = JSON.parse(JSON.stringify(response.data.problem.solution));
+        problem.problem.description = JSON.parse(
+          JSON.stringify(response.data.problem.description)
+        );
+        problem.problem.solution = JSON.parse(
+          JSON.stringify(response.data.problem.solution)
+        );
         problem.problem.problemId = response.data.problem.problemId;
         problem.instructions = response.data.instructions;
         problem.problem.subject = response.data.problem.subject;
@@ -50,6 +55,8 @@ export function create(req) {
         resolve(problem);
       })
       .catch(function(err) {
+        var errormsg = 'Could not instantiate Axios ' + err;
+        logger.error({ msg: errrormsg });
         reject('Could not instantiate Axios ' + err);
       });
   });
