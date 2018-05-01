@@ -13,13 +13,20 @@
         height: 50%;
         border-radius: 10px;
 
+        h1{
+            font-size: 48px;
+            margin: 10px;
+        }
+
         input{
             height: 40px;
-            width: 90%
+            width: 90%;
+            text-align: center;
+            margin: 20px 0;
         }
 
         .row{
-            padding: 50px;
+            padding: 70px 10px;
         }
 
         .btn-login{
