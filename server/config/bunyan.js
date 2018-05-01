@@ -22,7 +22,7 @@ var log = bunyan.createLogger({
     },
     {
       level: 'error',
-      path: __dirname + '/logs/appError.log' // log ERROR and above to a file
+      stream: process.stderr
     },
     {
       level: 'fatal',
