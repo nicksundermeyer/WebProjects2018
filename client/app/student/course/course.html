@@ -21,13 +21,13 @@
           </figcaption>
       </figure>
     </div>
-    <div class= "col-lg-7 col-md-12">
+    <div class= "col-lg-8 col-md-12">
       <div class="container info">
         <br>
         <div><span class="title bold">{{courseController.course.name}}</span></div>
         <div>{{courseController.course.description}}</div>
       </div>
-      <div class="center-block" ng-repeat="anAssignment in courseController.assignments">
+      <div ng-repeat="anAssignment in courseController.assignments">
         <assignment-card assignment="anAssignment" courseid="courseController.courseId" istailored="courseController.isTailored" ></assignment-card>
       </div>
     </div>

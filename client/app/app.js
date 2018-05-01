@@ -1,5 +1,5 @@
 'use strict';
-console.log("app.js 6");
+
 
 import angular from 'angular';
 // import ngAnimate from 'angular-animate';
