@@ -23,10 +23,8 @@ export function Modal($rootScope, $uibModal) {
 
   // Public API here
   return {
-
     /* Confirmation modals */
     confirm: {
-
       /**
        * Create a function to open a delete confirmation modal (ex. ng-click='myModalFn(name, arg1, arg2...)')
        * @param  {Function} del - callback, ran when delete is confirmed
@@ -43,26 +41,32 @@ export function Modal($rootScope, $uibModal) {
           var name = slicedArgs.shift();
           var deleteModal;
 
-          deleteModal = openModal({
-            modal: {
-              dismissable: true,
-              title: 'Confirm Delete',
-              html: `<p>Are you sure you want to delete <strong>${name}</strong> ?</p>`,
-              buttons: [{
-                classes: 'btn-danger',
-                text: 'Delete',
-                click(e) {
-                  deleteModal.close(e);
-                }
-              }, {
-                classes: 'btn-default',
-                text: 'Cancel',
-                click(e) {
-                  deleteModal.dismiss(e);
-                }
-              }]
-            }
-          }, 'modal-danger');
+          deleteModal = openModal(
+            {
+              modal: {
+                dismissable: true,
+                title: 'Confirm Delete',
+                html: `<p>Are you sure you want to delete <strong>${name}</strong> ?</p>`,
+                buttons: [
+                  {
+                    classes: 'btn-danger',
+                    text: 'Delete',
+                    click(e) {
+                      deleteModal.close(e);
+                    }
+                  },
+                  {
+                    classes: 'btn-default',
+                    text: 'Cancel',
+                    click(e) {
+                      deleteModal.dismiss(e);
+                    }
+                  }
+                ]
+              }
+            },
+            'modal-danger'
+          );
 
           deleteModal.result.then(function(event) {
             Reflect.apply(del, event, slicedArgs);
@@ -73,6 +77,6 @@ export function Modal($rootScope, $uibModal) {
   };
 }
 
-export default angular.module('webProjectsApp.Modal', [])
-  .factory('Modal', Modal)
-  .name;
+export default angular
+  .module('webProjectsApp.Modal', [])
+  .factory('Modal', Modal).name;
