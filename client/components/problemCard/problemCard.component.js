@@ -200,3 +200,26 @@ export default angular
       ischanged: '='
     }
   }).name;
+
+
+//not working yet need to figure this out
+/*
+import {MathQuillLoader} from 'mathquill-typescript';
+MathQuillLoader.loadMathQuill(mathquill => {
+
+  // do what you want here
+  var mathFieldSpan = document.getElementById('text-box-problem');
+  var latexSpan = document.getElementById('problem-input');
+
+  var MQ = MathQuill.getInterface(2); // for backcompat
+  var mathField = MQ.MathField(mathFieldSpan, {
+    spaceBehavesLikeTab: true, // configurable
+    handlers: {
+      edit: function() { // useful event handlers
+        latexSpan.textContent = mathField.latex(); // simple API
+      }
+    }
+  });
+});
+
+*/
