@@ -129,6 +129,8 @@ export class ProblemCardComponent {
             document.getElementById('text-box-problem').style.color = 'red';
             this.addAlert('danger', 'Incorrect!');
           }
+          this.remainingAttempts =
+            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
         });
     }
   }
