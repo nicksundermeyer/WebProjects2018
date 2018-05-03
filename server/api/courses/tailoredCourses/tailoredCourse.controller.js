@@ -49,15 +49,27 @@ export function submitSolution(req, res) {
                   var solAsLatex = global.MathLex.render(solAsTree, 'latex');
                   var att = req.body;
                   var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
-                  //console.log(expr1.print());
-                  logger.info(expr1.print());
+                  if (expr1) {
+                    logger.debug('expr1: ' + expr1.print());
+                  } else {
+                    logger.info(
+                      _problem.problem.solution.math +
+                        ' is not a valid expression'
+                    );
+                  }
 
                   var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
-                  //console.log(expr2.print());
-                  logger.info(expr2.print());
+                  if (expr2) {
+                    logger.debug(expr2.print());
+                  } else {
+                    logger.error('Invalid solution detected: ' + solAsLatex);
+                  }
 
-                  if (global.KAS.compare(expr1, expr2).equal) {
-                    //console.log('right answer! It is working!');
+                  if (
+                    expr1 &&
+                    expr2 &&
+                    global.KAS.compare(expr1, expr2).equal
+                  ) {
                     return res.send({
                       result: 'success',
                       numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
