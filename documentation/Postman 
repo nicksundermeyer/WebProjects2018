@@ -1,0 +1,949 @@
+{
+	"id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+	"name": "Postman Testing",
+	"description": "API test for course, users, and problem",
+	"order": [],
+	"folders": [
+		{
+			"name": "Assignment/Problems",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"697dc907-bf2c-6b2a-2e2c-c7b9ebf77f3c",
+				"253a54a6-985c-3e78-de59-15a6f5e9bfd5",
+				"f9cd8456-180f-c694-8f69-0a6debd6fc43"
+			],
+			"owner": "3559904",
+			"folder": "9614d3f0-9297-f31f-d695-ca82c476d3ba",
+			"folders_order": [],
+			"id": "0c59818c-0bca-40d7-01c2-b86c841301cb"
+		},
+		{
+			"name": "Collecting User Info",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"62dc11da-deec-c50b-a463-0c9db40889b3",
+				"9703c470-e817-baf9-66d6-d262897cc037",
+				"5ffbb60a-de77-1210-60ab-aa7de805fc00",
+				"097e4707-6537-2e3b-83dc-7344102abcd9",
+				"ea316bc0-2f28-b035-1424-eac55ae78a47"
+			],
+			"owner": "3559904",
+			"folder": "795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+			"folders_order": [],
+			"id": "7fea619b-fe70-3473-0334-0176def1c3a5"
+		},
+		{
+			"id": "9614d3f0-9297-f31f-d695-ca82c476d3ba",
+			"name": "Course API",
+			"description": "",
+			"order": [],
+			"folders_order": [
+				"f392fbec-27f9-a0f4-9939-ce54aa9d3ec5",
+				"2e552a3a-b712-44a7-c76a-adc5374ea825",
+				"0c59818c-0bca-40d7-01c2-b86c841301cb"
+			],
+			"owner": "3559904",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d"
+		},
+		{
+			"name": "Course Info",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"216fc38d-609d-66a3-885b-647b804142eb",
+				"2533de2b-f12c-031b-60c8-9e3762c0e473",
+				"4c23d491-2152-d418-a4ec-c5d388e91b42",
+				"c39fba0f-e8a6-0c5f-d4fb-47248e78b46e",
+				"45d0192a-792e-c908-172e-eb8212e3159f"
+			],
+			"owner": "3559904",
+			"folder": "9614d3f0-9297-f31f-d695-ca82c476d3ba",
+			"folders_order": [],
+			"id": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"name": "Courses CRUD",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"e8d9a4a9-a622-b40b-8597-7991b3a7dd75",
+				"0fc1d3af-f5a8-5488-9fbb-e0ff69875d61",
+				"1e14eb7e-4d44-1c42-a758-eb516d8743a3"
+			],
+			"owner": "3559904",
+			"folder": "9614d3f0-9297-f31f-d695-ca82c476d3ba",
+			"folders_order": [],
+			"id": "f392fbec-27f9-a0f4-9939-ce54aa9d3ec5"
+		},
+		{
+			"name": "Creating Profiles to Test With",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"42e5547e-3d8f-a592-af81-7d3cf0253345",
+				"f0b33063-bc8c-0e11-5806-37445d2903df",
+				"8a39d443-d76e-3fdd-7635-98e01978e6f6",
+				"ad7e10d0-b9e7-34be-69bd-32a23982a877",
+				"1ba51c23-f755-8f8e-c932-f92c5f7c5d53"
+			],
+			"owner": "3559904",
+			"folder": "795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+			"folders_order": [],
+			"id": "846fb434-3489-5d27-1580-6d5ef2e8b2a6"
+		},
+		{
+			"name": "Different Login Roles",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"fa0383b4-5e7d-e04f-5ecd-8e7396e1024a",
+				"ebc231a9-dee3-4c57-3dd1-7d1d2cb03c66",
+				"c6c6bfb8-566d-f0e6-aa60-7353e1260054"
+			],
+			"owner": "3559904",
+			"folder": "795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+			"folders_order": [],
+			"id": "001bef50-a45c-14c4-7a55-bf4efec1e3ed"
+		},
+		{
+			"name": "Making Changes to a User",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"order": [
+				"948a3d64-d00e-5c10-1a73-9372399495cc",
+				"ee9b59a2-da07-0035-9c3e-575812b25786",
+				"df4873ea-f2ac-5ad2-8640-eda10612b67a"
+			],
+			"owner": "3559904",
+			"folder": "795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+			"folders_order": [],
+			"id": "4d2df419-c7a4-7d50-2edb-6d34b6010473"
+		},
+		{
+			"id": "795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+			"name": "Users(Log in Here) API",
+			"description": "",
+			"order": [],
+			"folders_order": [
+				"001bef50-a45c-14c4-7a55-bf4efec1e3ed",
+				"846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+				"7fea619b-fe70-3473-0334-0176def1c3a5",
+				"4d2df419-c7a4-7d50-2edb-6d34b6010473"
+			],
+			"owner": "3559904",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d"
+		}
+	],
+	"folders_order": [
+		"795fcb0c-7a5c-acd9-cace-bd34f95505c0",
+		"9614d3f0-9297-f31f-d695-ca82c476d3ba"
+	],
+	"timestamp": 0,
+	"owner": "3559904",
+	"public": false,
+	"requests": [
+		{
+			"id": "097e4707-6537-2e3b-83dc-7344102abcd9",
+			"name": "Get current Logged in students info",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users/me",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "7fea619b-fe70-3473-0334-0176def1c3a5",
+			"isFromCollection": true,
+			"collectionRequestId": "097e4707-6537-2e3b-83dc-7344102abcd9"
+		},
+		{
+			"id": "0fc1d3af-f5a8-5488-9fbb-e0ff69875d61",
+			"name": "Update Course",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "PUT",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n    \"name\": \"Chemistry1\",\n\t\"description\": \"Chemistry is the topic lab.\"\n}",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/5a7eb57dafd57e5e9a878d315a7eb57dafd57e5e9a878d31",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "f392fbec-27f9-a0f4-9939-ce54aa9d3ec5"
+		},
+		{
+			"id": "1ba51c23-f755-8f8e-c932-f92c5f7c5d53",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:3000/api/users/",
+			"folder": "846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1524687963578,
+			"name": "Create a New User",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"responses": [],
+			"rawModeData": "{\n  \"name\": \"Teacher2\",\n  \"email\": \"teacher2@example.com\",\n  \"password\": \"ps-teacher2\",\n  \"role\" : \"teacher\"\n}"
+		},
+		{
+			"id": "1e14eb7e-4d44-1c42-a758-eb516d8743a3",
+			"name": "Delete Course",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "DELETE",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/5a690208ab273f12a0a718f2",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"isLastRequest": true,
+			"folder": "f392fbec-27f9-a0f4-9939-ce54aa9d3ec5"
+		},
+		{
+			"id": "216fc38d-609d-66a3-885b-647b804142eb",
+			"name": "Get all courses Information",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"id": "2533de2b-f12c-031b-60c8-9e3762c0e473",
+			"name": "Get Tailored Course by ID",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/mycourses/5a8b2d40f36cd41e58e482a4",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"id": "253a54a6-985c-3e78-de59-15a6f5e9bfd5",
+			"name": "Get Assignment By ID",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses//mycourses/assignments/5a8b2d40f36cd41e58e482a6",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "0c59818c-0bca-40d7-01c2-b86c841301cb"
+		},
+		{
+			"id": "42e5547e-3d8f-a592-af81-7d3cf0253345",
+			"name": "Create Teacher to test Permission",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n  \"name\": \"Teacher2\",\n  \"email\": \"teacher2@example.com\",\n  \"password\": \"ps-teacher2\",\n  \"role\" : \"teacher\"\n}",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users/",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+			"isFromCollection": true,
+			"collectionRequestId": "42e5547e-3d8f-a592-af81-7d3cf0253345"
+		},
+		{
+			"id": "45d0192a-792e-c908-172e-eb8212e3159f",
+			"name": "Add student to course",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "POST",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/5a8f6e708497b92568c09b0d/students",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"id": "4c23d491-2152-d418-a4ec-c5d388e91b42",
+			"name": "Show specific course using id",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "http://localhost:3000/api/courses/5a7e8dc745bb6805fe805e00",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"id": "5ffbb60a-de77-1210-60ab-aa7de805fc00",
+			"name": "Get user's courses",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {
+				"id": ""
+			},
+			"url": "localhost:3000/api/users/:id/courses",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": ""
+				}
+			],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "7fea619b-fe70-3473-0334-0176def1c3a5",
+			"isFromCollection": true,
+			"collectionRequestId": "5ffbb60a-de77-1210-60ab-aa7de805fc00"
+		},
+		{
+			"id": "62dc11da-deec-c50b-a463-0c9db40889b3",
+			"name": "List all users",
+			"description": "List all users stored in the collection",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				}
+			],
+			"collection_id": "0117e2d1-dbd7-68bb-af8a-592c72282ec4",
+			"isFromCollection": true,
+			"collectionRequestId": "7aa9c8af-168f-ba2b-96d8-0db6ef41343f",
+			"folder": "7fea619b-fe70-3473-0334-0176def1c3a5"
+		},
+		{
+			"id": "697dc907-bf2c-6b2a-2e2c-c7b9ebf77f3c",
+			"name": "Find Problems Using IDs",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {
+				"courseid": "",
+				"studentid": "",
+				"assignmentid": "",
+				"problemid": ""
+			},
+			"url": "localhost:3000/api/courses/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "courseid",
+					"value": ""
+				},
+				{
+					"key": "studentid",
+					"value": ""
+				},
+				{
+					"key": "assignmentid",
+					"value": ""
+				},
+				{
+					"key": "problemid",
+					"value": ""
+				}
+			],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "0c59818c-0bca-40d7-01c2-b86c841301cb"
+		},
+		{
+			"id": "8a39d443-d76e-3fdd-7635-98e01978e6f6",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:3000/api/users/",
+			"folder": "846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1524634525898,
+			"name": "Create Student to test Permission",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"responses": [],
+			"rawModeData": "{\n  \"name\": \"Student5\",\n  \"email\": \"Student5@example.com\",\n  \"password\": \"ps-student5\",\n  \"role\" : \"student\"\n}"
+		},
+		{
+			"id": "948a3d64-d00e-5c10-1a73-9372399495cc",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:3000/api/users/:id",
+			"folder": "4d2df419-c7a4-7d50-2edb-6d34b6010473",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {
+				"id": ""
+			},
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": ""
+				}
+			],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1524688332777,
+			"name": "Update a user",
+			"description": "Update a user with a given id. Replace :id with the id of your user",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"responses": [],
+			"rawModeData": "{\n  \"name\": \"Teacher2\",\n  \"email\": \"teacher2@example.com\",\n  \"password\": \"ps-teacher2\",\n  \"role\" : \"teacher\"\n}"
+		},
+		{
+			"id": "9703c470-e817-baf9-66d6-d262897cc037",
+			"name": "Get all User Info",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users/",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "7fea619b-fe70-3473-0334-0176def1c3a5",
+			"isFromCollection": true,
+			"collectionRequestId": "9703c470-e817-baf9-66d6-d262897cc037"
+		},
+		{
+			"id": "ad7e10d0-b9e7-34be-69bd-32a23982a877",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:3000/api/users/",
+			"folder": "846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1524634734282,
+			"name": "Create Resaercher to test Permission",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"responses": [],
+			"rawModeData": "{\n  \"name\": \"Researcher5\",\n  \"email\": \"Researcher5@example.com\",\n  \"password\": \"ps-researcher5\",\n  \"role\" : \"researcher\"\n}"
+		},
+		{
+			"id": "c39fba0f-e8a6-0c5f-d4fb-47248e78b46e",
+			"name": "Get Tailored Courses With Abstract and User ID ( 404)",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/5a8b2d40f36cd41e58e482a4/students/5a8b2d3ef36cd41e58e48275",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "2e552a3a-b712-44a7-c76a-adc5374ea825"
+		},
+		{
+			"id": "c6c6bfb8-566d-f0e6-aa60-7353e1260054",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:3000",
+			"folder": "001bef50-a45c-14c4-7a55-bf4efec1e3ed",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1523472480664,
+			"name": "Admin Login",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"rawModeData": "{\n  \"email\" : \"admin@example.com\",\n  \"password\" : \"ps-admin\",\n  \"role\" : \"admin\"\n}"
+		},
+		{
+			"id": "df4873ea-f2ac-5ad2-8640-eda10612b67a",
+			"name": "delete users using user id",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "DELETE",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {
+				"id": ""
+			},
+			"url": "localhost:3000/api/users/:id",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "id",
+					"value": ""
+				}
+			],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "4d2df419-c7a4-7d50-2edb-6d34b6010473",
+			"isFromCollection": true,
+			"collectionRequestId": "df4873ea-f2ac-5ad2-8640-eda10612b67a"
+		},
+		{
+			"id": "e8d9a4a9-a622-b40b-8597-7991b3a7dd75",
+			"name": "Create Crouse",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "POST",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n  \"name\": \"Computer Science 5\",\n  \"description\" : \"CS course 5\",\n  \"subjects\" : [\"booleanLogic\"],\n  \"categories\" : [\"or\"],\n  \"assignments\" : [{\n  \t\"title\" : \"assign 1\",\n  \t\"description\" : \"assign 1 descrip\",\n  \t\"minNumProblems\": 5,\n  \t\"maxNumProblems\" : 10,\n  \t\"newProblemPercentage\" : 17\n  }]\n}",
+			"pathVariables": {},
+			"url": "localhost:3000/api/courses/",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "f392fbec-27f9-a0f4-9939-ce54aa9d3ec5"
+		},
+		{
+			"id": "ea316bc0-2f28-b035-1424-eac55ae78a47",
+			"name": "Get user's information using their id",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "GET",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users/me",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "7fea619b-fe70-3473-0334-0176def1c3a5",
+			"isFromCollection": true,
+			"collectionRequestId": "ea316bc0-2f28-b035-1424-eac55ae78a47"
+		},
+		{
+			"id": "ebc231a9-dee3-4c57-3dd1-7d1d2cb03c66",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:3000",
+			"folder": "001bef50-a45c-14c4-7a55-bf4efec1e3ed",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var data = JSON.parse(responseBody);\r\npostman.clearGlobalVariable(\"jwt_token\");\r\npostman.setGlobalVariable(\"jwt_token\", data.token);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1523482719191,
+			"name": "Student Login",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"rawModeData": "{\n  \"email\" : \"student@example.com\",\n  \"password\" : \"ps-student\",\n  \"role\" : \"student\"\n}"
+		},
+		{
+			"id": "ee9b59a2-da07-0035-9c3e-575812b25786",
+			"name": "Change password using user's ID",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "PUT",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:3000/api/users/5a675b17a08c472d7c36a9f9/password",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}"
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "4d2df419-c7a4-7d50-2edb-6d34b6010473",
+			"isFromCollection": true,
+			"collectionRequestId": "ee9b59a2-da07-0035-9c3e-575812b25786"
+		},
+		{
+			"id": "f0b33063-bc8c-0e11-5806-37445d2903df",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:3000/api/users/",
+			"folder": "846fb434-3489-5d27-1580-6d5ef2e8b2a6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1524634528325,
+			"name": "Create Admin to test Permissions",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"responses": [],
+			"rawModeData": "{\n  \"name\": \"Admin5\",\n  \"email\": \"Admin5@example.com\",\n  \"password\": \"ps-admin5\",\n  \"role\" : \"admin\"\n}"
+		},
+		{
+			"id": "f9cd8456-180f-c694-8f69-0a6debd6fc43",
+			"name": "Submit solution",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "POST",
+			"headers": "Content-Type: application/json\nAuthorization: bearer {{jwt_token}}",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {
+				"course": "",
+				"assignment": "",
+				"problem": ""
+			},
+			"url": "localhost:3000/api/courses/:course/assignments/:assignment/problems/:problem",
+			"responses": [],
+			"pathVariableData": [
+				{
+					"key": "course",
+					"value": ""
+				},
+				{
+					"key": "assignment",
+					"value": ""
+				},
+				{
+					"key": "problem",
+					"value": ""
+				}
+			],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "0c59818c-0bca-40d7-01c2-b86c841301cb"
+		},
+		{
+			"id": "fa0383b4-5e7d-e04f-5ecd-8e7396e1024a",
+			"name": "Teacher Login",
+			"description": "",
+			"collectionId": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"method": "POST",
+			"headers": "Content-Type: application/json\nAuthorization: Bearer {{jwt_token}}",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n  \"email\" : \"teacher@example.com\",\n  \"password\" : \"ps-teacher\"\n}",
+			"pathVariables": {},
+			"tests": "var data = JSON.parse(responseBody);\r\npostman.clearGlobalVariable(\"jwt_token\");\r\npostman.setGlobalVariable(\"jwt_token\", data.token);",
+			"preRequestScript": "",
+			"url": "http://localhost:3000/auth/local",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
+				},
+				{
+					"key": "Authorization",
+					"value": "Bearer {{jwt_token}}",
+					"description": ""
+				}
+			],
+			"collection_id": "67507139-c51b-75cc-3185-fdb10f74f90d",
+			"folder": "001bef50-a45c-14c4-7a55-bf4efec1e3ed",
+			"isFromCollection": true,
+			"collectionRequestId": "fa0383b4-5e7d-e04f-5ecd-8e7396e1024a"
+		}
+	]
+}
