@@ -5,12 +5,28 @@
   padding: 16px;
   border-radius: 10px;
 }
+
+// to create a banner, create a div with id #banner, and then class hero-unit and either
+// banner-small, banner-medium, or banner-large depending on size
 .hero-unit {
 
   &#banner {
     border-bottom: none;
     margin-top: -20px;
-    min-height: 400px;
+    min-height: 200px;
+
+    &.banner-small{
+      height: 200px;
+    }
+  
+    &.banner-medium{
+      height: 400px;
+    }
+
+    &.banner-large{
+      height: 600px;
+    }
+
     //background: -webkit-linear-gradient(45deg, rgba(0,67,168,1) 0%, rgba(0,0,82,1) 100%);
     &:after {
       content: "";
