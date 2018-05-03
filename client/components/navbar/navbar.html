@@ -13,9 +13,9 @@
       <li ng-show="$ctrl.isStudent()" ><a href="/student">Student</a></li>
       <li ng-show="$ctrl.isTeacher()" ><a href="/teacher">Teacher</a></li>
       <li ng-show="$ctrl.isAdmin()" ><a href="/admin">Admin</a></li>
-      <li ng-show="$ctrl.isStudent()" ><a href="/student">Discovery</a></li>
-      <li ng-show="$ctrl.isTeacher()" ><a href="/teacher">Discovery</a></li>
-      <li ng-show="$ctrl.isAdmin()" ><a href="/student">Discovery</a></li>
+      <li ng-show="$ctrl.isStudent()"|| ng-show = "$ctrl.isTeacher()" || ng-show = "$ctrl.isAdmin()"><a href="/admin">Discovery</a></li>
+
+
 
       <li ng-hide="$ctrl.isLoggedIn()" class="float-right"><a href="/login">Login</a></li>
       <li ng-hide="$ctrl.isLoggedIn()" class="float-right"><a href="/signup">Sign up</a></li>
