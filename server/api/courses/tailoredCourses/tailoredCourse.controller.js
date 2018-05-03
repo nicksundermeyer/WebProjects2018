@@ -71,6 +71,12 @@ export function submitSolution(req, res) {
                       numberOfAttempts: _problem.attempts.length
                     });
                   }
+                } else {
+                  return res.send({
+                    result: 'exceeded attempts',
+                    numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
+                    numberOfAttempts: _problem.attempts.length
+                  });
                 }
                 //save the changes made to attempts
                 _problem.save();

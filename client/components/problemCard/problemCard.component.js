@@ -201,7 +201,6 @@ export default angular
     }
   }).name;
 
-
 //not working yet need to figure this out
 /*
 import {MathQuillLoader} from 'mathquill-typescript';
