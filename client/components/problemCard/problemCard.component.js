@@ -208,18 +208,19 @@ import {MathQuillLoader} from 'mathquill-typescript';
 MathQuillLoader.loadMathQuill(mathquill => {
 
   // do what you want here
-  var mathFieldSpan = document.getElementById('text-box-problem');
-  var latexSpan = document.getElementById('problem-input');
+  let answerSpan = document.getElementById('text-box-problem');
+ // let latexSpan = document.getElementById('text-box-problem');
 
-  var MQ = MathQuill.getInterface(2); // for backcompat
-  var mathField = MQ.MathField(mathFieldSpan, {
-    spaceBehavesLikeTab: true, // configurable
+  //var answerSpan = document.getElementById('answer');
+  var answerMathField = MQ.MathField(answerSpan, {
     handlers: {
-      edit: function() { // useful event handlers
-        latexSpan.textContent = mathField.latex(); // simple API
+      edit: function() {
+        var enteredMath = answerMathField.latex();  // Get entered math in LaTeX format
+        checkAnswer(enteredMath);
       }
     }
   });
 });
-
 */
+
+

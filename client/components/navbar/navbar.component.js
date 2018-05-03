@@ -22,7 +22,6 @@ export class NavbarComponent {
     this.isStudent = Auth.isStudentSync;        //see if student
     this.isTeacher = Auth.isTeacherSync;        //see if teacher
     this.getCurrentUser = Auth.getCurrentUserSync; //get the current user
-
   }
   /* if route is active return path location */
   isActive(route) {
