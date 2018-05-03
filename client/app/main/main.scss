@@ -10,8 +10,8 @@
   &#banner {
     border-bottom: none;
     margin-top: -20px;
-    min-height: 600px;
-    background: -webkit-linear-gradient(45deg, rgba(0,67,168,1) 0%, rgba(0,0,82,1) 100%);
+    min-height: 400px;
+    //background: -webkit-linear-gradient(45deg, rgba(0,67,168,1) 0%, rgba(0,0,82,1) 100%);
     &:after {
       content: "";
       top: 0;
@@ -19,13 +19,13 @@
       left: 0;
       right: 0;
       position: absolute;
-      background-image: url("/assets/images/background.svg");
+      background-image: url("/assets/images/Banner.png");
       background-size: auto;
       background-repeat: repeat;
-      opacity: 0.15;
+      //opacity: 0.15;
     }
     .container{
-      padding-top: 120px;
+      padding-top: 60px;
       position: relative;
       z-index: 5;
     }
@@ -37,11 +37,11 @@
       font-size: 60px;
       line-height: 1;
       letter-spacing: -1px;
-      color: $white;
+      color: $black;
       font-weight: bolder;
     }
     h2 {
-      color: $light-grey;
+      color: $dark-grey;
       font-weight: medium;
       padding-bottom: 48px;
     }

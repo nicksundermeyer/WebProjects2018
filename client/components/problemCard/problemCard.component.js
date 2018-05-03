@@ -129,6 +129,8 @@ export class ProblemCardComponent {
             document.getElementById('text-box-problem').style.color = 'red';
             this.addAlert('danger', 'Incorrect!');
           }
+          this.remainingAttempts =
+            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
         });
     }
   }
@@ -198,3 +200,26 @@ export default angular
       ischanged: '='
     }
   }).name;
+
+//not working yet need to figure this out
+/*
+import {MathQuillLoader} from 'mathquill-typescript';
+MathQuillLoader.loadMathQuill(mathquill => {
+
+  // do what you want here
+  let answerSpan = document.getElementById('text-box-problem');
+ // let latexSpan = document.getElementById('text-box-problem');
+
+  //var answerSpan = document.getElementById('answer');
+  var answerMathField = MQ.MathField(answerSpan, {
+    handlers: {
+      edit: function() {
+        var enteredMath = answerMathField.latex();  // Get entered math in LaTeX format
+        checkAnswer(enteredMath);
+      }
+    }
+  });
+});
+*/
+
+
