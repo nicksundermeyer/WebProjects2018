@@ -5,7 +5,6 @@ import TailoredCourse from '../courses/tailoredCourses/tailoredCourse.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
-
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
@@ -25,16 +24,18 @@ function handleError(res, statusCode) {
  * restriction: 'admin'
  */
 export function index(req, res) {
-  return User.find({}, '-salt -password').exec()
-    .then(users => res.status(200).json(users)
-    )
+  return User.find({}, '-salt -password')
+    .exec()
+    .then(users => res.status(200).json(users))
     .catch(handleError(res));
 }
 
 export function getUsersCourses(req, res) {
-  TailoredCourse.find({ studentID: req.params.id}, '-studentID').populate({path: 'abstractCourseID', select: 'name description _id'})
+  TailoredCourse.find({ studentID: req.params.id }, '-studentID')
+    .populate({ path: 'abstractCourseID', select: 'name description _id' })
     .exec()
-    .then(tc => res.json(tc).status(200)).catch(() => res.status(404));
+    .then(tc => res.json(tc).status(200))
+    .catch(() => res.status(404));
 }
 
 /**
@@ -43,12 +44,17 @@ export function getUsersCourses(req, res) {
 export function create(req, res) {
   var newUser = new User(req.body);
   newUser.provider = 'local';
-  newUser.save()
+  newUser
+    .save()
     .then(function(user) {
-      var token = jwt.sign({_id: user._id, role: user.role}, config.secrets.session, {
-        expiresIn: 60 * 60 * 5
-      });
-      return res.json({token});
+      var token = jwt.sign(
+        { _id: user._id, role: user.role },
+        config.secrets.session,
+        {
+          expiresIn: 60 * 60 * 5
+        }
+      );
+      return res.json({ token });
     })
     .catch(validationError(res));
 }
@@ -58,9 +64,10 @@ export function create(req, res) {
  */
 export function show(req, res, next) {
   var userId = req.params.id;
-  return User.findById(userId).exec()
+  return User.findById(userId)
+    .exec()
     .then(user => {
-      if(!user) {
+      if (!user) {
         res.status(404).end();
       }
       res.json(user.profile);
@@ -73,7 +80,8 @@ export function show(req, res, next) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-  return User.findByIdAndRemove(req.params.id).exec()
+  return User.findByIdAndRemove(req.params.id)
+    .exec()
     .then(function() {
       return res.status(204).end();
     })
@@ -88,11 +96,13 @@ export function changePassword(req, res) {
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
-  return User.findById(userId).exec()
+  return User.findById(userId)
+    .exec()
     .then(user => {
-      if(user.authenticate(oldPass)) {
+      if (user.authenticate(oldPass)) {
         user.password = newPass;
-        return user.save()
+        return user
+          .save()
           .then(() => {
             res.status(204).end();
           })
@@ -109,9 +119,11 @@ export function changePassword(req, res) {
 export function me(req, res, next) {
   var userId = req.user._id;
 
-  return User.findOne({_id: userId}, '-salt -password').exec()
-    .then(user => { // don't ever give out the password or salt
-      if(!user) {
+  return User.findOne({ _id: userId }, '-salt -password')
+    .exec()
+    .then(user => {
+      // don't ever give out the password or salt
+      if (!user) {
         return res.status(401).end();
       }
       return res.json(user);
