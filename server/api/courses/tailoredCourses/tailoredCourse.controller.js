@@ -131,7 +131,6 @@ export function getTailoredCourse(req, res, allowSolutions) {
       }
     })
     .catch(err => {
-      console.log(err);
       logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
         res
@@ -240,8 +239,7 @@ function createCourseAndAddStudent(user, course) {
       return tailoredCourse.save();
     })
     .catch(err => {
-      console.log(err);
-      console.log('Error creating tailored assignment', err);
+      logger.error(err);
     });
 } //end create tailored course
 
@@ -306,23 +304,21 @@ function generateAssignmentsWith(course, assignment) {
               });
             })
             .catch(err => {
-              console.log(err);
+              logger.error(err);
               reject('Error getting problems', err);
             });
         })
         .catch(() => {
-          console.log('Error getting abstract assignment');
+          logger.error('Error getting abstract assignment');
         });
     });
   });
 }
 
 function addProblems(course, databaseProblems, additionalProblems) {
-  console.log('Add Problems');
   var results = [];
   for (let i = 0; i < additionalProblems; i++) {
     //Add on to the array of existing problems with numberOfNew new problems
-    console.log('Problem ' + i);
     results.push(
       problemController.create({
         protocol: 'dpg',
