@@ -162,7 +162,6 @@ export class ProblemCardComponent {
   };
 
   append(htmlVal) {
-    console.log('test');
     if (htmlVal) {
       this.userInput += this.mappings[htmlVal][0];
     } else {
