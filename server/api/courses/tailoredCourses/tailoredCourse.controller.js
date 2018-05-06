@@ -49,22 +49,18 @@ export function submitSolution(req, res) {
                   var solAsLatex = global.MathLex.render(solAsTree, 'latex');
                   var att = req.body;
                   var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
-                  //console.log(expr1.print());
                   logger.info(expr1.print());
 
                   var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
-                  //console.log(expr2.print());
                   logger.info(expr2.print());
 
                   if (global.KAS.compare(expr1, expr2).equal) {
-                    //console.log('right answer! It is working!');
                     return res.send({
                       result: 'success',
                       numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
                       numberOfAttempts: _problem.attempts.length
                     });
                   } else {
-                    //console.log('wrong answer! It is still working!');
                     return res.send({
                       result: 'failure',
                       numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
@@ -96,7 +92,6 @@ export function submitSolution(req, res) {
       }
     })
     .catch(err => {
-      //console.log(err);
       logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
         res
@@ -136,7 +131,6 @@ export function getTailoredCourse(req, res, allowSolutions) {
       }
     })
     .catch(err => {
-      console.log(err);
       logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
         res
@@ -245,8 +239,7 @@ function createCourseAndAddStudent(user, course) {
       return tailoredCourse.save();
     })
     .catch(err => {
-      console.log(err);
-      console.log('Error creating tailored assignment', err);
+      logger.error(err);
     });
 } //end create tailored course
 
@@ -311,23 +304,21 @@ function generateAssignmentsWith(course, assignment) {
               });
             })
             .catch(err => {
-              console.log(err);
+              logger.error(err);
               reject('Error getting problems', err);
             });
         })
         .catch(() => {
-          console.log('Error getting abstract assignment');
+          logger.error('Error getting abstract assignment');
         });
     });
   });
 }
 
 function addProblems(course, databaseProblems, additionalProblems) {
-  console.log('Add Problems');
   var results = [];
   for (let i = 0; i < additionalProblems; i++) {
     //Add on to the array of existing problems with numberOfNew new problems
-    console.log('Problem ' + i);
     results.push(
       problemController.create({
         protocol: 'dpg',
