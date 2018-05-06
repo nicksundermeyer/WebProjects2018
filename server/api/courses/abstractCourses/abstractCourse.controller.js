@@ -10,13 +10,14 @@ import TailoredCourse from './../tailoredCourses/tailoredCourse.model';
 import User from './../../users/user.model';
 import KAS from 'kas/kas';
 var MathLex = require('mathlex_server_friendly');
-let logger = require('./../../../config/bunyan'); //path to my logger
+let logger = require('./../../../config/bunyan');
 
 export function index(req, res) {
   AbstractCourse.find()
     .populate('assignments')
     .exec()
     .then(function(courses) {
+      logger.debug('Get all courses: ' + courses);
       return res.status(200).json(courses);
     })
     //Print errors
@@ -33,6 +34,7 @@ export function show(req, res) {
     .exec()
     .then(function(course) {
       //return an OK status and the course, if course exists
+      logger.debug('Show course: ' + course);
       return res.status(200).json(course);
     })
     .catch(function(err) {
@@ -52,10 +54,15 @@ export function create(req, res) {
     //set teacher id if current user is actually a teacher
     newCourse.teacherID = req.user._id;
     newCourse.save(function(err) {
-      if (err) return res.status(400).json({});
+      if (err) {
+        logger.error("Couldn't create course: " + newCourse);
+        return res.status(400).json({});
+      }
+      logger.debug('Created course: ' + newCourse);
       return res.status(201).json(newCourse);
     });
   } else {
+    logger.error('Only teachers can create courses');
     return res.status(403).end(); // Return 403 forbidden if not a teacher
   }
 }
@@ -71,6 +78,7 @@ export function update(req, res) {
         //save course
         course.save();
         //return an OK status and the course
+        logger.debug('Updated course: ' + course);
         return res.status(200).send(course);
       }
     })
@@ -88,6 +96,7 @@ export function destroy(req, res) {
     .then(course => {
       //if course found delete course. Permanently
       course.remove();
+      logger.debug('Removed course: ' + course);
       //return a no content status
       return res.status(204).end();
     })

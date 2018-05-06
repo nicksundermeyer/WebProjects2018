@@ -2,7 +2,6 @@
 
 import * as _ from 'lodash';
 
-
 class _User {
   _id = '';
   name = '';
@@ -11,7 +10,15 @@ class _User {
   $promise = undefined;
 }
 
-export function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
+export function AuthService(
+  $location,
+  $http,
+  $cookies,
+  $q,
+  appConfig,
+  Util,
+  User
+) {
   'ngInject';
 
   var safeCb = Util.safeCb;
@@ -26,7 +33,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     return userRoles.indexOf(userRole) >= userRoles.indexOf(role);
   };
 
-  if($cookies.get('token') && $location.path() !== '/logout') {
+  if ($cookies.get('token') && $location.path() !== '/logout') {
     currentUser = User.get();
   }
 
@@ -38,14 +45,12 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @param  {Function} callback - function(error, user)
      * @return {Promise}
      */
-    login({
-      email,
-      password
-    }, callback) {
-      return $http.post('/auth/local', {
-        email,
-        password
-      })
+    login({ email, password }, callback) {
+      return $http
+        .post('/auth/local', {
+          email,
+          password
+        })
         .then(res => {
           $cookies.put('token', res.data.token);
           currentUser = User.get();
@@ -78,15 +83,18 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     createUser(user, callback) {
-      return User.save(user, function(data) {
-        $cookies.put('token', data.token);
-        currentUser = User.get();
-        return safeCb(callback)(null, user);
-      }, function(err) {
-        Auth.logout();
-        return safeCb(callback)(err);
-      })
-        .$promise;
+      return User.save(
+        user,
+        function(data) {
+          $cookies.put('token', data.token);
+          currentUser = User.get();
+          return safeCb(callback)(null, user);
+        },
+        function(err) {
+          Auth.logout();
+          return safeCb(callback)(err);
+        }
+      ).$promise;
     },
 
     /**
@@ -98,17 +106,21 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     changePassword(oldPassword, newPassword, callback) {
-      return User.changePassword({
-        id: currentUser._id
-      }, {
-        oldPassword,
-        newPassword
-      }, function() {
-        return safeCb(callback)(null);
-      }, function(err) {
-        return safeCb(callback)(err);
-      })
-        .$promise;
+      return User.changePassword(
+        {
+          id: currentUser._id
+        },
+        {
+          oldPassword,
+          newPassword
+        },
+        function() {
+          return safeCb(callback)(null);
+        },
+        function(err) {
+          return safeCb(callback)(err);
+        }
+      ).$promise;
     },
 
     /**
@@ -118,16 +130,20 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     getCurrentUser(callback) {
-      var value = _.get(currentUser, '$promise') ? currentUser.$promise : currentUser;
+      var value = _.get(currentUser, '$promise')
+        ? currentUser.$promise
+        : currentUser;
 
-      return $q.when(value)
-        .then(user => {
+      return $q.when(value).then(
+        user => {
           safeCb(callback)(user);
           return user;
-        }, () => {
+        },
+        () => {
           safeCb(callback)({});
           return {};
-        });
+        }
+      );
     },
 
     /**
@@ -146,13 +162,12 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     isLoggedIn(callback) {
-      return Auth.getCurrentUser(undefined)
-        .then(user => {
-          let is = _.get(user, 'role');
+      return Auth.getCurrentUser(undefined).then(user => {
+        let is = _.get(user, 'role');
 
-          safeCb(callback)(is);
-          return is;
-        });
+        safeCb(callback)(is);
+        return is;
+      });
     },
 
     /**
@@ -172,13 +187,12 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     hasRole(role, callback) {
-      return Auth.getCurrentUser(undefined)
-        .then(user => {
-          let has = hasRole(_.get(user, 'role'), role);
+      return Auth.getCurrentUser(undefined).then(user => {
+        let has = hasRole(_.get(user, 'role'), role);
 
-          safeCb(callback)(has);
-          return has;
-        });
+        safeCb(callback)(has);
+        return has;
+      });
     },
 
     /**

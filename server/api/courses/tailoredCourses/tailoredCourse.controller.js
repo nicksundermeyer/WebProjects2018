@@ -49,12 +49,28 @@ export function submitSolution(req, res) {
                   var solAsLatex = global.MathLex.render(solAsTree, 'latex');
                   var att = req.body;
                   var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
-                  logger.info(expr1.print());
+
+                  if (expr1) {
+                    logger.debug('expr1: ' + expr1.print());
+                  } else {
+                    logger.info(
+                      _problem.problem.solution.math +
+                        ' is not a valid expression'
+                    );
+                  }
 
                   var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
-                  logger.info(expr2.print());
+                  if (expr2) {
+                    logger.debug(expr2.print());
+                  } else {
+                    logger.error('Invalid solution detected: ' + solAsLatex);
+                  }
 
-                  if (global.KAS.compare(expr1, expr2).equal) {
+                  if (
+                    expr1 &&
+                    expr2 &&
+                    global.KAS.compare(expr1, expr2).equal
+                  ) {
                     return res.send({
                       result: 'success',
                       numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
@@ -67,6 +83,12 @@ export function submitSolution(req, res) {
                       numberOfAttempts: _problem.attempts.length
                     });
                   }
+                } else {
+                  return res.send({
+                    result: 'exceeded attempts',
+                    numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
+                    numberOfAttempts: _problem.attempts.length
+                  });
                 }
                 //save the changes made to attempts
                 _problem.save();
