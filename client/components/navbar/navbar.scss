@@ -97,9 +97,10 @@
 .left-nav{
   background-color: $black;
   border-radius: 20px;
-  height: 70vh;
+  height: auto;
   vertical-align: top;
   overflow-y: auto;
+  margin: 0;
 
   .nav{
     margin: 0;
