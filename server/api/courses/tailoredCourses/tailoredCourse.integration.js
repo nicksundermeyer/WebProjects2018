@@ -1,29 +1,13 @@
 'use strict';
 
-// globals describe, expect, it, beforeEach, afterEach, before
+/* globals describe, expect, it, beforeEach, afterEach, before */
 
 import User from '../../users/user.model';
-
-var app = require('../../..');
 import request from 'supertest';
 
-describe('Tailored Course Tests:', function() {
-  var validCoursePayload = {
-    id: '12345',
-    name: 'survival class',
-    description: 'how to make fire',
-    subjects: ['booleanLogic'],
-    categories: ['or']
-  };
+var app = require('../../..');
 
-  var existingStudent = {
-    id: '12345',
-    name: 'Fake Student2',
-    email: 'student2@example.com',
-    password: 'ps-student2',
-    role: 'student'
-  };
-
+describe('Tailored Course Tests', function() {
   var teacherPayload = {
     name: 'Fake Teacher',
     email: 'teacher@example.com',
@@ -38,142 +22,313 @@ describe('Tailored Course Tests:', function() {
     role: 'student'
   };
 
-  var studentToken, teacherToken, student2Token, tcSolutionsResponse;
+  var teacherAuthToken, studentAuthToken, student, teacher, courseResponse;
 
   // Clear users and create a teacher and student to use duration of tests
   before(function(done) {
     User.remove().then(function() {
-      var teacher = new User(teacherPayload);
-      var student = new User(studentPayload);
+      teacher = new User(teacherPayload);
+      student = new User(studentPayload);
       student.save();
       teacher.save(done);
     });
   });
 
-  // Bad Student login
-  describe('Bad Student Login Attempt /auth/local', function() {
-    before(function(done) {
-      request(app)
-        .post('/auth/local')
-        .send({
-          email: 'student@example.com',
-          password: 'pss-student'
-        })
-        .expect(401)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          studentToken = res.body.token;
-          done();
-        });
+  before(function(done) {
+    request(app)
+      .post('/auth/local')
+      .send(teacherPayload)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if (err) throw err;
+        teacherAuthToken = res.body.token;
+        done();
+      });
+  });
+
+  before(function(done) {
+    request(app)
+      .post('/auth/local')
+      .send(studentPayload)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end((err, res) => {
+        if (err) throw err;
+        studentAuthToken = res.body.token;
+        done();
+      });
+  });
+
+  // Create the course to use for all tests (must do as a teacher)
+  before(function(done) {
+    request(app)
+      .post('/api/courses')
+      .set('authorization', `Bearer ${teacherAuthToken}`)
+      .set('Content-type', 'application/json; charset=utf-8')
+      .send({
+        name: 'Course in which to be enrolled',
+        description: 'good luck',
+        subjects: ['algebra'],
+        categories: ['multiplication']
+      })
+      .expect(201)
+      .end(function(err, res) {
+        if (err) return done(err);
+        courseResponse = res.body;
+        done();
+      });
+  });
+
+  /* Test as a student */
+  describe('Test Tailored courses as a student', function() {
+    it('should validate we logged in by checking that the auth token exists', function() {
+      expect(studentAuthToken).to.not.be.an('undefined');
     });
 
-    it('should validate token does not exist', function() {
-      expect(studentToken).to.be.an('undefined');
+    describe('Enroll in a tailored course', function() {
+      var enrollResponse;
+
+      // Enroll in the Course
+      before(function(done) {
+        request(app)
+          .post(
+            '/api/courses/' + courseResponse._id + '/students/' + student._id
+          )
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should enroll in a Tailored course as a student', function() {
+        expect(enrollResponse).to.not.be.an('undefined');
+      });
+    });
+
+    describe('Get a tailored course', function() {
+      var getTCResponse, assignResponse;
+
+      // Get tailored course
+      before(function(done) {
+        request(app)
+          .get(
+            '/api/courses/' + courseResponse._id + '/students/' + student._id
+          )
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            getTCResponse = res.body;
+            console.log(JSON.stringify(getTCResponse));
+            done();
+          });
+      });
+
+      it('Should get the Tailored course', function() {
+        expect(getTCResponse).to.not.be.an('undefined');
+      });
+
+      // Get tailored assignment
+      before(function(done) {
+        request(app)
+          .get(
+            '/api/courses/' +
+              courseResponse._id +
+              '/students/' +
+              student._id +
+              '/assignments/5aeff2d7e7a03834314df6b7'
+          )
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(204)
+          // .expect('Content-type', 'text/html; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            assignResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should get the Tailored assignment (empty)', function() {
+        expect(JSON.stringify(assignResponse)).to.equal(JSON.stringify({}));
+      });
+    });
+
+    // ERROR PROVOKING ROUTES
+
+    describe('Enroll in a tailored course with someone elses student ID', function() {
+      var enrollResponse;
+
+      // Enroll in a course as someone else (should be forbidden)
+      before(function(done) {
+        request(app)
+          .post('/api/courses/' + courseResponse._id + '/students/12345')
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(403)
+          .expect('Content-type', 'text/html; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should deny access to enroll', function() {
+        expect(JSON.stringify(enrollResponse)).to.equal(JSON.stringify({}));
+      });
+    });
+
+    describe('Try to Enroll in a tailored course that doesnt exist', function() {
+      var enrollResponse;
+
+      // Enroll in a course that doesnt exist
+      before(function(done) {
+        request(app)
+          .post('/api/courses/5a7e8dc745bb6805fe805e55/students/' + student._id)
+          .set('authorization', `Bearer ${studentAuthToken}`)
+          .expect(404)
+          // .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should not be able to find course', function() {
+        expect(JSON.stringify(enrollResponse)).to.equal(JSON.stringify({}));
+      });
     });
   });
 
-  // Good Student login
-  describe('Good Student Login Attempt /auth/local', function() {
-    before(function(done) {
-      request(app)
-        .post('/auth/local')
-        .send({
-          email: 'student@example.com',
-          password: 'ps-student'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          studentToken = res.body.token;
-          done();
-        });
+  /* Test as a teacher */
+  describe('Test Tailored courses as a teacher', function() {
+    it('should validate we logged in by checking that the auth token exists', function() {
+      expect(teacherAuthToken).to.not.be.an('undefined');
     });
 
-    it('should validate token exists', function() {
-      expect(studentToken).to.not.be.an('undefined');
-    });
-  });
+    describe('Enroll in a tailored course', function() {
+      var enrollResponse;
 
-  // Bad Teacher login
-  describe('Bad Teacher Login Attempt /auth/local', function() {
-    before(function(done) {
-      request(app)
-        .post('/auth/local')
-        .send({
-          email: 'teacherr@example.com',
-          password: 'ps-teacher'
-        })
-        .expect(401)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          teacherToken = res.body.token;
-          done();
-        });
-    });
+      // Enroll in the Course
+      before(function(done) {
+        request(app)
+          .post(
+            '/api/courses/' + courseResponse._id + '/students/' + student._id
+          )
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
 
-    it('should validate token does not exist', function() {
-      expect(teacherToken).to.be.an('undefined');
-    });
-  });
-
-  // Good Teacher login
-  describe('Good Teacher Login Attempt /auth/local', function() {
-    before(function(done) {
-      request(app)
-        .post('/auth/local')
-        .send({
-          email: 'teacher@example.com',
-          password: 'ps-teacher'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          teacherToken = res.body.token;
-          done();
-        });
+      it('Should enroll in a Tailored course as a teacher', function() {
+        expect(enrollResponse).to.not.be.an('undefined');
+      });
     });
 
-    it('should validate token exists', function() {
-      expect(teacherToken).to.not.be.an('undefined');
+    describe('Get a tailored course', function() {
+      var getTCResponse, assignResponse;
+
+      // Get tailored course
+      before(function(done) {
+        request(app)
+          .get(
+            '/api/courses/' + courseResponse._id + '/students/' + student._id
+          )
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            getTCResponse = res.body;
+            console.log(JSON.stringify(getTCResponse));
+            done();
+          });
+      });
+
+      it('Should get the Tailored course', function() {
+        expect(getTCResponse).to.not.be.an('undefined');
+      });
+
+      // Get tailored assignment
+      before(function(done) {
+        request(app)
+          .get(
+            '/api/courses/' +
+              courseResponse._id +
+              '/students/' +
+              student._id +
+              '/assignments/5aeff2d7e7a03834314df6b7'
+          )
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(204)
+          // .expect('Content-type', 'text/html; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            assignResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should get the Tailored assignment (empty)', function() {
+        expect(JSON.stringify(assignResponse)).to.equal(JSON.stringify({}));
+      });
     });
-  });
 
-  // Access  a Different Student's Tailored Course
-  describe("Access  a Different Student's Tailored Course", function() {
-    var TC;
+    describe('Enroll in a different student into a tailored course with their student ID', function() {
+      var enrollResponse;
 
-    before(function(done) {
-      request(app)
-        .post('/auth/local')
-        .send({
-          email: 'student2@example.com',
-          password: 'ps-student2'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          student2Token = res.body.token;
-          done();
-        });
+      // Enroll in a course as someone else (should be forbidden)
+      before(function(done) {
+        request(app)
+          .post('/api/courses/' + courseResponse._id + '/students/12345')
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(200)
+          .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should enroll the student into a Tailored course as a student', function() {
+        expect(enrollResponse).to.not.be.an('undefined');
+      });
     });
 
-    beforeEach(function(done) {
-      request(app)
-        .get('/api/courses/12345/students/12345')
-        .set('authorization', `Bearer ${student2Token}`)
-        .expect(401)
-        .expect('Content-type', 'text/html; charset=utf-8')
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          TC = res.body;
-          done();
-        });
-    });
+    // ERROR PROVOKING ROUTES
 
-    it('should respond with unauthorized', function() {
-      expect().to.be.an('undefined');
+    describe('Try to Enroll in a tailored course that doesnt exist', function() {
+      var enrollResponse;
+
+      // Enroll in a course that doesnt exist
+      before(function(done) {
+        request(app)
+          .post('/api/courses/5a7e8dc745bb6805fe805e55/students/' + student._id)
+          .set('authorization', `Bearer ${teacherAuthToken}`)
+          .expect(404)
+          // .expect('Content-type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            enrollResponse = res.body;
+            done();
+          });
+      });
+
+      it('Should not be able to find course', function() {
+        expect(JSON.stringify(enrollResponse)).to.equal(JSON.stringify({}));
+      });
     });
   });
 });
