@@ -19,7 +19,7 @@ export class ProblemCardComponent {
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
     'ngInject';
     this.$location = $location;
-    this.userInput = '';
+    this.userInput = 'x=';
     this.ast = '';
     this.latex = '';
     this.$uibModal = $uibModal;
@@ -56,7 +56,7 @@ export class ProblemCardComponent {
 
   load() {
     if (this.ischanged === true) {
-      this.userInput = '';
+      this.userInput = 'x=';
       this.updateDisplay();
       this.ischanged = false;
     }
@@ -162,7 +162,6 @@ export class ProblemCardComponent {
   };
 
   append(htmlVal) {
-    console.log('test');
     if (htmlVal) {
       this.userInput += this.mappings[htmlVal][0];
     } else {

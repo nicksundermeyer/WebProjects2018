@@ -55,8 +55,8 @@ export function create(req) {
         resolve(problem);
       })
       .catch(function(err) {
-        var errormsg = 'Could not instantiate Axios ' + err;
-        logger.error({ msg: errrormsg });
+        var errorMessage = 'Could not instantiate Axios ' + err;
+        logger.error({ msg: errorMessage });
         reject('Could not instantiate Axios ' + err);
       });
   });

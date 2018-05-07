@@ -8,6 +8,7 @@ import TailoredAssignment from './tailoredAssignment.model';
 import Problem from './../problems/problem.model';
 import TailoredCourse from './tailoredCourse.model';
 import User from './../../users/user.model';
+import Submission from '../submission/submission.model';
 import KAS from 'kas/kas';
 require('kas/kas');
 require('mathlex_server_friendly');
@@ -17,8 +18,7 @@ let logger = require('./../../../config/bunyan'); //path to my logger
 //Operations for Tailored courses - Tailored courses functions go here for clear debugging
 
 export function submitSolution(req, res) {
-  //find the corresponding Tailored course based on a abstract course id
-  //and student id
+  //find the corresponding Tailored course based on a abstract course id and student id
   TailoredCourse.findOne({
     abstractCourseID: req.params.courseId,
     studentID: req.params.studentId
@@ -26,100 +26,78 @@ export function submitSolution(req, res) {
     .populate('assignments')
     .exec()
     .then(tailoredCourse => {
-      if (tailoredCourse) {
-        //filter through all the assignments
-        //find the corresponding problem and push the solution
-        //into the attempts array
-        tailoredCourse.assignments.filter(_assignment => {
-          if (_assignment.AbstractAssignmentId == req.params.assignmentId) {
-            _assignment.problems.filter(_problem => {
-              if (_problem._id == req.params.problemId) {
-                //push the attempts to problem
-                // we need a number of attempts allowed for each problem
-                if (
-                  _problem.attempts.length < _problem.numberOfAllowedAttempts
-                ) {
-                  _problem.attempts.push({
-                    date: Date.now(),
-                    attempt: req.body,
-                    correct: null
-                  });
+      // Filter down to our problem to get the solution
+      tailoredCourse.assignments.filter(assignment => {
+        if (assignment.AbstractAssignmentId == req.params.assignmentId) {
+          assignment.problems.filter(problem => {
+            if (problem._id == req.params.problemId) {
+              var attemptString = String(req.body.latexSol);
+              var submissionExpr = global.KAS.parse(attemptString).expr; //submitted answer
+              var solAsLatex = global.MathLex.render(
+                problem.problem.solution.math,
+                'latex'
+              );
+              var solutionExpr = global.KAS.parse(solAsLatex).expr; //stored solution
 
-                  var solAsTree = _problem.problem.solution.math;
-                  var solAsLatex = global.MathLex.render(solAsTree, 'latex');
-                  var att = req.body;
-                  var expr1 = global.KAS.parse(att.latexSol).expr; //submitted answer
-
-                  if (expr1) {
-                    logger.debug('expr1: ' + expr1.print());
-                  } else {
-                    logger.info(
-                      _problem.problem.solution.math +
-                        ' is not a valid expression'
-                    );
-                  }
-
-                  var expr2 = global.KAS.parse(solAsLatex).expr; //stored solution
-                  if (expr2) {
-                    logger.debug(expr2.print());
-                  } else {
-                    logger.error('Invalid solution detected: ' + solAsLatex);
-                  }
-
-                  if (
-                    expr1 &&
-                    expr2 &&
-                    global.KAS.compare(expr1, expr2).equal
-                  ) {
-                    return res.send({
-                      result: 'success',
-                      numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
-                      numberOfAttempts: _problem.attempts.length
-                    });
-                  } else {
-                    return res.send({
-                      result: 'failure',
-                      numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
-                      numberOfAttempts: _problem.attempts.length
-                    });
-                  }
-                } else {
-                  return res.send({
-                    result: 'exceeded attempts',
-                    numberOfAllowedAttempts: _problem.numberOfAllowedAttempts,
-                    numberOfAttempts: _problem.attempts.length
-                  });
-                }
-                //save the changes made to attempts
-                _problem.save();
+              if (!submissionExpr) {
+                logger.error('Invalid submission detected: ' + attemptString);
+                return res
+                  .status(400)
+                  .json({ error: 'ERROR in submission: ' + attemptString });
               }
-              return _problem;
-            });
 
-            //save the changes made in the problem
-            _assignment.save();
-          }
-          return _assignment;
-        });
+              if (!solutionExpr) {
+                logger.error('Invalid solution detected: ' + solAsLatex);
+                return res
+                  .status(500)
+                  .json({
+                    error: 'ERROR in solution: ' + problem.problem.solution.math
+                  });
+              }
 
-        //save the changes made in the assignment
-        tailoredCourse.save();
-        //return the entire course for now
-        //the idea is to write the logic to check the attempts
-        //and compare them to the solution here
-        // return res.json(tailoredCourse).status(200)
-        //   .end();
-      } else {
-        return Promise.reject('Tailored course not found');
-      }
+              var correct = global.KAS.compare(submissionExpr, solutionExpr)
+                .equal;
+
+              // Save the attempt to our database. Once for the problem and again for our statistics table
+              problem.attempts.push({ attempt: String(req.body.latexSol) });
+
+              var submission = new Submission({
+                problemId: req.params.problemId,
+                assignmentId: req.params.assignmentId,
+                courseId: req.params.courseId,
+                studentId: req.params.courseId,
+                attemptNum: problem.attempts.length,
+                correct: correct
+              });
+
+              submission.save();
+              problem.save();
+
+              /* Return response based on correctness */
+              if (correct) {
+                return res.send({
+                  result: 'success',
+                  numberOfAllowedAttempts: problem.numberOfAllowedAttempts,
+                  numberOfAttempts: problem.attempts.length
+                });
+              } else {
+                return res.send({
+                  result: 'failure',
+                  numberOfAllowedAttempts: problem.numberOfAllowedAttempts,
+                  numberOfAttempts: problem.attempts.length
+                });
+              }
+            }
+          });
+          assignment.save();
+        }
+      });
+      tailoredCourse.save();
     })
     .catch(err => {
       logger.error(err);
       if (typeof err == 'string' && err.includes('not found')) {
-        res
-          .status(404)
-          .json({ message: err.toString() })
-          .end();
+        return res.status(404).json({ message: err.toString() });
       } else {
         return res.status(400).json(err.toString());
       }
