@@ -1,7 +1,7 @@
 'use strict';
 
 // Percentage of each course completed
-function courseCompletionPercentage(req, res) {
+export function courseCompletionPercentage(req, res) {
   //calculate values
   return res
     .json({
@@ -12,7 +12,7 @@ function courseCompletionPercentage(req, res) {
 }
 
 // Metrics for student progress on completing courses
-function studentDistribution(req, res) {
+export function studentDistribution(req, res) {
   //calculate values
   return res
     .json({
@@ -22,7 +22,7 @@ function studentDistribution(req, res) {
 }
 
 // Set of failing students who are performing below a certain threshold
-function failingStudents(req, res) {
+export function failingStudents(req, res) {
   //calculate values
   return res
     .json({
@@ -32,7 +32,7 @@ function failingStudents(req, res) {
 }
 
 // Group of exemplar students performing above a certain threshold
-function overachievingStudents(req, res) {
+export function overachievingStudents(req, res) {
   //calculate values
   return res
     .json({
@@ -42,7 +42,7 @@ function overachievingStudents(req, res) {
 }
 
 // Specific problems causing students the most difficulty
-function problemSetMetrics(req, res) {
+export function problemSetMetrics(req, res) {
   //calculate values
   return res
     .json({
@@ -52,7 +52,7 @@ function problemSetMetrics(req, res) {
 }
 
 // Category of problems causing students the most difficulty
-function categoryMetrics(req, res) {
+export function categoryMetrics(req, res) {
   //calculate values
   return res
     .json({
@@ -62,7 +62,7 @@ function categoryMetrics(req, res) {
 }
 
 // Correlations between failure on some problems and success on others (data mining)
-function dataCorrelations(req, res) {
+export function dataCorrelations(req, res) {
   //calculate values
   return res
     .json({

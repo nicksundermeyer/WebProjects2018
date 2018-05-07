@@ -9,7 +9,7 @@ var router = new Router();
 router.get(
   '/:id/statistics/courseCompletionPercentage',
   auth.hasRole('teacher'),
-  controller.percentComplete
+  controller.courseCompletionPercentage
 );
 router.get(
   '/:id/statistics/studentDistribution',
