@@ -1,5 +1,63 @@
 'use strict';
 
+import AbstractCourse from '../abstractCourses/abstractCourse.model';
+
+export function myCourses(req, res) {
+  var id = req.params.id;
+  return res
+    .json({
+      teacherId: id,
+      courses: [
+        {
+          courseId: 12345,
+          name: 'test course 1'
+        },
+        {
+          courseId: 67890,
+          name: 'test course 2'
+        }
+      ]
+    })
+    .status(200);
+}
+
+export function getStats(req, res) {
+  return res
+    .json({
+      courseId: 12345,
+      courseName: 'test course 1',
+      courseCompletionPercentage: {
+        average: 1,
+        stdDev: 1
+      },
+      studentDistribution: {
+        average: 2,
+        stdDev: 2
+      },
+      failingStudents: {
+        average: 3,
+        stdDev: 3
+      },
+      overachievingStudents: {
+        average: 4,
+        stdDev: 4
+      },
+      problemSetMetrics: {
+        average: 5,
+        stdDev: 5
+      },
+      categoryMetrics: {
+        average: 6,
+        stdDev: 6
+      },
+      dataCorrelations: {
+        average: 7,
+        stdDev: 7
+      }
+    })
+    .status(200);
+}
+
 // Percentage of each course completed
 export function courseCompletionPercentage(req, res) {
   //calculate values
