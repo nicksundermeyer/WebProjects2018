@@ -4,6 +4,7 @@ import angular from 'angular';
 import 'mathlex_server_friendly';
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
+require('../../../node_modules/mathquill/build/mathquill');
 import { AssignmentController } from '../../app/student/studentAssignment/assignment.component';
 //import kas from 'kas/kas';
 
