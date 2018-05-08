@@ -1,24 +1,32 @@
-.card {
+.assignment-card {
+  height: 200px;
+  margin: 10px;
+  border-radius: 10px;
   text-align: center;
+  background-color: #EBEBEB;
+  color: $black;
 }
 
 .card-header {
-  background-color: #4393B9;
-  border-color: #4393B9;
+  background-color: $blue;
+  border-color: $blue;
+}
+
+.card-body {
+  text-align: left;
+  border-radius: 10px;
+  height: 70%
 }
 
 .goButton {
-  bottom: 0;
-  width: 100%;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  justify-content: center;
+  vertical-align: middle;
+  border-radius: 10px;
+  width: 50%;
 }
 
-.card-footer {
-  text-align: left;
-  bottom: 10%;
-  width: 100%;
+.btn-primary:disabled {
+  background-color: $orange;
+  border-color: $orange;
 }
 
