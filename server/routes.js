@@ -12,8 +12,6 @@ export default function(app) {
 
   app.use('/api/users', require('./api/users'));
 
-  app.use('/api/teachers', require('./api/teachers'));
-
   app.use('/api/courses', require('./api/courses'));
 
   app.use('/auth', require('./auth').default);
