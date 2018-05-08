@@ -20,7 +20,7 @@ export class AssignmentController {
     this.Auth = Auth;
     this.problemObjects = [];
     var vm = this;
-    localStorage.setItem('ProblemNumber', 0);
+    //localStorage.setItem('ProblemNumber', 0);
     $scope.$watch(() => localStorage.getItem('ProblemNumber'), function(
       newVal
     ) {
@@ -32,6 +32,7 @@ export class AssignmentController {
   }
 
   $onInit() {
+    var vm = this;
     this.Auth.getCurrentUser()
       .then(user => {
         this.Assignment.getAssignmentInfo(
@@ -53,11 +54,11 @@ export class AssignmentController {
           });
           if (!localStorage.getItem('ProblemNumber')) {
             this.selectedProblem = this.problemObjects[0];
+            console.log('test');
             //localStorage.setItem('ProblemNumber', 0);
           } else {
-            this.selectedProblem = this.problemObjects[
-              localStorage.getItem('ProblemNumber')
-            ];
+            console.log(Number(localStorage.getItem('ProblemNumber')));
+            vm.changeProblem(Number(localStorage.getItem('ProblemNumber')));
           }
           this.userId = user._id;
           this.problemId = this.selectedProblem.overview._id;
@@ -92,7 +93,7 @@ export class AssignmentController {
   }
   //changes the number of the problem you are on
   changeProblem(problemNumber) {
-    console.log(this.problemNumber);
+    //console.log(this.problemNumber);
     if (problemNumber > this.problemObjects.length - 1) {
       problemNumber = this.problemObjects.length - 1;
     }
