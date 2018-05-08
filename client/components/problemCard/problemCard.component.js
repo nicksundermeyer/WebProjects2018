@@ -4,6 +4,7 @@ import angular from 'angular';
 import 'mathlex_server_friendly';
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
+import { AssignmentController } from '../../app/student/studentAssignment/assignment.component';
 //import kas from 'kas/kas';
 
 export class ProblemCardComponent {
@@ -14,6 +15,7 @@ export class ProblemCardComponent {
   attIsCorrect;
   problem;
   remainingAttempts;
+  isCorrect;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
@@ -56,7 +58,7 @@ export class ProblemCardComponent {
 
   load() {
     if (this.ischanged === true) {
-      this.userInput = 'x=';
+      this.userInput = '';
       this.updateDisplay();
       this.ischanged = false;
     }
@@ -71,7 +73,7 @@ export class ProblemCardComponent {
     this.remainingAttempts =
       this.myproblemgeneral.numberOfAllowedAttempts -
       this.myproblemgeneral.attempts.length;
-    console.log(this.remainingAttempts);
+    //this.myproblemspecific.attempts.length;
   }
 
   /*Try and Catch to see if parsing and rendering works ok*/
@@ -176,12 +178,23 @@ export class ProblemCardComponent {
 
   addAlert(type, msg) {
     console.log('added alert');
-    this.alerts.push({ type: type, msg: msg });
+    this.alerts.push({ type, msg });
+    if (msg == 'Correct') {
+      this.isCorrect = true;
+    } else {
+      this.isCorrect = false;
+    }
   }
 
   closeAlert(index) {
     console.log('closed alert');
     this.alerts.splice(index, 1);
+    if (this.isCorrect == true) {
+      localStorage.setItem(
+        'ProblemNumber',
+        parseInt(localStorage.getItem('ProblemNumber')) + 1
+      );
+    }
   }
 }
 

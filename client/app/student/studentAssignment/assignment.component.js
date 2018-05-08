@@ -13,12 +13,22 @@ export class AssignmentController {
   isChanged;
   //constructs the course and problems
   /*@ngInject*/
-  constructor($routeParams, Assignment, Course, Auth) {
+  constructor($routeParams, $scope, Assignment, Course, Auth) {
     this.$routeParams = $routeParams;
     this.Assignment = Assignment;
     this.Course = Course;
     this.Auth = Auth;
     this.problemObjects = [];
+    var vm = this;
+    localStorage.setItem('ProblemNumber', 0);
+    $scope.$watch(() => localStorage.getItem('ProblemNumber'), function(
+      newVal
+    ) {
+      if (newVal) {
+        console.log(localStorage.getItem('ProblemNumber'));
+        vm.changeProblem(Number(localStorage.getItem('ProblemNumber')));
+      }
+    });
   }
 
   $onInit() {
@@ -43,6 +53,7 @@ export class AssignmentController {
           });
           if (!localStorage.getItem('ProblemNumber')) {
             this.selectedProblem = this.problemObjects[0];
+            //localStorage.setItem('ProblemNumber', 0);
           } else {
             this.selectedProblem = this.problemObjects[
               localStorage.getItem('ProblemNumber')
@@ -61,20 +72,33 @@ export class AssignmentController {
       });
   }
   //goes to the left problem
+
   left() {
     if (this.selectedProblem.number > 0) {
-      this.changeProblem(this.selectedProblem.number - 1);
+      localStorage.setItem(
+        'ProblemNumber',
+        parseInt(localStorage.getItem('ProblemNumber')) - 1
+      );
     }
   }
   //goes to the right problem
   right() {
     if (this.selectedProblem.number < this.problemObjects.length - 1) {
-      this.changeProblem(this.selectedProblem.number + 1);
+      localStorage.setItem(
+        'ProblemNumber',
+        parseInt(localStorage.getItem('ProblemNumber')) + 1
+      );
     }
   }
   //changes the number of the problem you are on
   changeProblem(problemNumber) {
     console.log(this.problemNumber);
+    if (problemNumber > this.problemObjects.length - 1) {
+      problemNumber = this.problemObjects.length - 1;
+    }
+    if (problemNumber < 0) {
+      problemNumber = 0;
+    }
     this.selectedProblem = this.problemObjects[problemNumber];
     this.problemId = this.selectedProblem.overview._id;
     this.isChanged = true;
