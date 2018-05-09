@@ -60,7 +60,7 @@ export class ProblemCardComponent {
 
   load() {
     if (this.ischanged === true) {
-      this.userInput = '';
+      this.userInput = 'x=';
       this.updateDisplay();
       this.ischanged = false;
     }
@@ -215,7 +215,6 @@ export default angular
     }
   }).name;
 
-
 //not working yet need to figure this out
 
 let MQ = MathQuill.getInterface(2);
@@ -231,5 +230,3 @@ let answerMathField = MQ.MathField(answerSpan, {
     }
   }
 });
-
-
