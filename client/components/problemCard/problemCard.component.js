@@ -181,7 +181,7 @@ export class ProblemCardComponent {
   addAlert(type, msg) {
     console.log('added alert');
     this.alerts.push({ type, msg });
-    if (msg == 'Correct') {
+    if (msg == 'Correct!') {
       this.isCorrect = true;
     } else {
       this.isCorrect = false;
