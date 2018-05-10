@@ -8,11 +8,9 @@
   <div class="description-problem-problem">
     <span id="problemDisplay-problem"></span>
   </div>
-  <div id="problem-input"></div>
-
+  
   <div class="submit-button-problem">
 <input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
-
     <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo();" type="button" class="btn btn-primary" ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
     <div uib-alert ng-repeat="alert in problemCardController.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="problemCardController.closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
   </div>
