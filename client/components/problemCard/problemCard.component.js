@@ -2,6 +2,7 @@
 
 import angular from 'angular';
 import 'mathlex_server_friendly';
+
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
 require('../../../node_modules/mathquill/build/mathquill');
@@ -59,7 +60,7 @@ export class ProblemCardComponent {
 
   load() {
     if (this.ischanged === true) {
-      this.userInput = '';
+      this.userInput = 'x=';
       this.updateDisplay();
       this.ischanged = false;
     }
@@ -215,22 +216,17 @@ export default angular
   }).name;
 
 //not working yet need to figure this out
-/*
-import {MathQuillLoader} from 'mathquill-typescript';
-MathQuillLoader.loadMathQuill(mathquill => {
 
-  // do what you want here
-  let answerSpan = document.getElementById('text-box-problem');
- // let latexSpan = document.getElementById('text-box-problem');
-
-  //var answerSpan = document.getElementById('answer');
-  var answerMathField = MQ.MathField(answerSpan, {
-    handlers: {
-      edit: function() {
-        var enteredMath = answerMathField.latex();  // Get entered math in LaTeX format
-        checkAnswer(enteredMath);
-      }
+let MQ = MathQuill.getInterface(2);
+let problemSpan = document.getElementById('problemDisplay-problem');
+MQ.StaticMath(problemSpan);
+let answerSpan = document.getElementById('text-box-problem');
+let answerMathField = MQ.MathField(answerSpan, {
+  handlers: {
+    edit: function() {
+      let enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
+      checkAnswer(enteredMath);
+      enteredMath.keystroke('Shift-Left'); // Selects character before the current cursor position
     }
-  });
+  }
 });
-*/

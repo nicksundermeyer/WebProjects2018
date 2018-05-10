@@ -31,6 +31,15 @@ export function submitSolution(req, res) {
         if (assignment.AbstractAssignmentId == req.params.assignmentId) {
           assignment.problems.filter(problem => {
             if (problem._id == req.params.problemId) {
+              /* Check that we're not submitting more than we're allowed */
+              if (problem.attempts.length >= problem.numberOfAllowedAttempts) {
+                return res.status(400).send({
+                  result: 'maximum number of attempts succeeded',
+                  numberOfAllowedAttempts: problem.numberOfAllowedAttempts,
+                  numberOfAttempts: problem.attempts.length
+                });
+              }
+
               var attemptString = String(req.body.latexSol);
               var submissionExpr = global.KAS.parse(attemptString).expr; //submitted answer
               var solAsLatex = global.MathLex.render(
@@ -48,11 +57,9 @@ export function submitSolution(req, res) {
 
               if (!solutionExpr) {
                 logger.error('Invalid solution detected: ' + solAsLatex);
-                return res
-                  .status(500)
-                  .json({
-                    error: 'ERROR in solution: ' + problem.problem.solution.math
-                  });
+                return res.status(500).json({
+                  error: 'ERROR in solution: ' + problem.problem.solution.math
+                });
               }
 
               var correct = global.KAS.compare(submissionExpr, solutionExpr)

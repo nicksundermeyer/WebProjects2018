@@ -58,7 +58,7 @@ describe('Login View', function() {
           )
           .then(() => {
             expect(browser.getCurrentUrl()).to.eventually.equal(
-              config.baseUrl + '/student/course'
+              config.baseUrl + 'student/course'
             );
             expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal(
               'Hello ' + testUser.name
@@ -97,15 +97,23 @@ describe('Login View', function() {
         expect(browser.getCurrentUrl()).to.eventually.equal(
           config.baseUrl + '/login'
         );
-        var helpBlock = page.form.element(
+        /*var helpBlock = page.form.element(
           by.css('.form-group.has-error .help-block.ng-binding')
-        );
-        expect(helpBlock.getText()).to.eventually.equal(
-          'Please enter a valid email.'
-        );
-        expect(helpBlock.getText()).to.eventually.equal(
-          'This password is not correct.'
-        );
+        );*/
+        var helpBlock = page.form
+          .element(by.css('.form-group.has-error .help-block.ng-binding'))
+          .getText()
+          .then(function(text) {
+            if (text.contains('Please enter a valid email.')) {
+              expect(helpBlock.getText()).to.eventually.equal(
+                'Please enter a valid email.'
+              );
+            } else {
+              expect(helpBlock.getText()).to.eventually.equal(
+                'This password is not correct.'
+              );
+            }
+          });
       });
       before(function() {
         return loadPage();

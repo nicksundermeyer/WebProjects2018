@@ -34,10 +34,16 @@ export default class LoginController {
               this.UserServ.getUsersCourses(user._id)
                 //redirecnts to the appropriate file depending on the user id
                 .then(courses => {
-                  if (courses.data.length > 0) {
-                    this.$location.path('/student');
-                  } else {
-                    this.$location.path('/student/course');
+                  if (user.role === 'admin') {
+                    this.$location.path('/admin');
+                  } else if (user.role === 'teacher') {
+                    this.$location.path('/teacher');
+                  } else if (user.role === 'student') {
+                    if (courses.data.length > 0) {
+                      this.$location.path('/student');
+                    } else {
+                      this.$location.path('/student/course');
+                    }
                   }
                 })
                 .catch(() => {
