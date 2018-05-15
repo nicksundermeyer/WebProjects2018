@@ -1,102 +1,22 @@
-.thing-form {
-  margin: 20px 0;
-}
+.studentBanner {
+  height: auto;
 
-#banner {
-  border-bottom: none;
-  margin-top: -20px;
-}
-
-#banner h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-
-.hero-unit {
-  position: relative;
-  padding: 30px 15px;
-  color: #F5F5F5;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background: #8B2332;
-}
-
-.navbar-fixed-left {
-  width: 140px;
-  border-radius: 10px;
-  height: 600px;
-  overflow: auto;
-  background: #EEEEEE;
-  border-color: #EEEEEE;
-  color: #4b5257;
-}
-
-
-
-.navbar-fixed-left .navbar-nav > li {
-  float: none;
-  width: 100%;
-  text-align: left;
-}
-
-.courseTeacher{
-  font-family: Roboto;
-  font-weight: bold;
-  font-size: 27px;
-line-height: 33px;
-  Align: Left;
-  Fill: Solid;
-  color:#C4C4C4;
-}
-
-.courseData{
-  font-family: Roboto;
-  font-size: 27px;
-  line-height: 33px;
-  Align: Left;
-  Fill: Solid;
-  color:#C4C4C4;
-
-}
-
-.description{
-  font-family: Roboto;
-  font-size: 15px;
-  line-height: 18px;
-  Align: Left;
-  color:#C4C4C4;
-  margin-bottom: 15px;
-  margin-top: 15px;
-}
-
-#subbanner {
-  background-image: url("/assets/images/background.jpg");
-  height: 29em;
-  opacity: 50%;
-  background-size: contain;
-}
-.studnentBanner {
-  border-bottom: none;
-  margin-top: -20px;
-  color:#EBEBEB;
-  background-color: #3D3D3D;
-  margin:auto;
-  position:absolute;
-  top:35%;
-  width: 100%;
-  text-align: center;
-  font-size: 36px;
-  line-height: 44px;
-  letter-spacing: -1px;
-  font-style: normal;
-  font-family: Montserrat-Light;
-}
-
-.studentImage {
-  margin-top: -125px;
+  img{
+    display: inline-block;
+  }
+  h1{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 50px;
+  }
 }
 
 .student-discovery{
   text-align: center;
+}
+
+.student-container{
+  background-color: $white;
+  width: 100%;
+  margin: 0;
 }

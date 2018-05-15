@@ -28,16 +28,18 @@ html {
 /* inject:scss */
 @import 'about/about';
 @import 'account/login/login';
+@import 'account/signup/signup';
 @import 'admin/admin';
 @import 'main/main';
-@import 'student/assignment/assignment';
-@import 'student/course/course';
 @import 'student/student';
+@import 'student/studentAssignment/assignment';
+@import 'student/studentCourse/course';
+@import 'student/studentCourseDiscovery/courseDiscovery';
 @import 'teacher/teacher';
 @import '../components/assignmentCard/assignmentCard';
 @import '../components/courseCard/courseCard';
 @import '../components/footer/footer';
-@import '../components/modal/modal';
 @import '../components/navbar/navbar';
 @import '../components/problemCard/problemCard';
+@import '../components/typeahead/typeahead';
 /* endinject */

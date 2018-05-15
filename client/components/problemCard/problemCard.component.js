@@ -2,8 +2,11 @@
 
 import angular from 'angular';
 import 'mathlex_server_friendly';
+
 //import mathlex from 'mathlex_server_friendly';
 import katex from 'katex';
+require('../../../node_modules/mathquill/build/mathquill');
+import { AssignmentController } from '../../app/student/studentAssignment/assignment.component';
 //import kas from 'kas/kas';
 
 export class ProblemCardComponent {
@@ -14,12 +17,13 @@ export class ProblemCardComponent {
   attIsCorrect;
   problem;
   remainingAttempts;
+  isCorrect;
 
   /*@ngInject*/
   constructor($location, $scope, $uibModal, Assignment, $routeParams) {
     'ngInject';
     this.$location = $location;
-    this.userInput = '';
+    this.userInput = 'x=';
     this.ast = '';
     this.latex = '';
     this.$uibModal = $uibModal;
@@ -56,7 +60,7 @@ export class ProblemCardComponent {
 
   load() {
     if (this.ischanged === true) {
-      this.userInput = '';
+      this.userInput = 'x=';
       this.updateDisplay();
       this.ischanged = false;
     }
@@ -71,7 +75,7 @@ export class ProblemCardComponent {
     this.remainingAttempts =
       this.myproblemgeneral.numberOfAllowedAttempts -
       this.myproblemgeneral.attempts.length;
-    console.log(this.remainingAttempts);
+    //this.myproblemspecific.attempts.length;
   }
 
   /*Try and Catch to see if parsing and rendering works ok*/
@@ -129,6 +133,8 @@ export class ProblemCardComponent {
             document.getElementById('text-box-problem').style.color = 'red';
             this.addAlert('danger', 'Incorrect!');
           }
+          this.remainingAttempts =
+            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
         });
     }
   }
@@ -160,7 +166,6 @@ export class ProblemCardComponent {
   };
 
   append(htmlVal) {
-    console.log('test');
     if (htmlVal) {
       this.userInput += this.mappings[htmlVal][0];
     } else {
@@ -175,12 +180,23 @@ export class ProblemCardComponent {
 
   addAlert(type, msg) {
     console.log('added alert');
-    this.alerts.push({ type: type, msg: msg });
+    this.alerts.push({ type, msg });
+    if (msg == 'Correct!') {
+      this.isCorrect = true;
+    } else {
+      this.isCorrect = false;
+    }
   }
 
   closeAlert(index) {
     console.log('closed alert');
     this.alerts.splice(index, 1);
+    if (this.isCorrect == true) {
+      localStorage.setItem(
+        'ProblemNumber',
+        parseInt(localStorage.getItem('ProblemNumber')) + 1
+      );
+    }
   }
 }
 
@@ -198,3 +214,27 @@ export default angular
       ischanged: '='
     }
   }).name;
+
+//Mathquill integration
+let MQ = MathQuill.getInterface(2); //loading Mathquill interface
+let answerSpan = document.getElementById('answer'); //get element by id
+let answerMathField = MQ.MathField(answerSpan, {
+  //configration settings
+  spaceBehavesLikeTab: true,
+  leftRightIntoCmdGoes: 'up',
+  restrictMismatchedBrackets: true,
+  sumStartsWithNEquals: true,
+  supSubsRequireOperand: true,
+  charsThatBreakOutOfSupSub: '+-=<>',
+  autoSubscriptNumerals: true,
+  autoCommands: 'pi theta sqrt sum',
+  autoOperatorNames: 'sin cos',
+  handlers: {
+    edit: function() {
+      let enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
+      checkAnswer(enteredMath);
+      answerMathField.typedText(); //identical to what would happen if a user were typing the text in.
+      answerMathField.focus(); //focus on the editable field.
+    }
+  }
+});

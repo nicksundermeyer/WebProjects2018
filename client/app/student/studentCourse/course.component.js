@@ -3,7 +3,6 @@ const ngRoute = require('angular-route');
 import routing from '../student.routes';
 //This class registers students to courses and tailors the course
 export class CourseController {
-
   assignments = [];
   course;
   courseId;
@@ -26,7 +25,10 @@ export class CourseController {
     this.Auth.getCurrentUser()
       .then(student => {
         this.student = student;
-        return this.Course.getTailoredCourseInfo(this.courseId, this.student._id);
+        return this.Course.getTailoredCourseInfo(
+          this.courseId,
+          this.student._id
+        );
       })
       //course gets tailored to the student here
       .then(tailored => {
@@ -43,19 +45,18 @@ export class CourseController {
       })
       //catches if the course couldn't be tailored
       .catch(err => {
-        this.Course.getCourseInfo(this.courseId)
-          .then(abstract => {
-            console.log(abstract);
-            this.isTailored = false;
-            this.course = abstract.data;
-            this.assignments = this.course.assignments;
-          });
+        this.Course.getCourseInfo(this.courseId).then(abstract => {
+          console.log(abstract);
+          this.isTailored = false;
+          this.course = abstract.data;
+          this.assignments = this.course.assignments;
+        });
       });
   }
   //this enrolls the student in a course and takes the course id and the student's id
   enroll() {
-    this.Course.enrollStudentCourse(this.courseId, this.student._id)
-      .then(enroll => {
+    this.Course.enrollStudentCourse(this.courseId, this.student._id).then(
+      enroll => {
         this.isTailored = true;
         this.course = enroll.data;
         this.course.name = this.course.abstractCourseID.name;
@@ -64,17 +65,17 @@ export class CourseController {
         this.course.assignments.forEach(asmt => {
           this.assignments.push(asmt.AbstractAssignmentId);
         });
-      });
+      }
+    );
   }
-
 }
 //this creates the course and takes the [ngRoute]
-export default angular.module('webProjectsApp.course', [ngRoute])
-//This sets the default config, and the default template and controller components as well as the name
+export default angular
+  .module('webProjectsApp.course', [ngRoute])
+  //This sets the default config, and the default template and controller components as well as the name
   .config(routing)
   .component('course', {
     template: require('./course.html'),
     controller: CourseController,
-    controllerAs: 'courseController',
-  })
-  .name;
+    controllerAs: 'courseController'
+  }).name;
