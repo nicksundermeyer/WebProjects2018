@@ -75,7 +75,6 @@ export class ProblemCardComponent {
     this.remainingAttempts =
       this.myproblemgeneral.numberOfAllowedAttempts -
       this.myproblemgeneral.attempts.length;
-    //this.myproblemspecific.attempts.length;
   }
 
   /*Try and Catch to see if parsing and rendering works ok*/

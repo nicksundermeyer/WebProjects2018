@@ -18,7 +18,7 @@
     &.banner-small{
       height: 200px;
     }
-  
+
     &.banner-medium{
       height: 400px;
     }
@@ -26,8 +26,6 @@
     &.banner-large{
       height: 600px;
     }
-
-    //background: -webkit-linear-gradient(45deg, rgba(0,67,168,1) 0%, rgba(0,0,82,1) 100%);
     &:after {
       content: "";
       top: 0;
@@ -38,7 +36,6 @@
       background-image: url("/assets/images/Banner.png");
       background-size: auto;
       background-repeat: repeat;
-      //opacity: 0.15;
     }
     .container{
       padding-top: 60px;
@@ -77,8 +74,6 @@
 
 
     .step{
-      //width: 100%;
-      //padding: 32px 0 128px 0;
       padding: 64px 0;
       h2{
         color: $white;
