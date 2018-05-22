@@ -22,11 +22,11 @@ export class TeacherController {
   courses = [];
   teacher;
   gravatarUrl;
-  submitted = false;
 
   /*@ngInject*/
-  constructor($http, Course, Auth, UserServ) {
+  constructor($http, $uibModal, Course, Auth, UserServ) {
     this.$http = $http;
+    this.$uibModal = $uibModal;
     this.Course = Course;
     this.Auth = Auth;
     this.UserServ = UserServ;
@@ -56,9 +56,15 @@ export class TeacherController {
     });
   }
 
-  submit() {
-    this.submitted = true;
+  createModal() {
+    this.$uibModal.open({
+      template: require('../../components/courseCreationModal/courseCreationModal.html'),
+      controller: 'courseCreationModal as courseCreationModal'
+    });
+  }
 
+  submit() {
+    console.log('submitting');
     // submit the course to be created
     this.Course.createCourse(this.course)
       .then(result => {
@@ -69,8 +75,6 @@ export class TeacherController {
         console.error(err);
       });
   }
-
-  getCourses() {}
 }
 
 export default angular

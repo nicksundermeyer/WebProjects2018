@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h3 class="text-danger" id="modalLabel">Create Course</h3>
+</div>
+<div class="modal-body">
+  <form>
+    <input required="required" placeholder="Name" ng-model="courseCreationModal.course.name" class="form-control" />
+    <input required="required" placeholder="Description" ng-model="courseCreationModal.course.description" class="form-control" />
+    <input required="required" placeholder="Subjects" ng-model="courseCreationModal.course.subjects" class="form-control" />
+    <input required="required" placeholder="Categories" ng-model="courseCreationModal.course.categories[0]" class="form-control" />
+    <input required="required" placeholder="Title" ng-model="courseCreationModal.course.assignments[0].title" class="form-control" />
+    <input required="required" placeholder="Description" ng-model="courseCreationModal.course.assignments[0].description" class="form-control" />
+    <input required="required" placeholder="Minimum Number of Problems" ng-model="courseCreationModal.course.assignments[0].minNumProblems" class="form-control" />
+    <input required="required" placeholder="Maximum Number of Problems" ng-model="courseCreationModal.course.assignments[0].maxNumProblems" class="form-control" />
+    <input required="required" placeholder="Percentage of New Problems" ng-model="courseCreationModal.course.assignments[0].newProblemPercentage" class="form-control" />
+    <input required="required" placeholder="Number of Possible Attempts" ng-model="courseCreationModal.course.assignments[0].numberOfPossibleAttempts" class="form-control" />
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" ng-click="courseCreationModal.submit()">Create Course</button>
+  <button type="button" class="btn btn-secondary" ng-click="courseCreationModal.cancel()"> Cancel</button>
+</div>
