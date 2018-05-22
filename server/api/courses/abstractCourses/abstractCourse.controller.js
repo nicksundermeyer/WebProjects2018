@@ -49,9 +49,9 @@ export function create(req, res) {
   //any role higher than teacher
   //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
   //so id should not be just grabber from the current user
-  console.log('testing');
   var newCourse = new AbstractCourse(req.body);
-  console.log(newCourse);
+  var newAssignment = new AbstractAssignment(req.body.assignments[0]);
+  newCourse.assignments = [newAssignment];
   if (req.user.role === 'teacher') {
     //set teacher id if current user is actually a teacher
     newCourse.teacherID = req.user._id;
