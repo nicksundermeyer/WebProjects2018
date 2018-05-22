@@ -3,22 +3,6 @@ const ngRoute = require('angular-route');
 import routing from './teacher.routes';
 
 export class TeacherController {
-  course = {
-    name: '',
-    description: '',
-    subjects: '',
-    categories: [],
-    assignments: [
-      {
-        title: '',
-        description: '',
-        minNumProblems: '',
-        maxNumProblems: '',
-        newProblemPercentage: '',
-        numberOfPossibleAttempts: ''
-      }
-    ]
-  };
   courses = [];
   teacher;
   gravatarUrl;
@@ -61,19 +45,6 @@ export class TeacherController {
       template: require('../../components/courseCreationModal/courseCreationModal.html'),
       controller: 'courseCreationModal as courseCreationModal'
     });
-  }
-
-  submit() {
-    console.log('submitting');
-    // submit the course to be created
-    this.Course.createCourse(this.course)
-      .then(result => {
-        this.formInfo =
-          'Abstract Course (id=' + result._id + ') successfully created!';
-      })
-      .catch(err => {
-        console.error(err);
-      });
   }
 }
 

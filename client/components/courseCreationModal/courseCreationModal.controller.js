@@ -1,33 +1,76 @@
 'use strict';
 
 import angular from 'angular';
+import shared from '../../../server/config/environment/shared';
+
 export class CourseCreationModalController {
+  course = {
+    name: '',
+    description: '',
+    subjects: '',
+    categories: [],
+    assignments: [
+      {
+        title: '',
+        description: '',
+        minNumProblems: '',
+        maxNumProblems: '',
+        newProblemPercentage: '',
+        numberOfPossibleAttempts: ''
+      }
+    ]
+  };
+  subjects = [];
+  categories = [];
+  title = 'Create Course';
+
   /*@ngInject*/
   constructor($uibModalInstance, Course) {
     'ngInject';
     this.$uibModalInstance = $uibModalInstance;
     this.Course = Course;
   }
-  $onInit() {}
-  cancel() {
-    this.$uibModalInstance.dismiss('cancel');
+
+  $onInit() {
+    // getting subjects and categories for selections
+    this.subjects = shared.allSubjects;
+    this.categories = shared.allCategories;
+    this.title = 'Create Course';
   }
+
+  close() {
+    this.$uibModalInstance.dismiss('close');
+  }
+
   submit() {
-    console.log('course creation');
     // submit the course to be created
     this.Course.createCourse(this.course)
       .then(result => {
-        this.formInfo =
-          'Abstract Course (id=' + result._id + ') successfully created!';
+        console.log(result);
+        this.title =
+          'Abstract Course (id=' + result.data._id + ') successfully created!';
       })
       .catch(err => {
         console.error(err);
       });
   }
+
+  addAssignment() {
+    this.course.assignments.push({
+      title: '',
+      description: '',
+      minNumProblems: '',
+      maxNumProblems: '',
+      newProblemPercentage: '',
+      numberOfPossibleAttempts: ''
+    });
+  }
+
+  removeAssignment(index) {
+    this.course.assignments.splice(index, 1);
+  }
 }
-export default // .config(['$qProvider', function($qProvider) {    //Once the module is defined .config is used to configure routing for the application
-//   $qProvider.errorOnUnhandledRejections(false);
-// }])
-angular
+
+export default angular
   .module('directives.courseCreationModal', [])
   .controller('courseCreationModal', CourseCreationModalController).name;

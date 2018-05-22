@@ -4,7 +4,6 @@ export function CourseService($http) {
   var Course = {
     // create a new course
     createCourse(course) {
-      console.log($http.post('/api/courses/', course));
       return $http.post('/api/courses/', course);
     },
 

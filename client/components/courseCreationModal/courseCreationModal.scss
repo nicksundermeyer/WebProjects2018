@@ -1,0 +1,21 @@
+.courseCreationModal{
+    input{
+        margin: 10px 0;
+    }
+
+    select{
+        height: 200px;
+    }
+
+    .title{
+        color: $black;
+        font-size: 24px;
+        margin: 10px 0;
+    }
+
+    .subtitle{
+        color: $grey;
+        font-size: 18px;
+        margin: 10px 0;
+    }
+}
