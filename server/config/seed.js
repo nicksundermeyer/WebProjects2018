@@ -70,8 +70,8 @@ export default function seedDatabaseIfNeeded() {
                     depth: 1
                   }
                 })
-                .catch(erro => {
-                  console.log(erro);
+                .catch(error => {
+                  console.log(error);
                 });
             })
             .catch(err => console.log('error populating Problems', err));
@@ -217,23 +217,31 @@ function createMockSubmissions() {
               /* TODO: Here we need to introduce some variance in the way these submissions are created.
             *  - Some students should not submit for certain problems (percentage complete being known)
             *  - Some students should get some questions wrong (percentage wrong being known) */
+              // enroll students in tailored courses
+              var tailoredCourse = new TailoredCourse({
+                abstractCourseID: course,
+                studentID: student,
+                subjects: 'algebra',
+                categories: 'addition'
+              });
+              tailoredCourse.save().then(function(tailoredCourse) {
+                // "Roll a dice" and compare to these numbers to introduce variance.
+                const PERCENTAGE_ATTEMPTED = 0.3;
+                const PERCENTAGE_CORRECT = 0.8;
 
-              // "Roll a dice" and compare to these numbers to introduce variance.
-              const PERCENTAGE_ATTEMPTED = 0.3;
-              const PERCENTAGE_CORRECT = 0.8;
+                for (var prob = 0; prob < NUM_PROBLEMS; prob++) {
+                  var submission = new Submission({
+                    studentId: student._id,
+                    problemId: null, // We can use no problem ID here to just roll up by course
+                    assignmentId: assignment._id,
+                    courseId: course._id,
+                    attemptNum: 1,
+                    correct: true
+                  });
 
-              for (var prob = 0; prob < NUM_PROBLEMS; prob++) {
-                var submission = new Submission({
-                  studentId: student._id,
-                  problemId: null, // We can use no problem ID here to just roll up by course
-                  assignmentId: assignment._id,
-                  courseId: course._id,
-                  attemptNum: 1,
-                  correct: true
-                });
-
-                submission.save();
-              }
+                  submission.save();
+                }
+              });
             });
           }
         });
