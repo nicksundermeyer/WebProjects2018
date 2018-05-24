@@ -19,10 +19,7 @@ export class TeacherController {
   $onInit() {
     // get teacher's courses
     this.Auth.getCurrentUser().then(teacher => {
-      //the gravatar implementation should build a url from the email given from the student size 320 px
-      // this.gravatarUrl = gravatar.url(teacher.email, {s: '320', r: 'x', d: 'retro'});
-
-      // get courses
+      // get courses the teacher owns from server and add them to the local array
       this.UserServ.getUsersCourses(teacher._id).then(response => {
         this.courses = [];
         response.data.forEach(aCourse => {
@@ -40,6 +37,7 @@ export class TeacherController {
     });
   }
 
+  // open modal
   createModal() {
     this.$uibModal.open({
       template: require('../../components/courseCreationModal/courseCreationModal.html'),
