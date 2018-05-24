@@ -1,6 +1,10 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
+const uiBootstrap = require('angular-ui-bootstrap');
 import routing from './teacher.routes';
+import gravatar from 'gravatar';
+import auth from '../../services/auth/auth.module';
+import user from '../../services/user/user.module';
 
 export class TeacherController {
   courses = [];
@@ -8,10 +12,9 @@ export class TeacherController {
   gravatarUrl;
 
   /*@ngInject*/
-  constructor($http, $uibModal, Course, Auth, UserServ) {
+  constructor($http, $uibModal, Auth, UserServ) {
     this.$http = $http;
     this.$uibModal = $uibModal;
-    this.Course = Course;
     this.Auth = Auth;
     this.UserServ = UserServ;
   }
@@ -19,10 +22,17 @@ export class TeacherController {
   $onInit() {
     // get teacher's courses
     this.Auth.getCurrentUser().then(teacher => {
-      //the gravatar implementation should build a url from the email given from the student size 320 px
-      // this.gravatarUrl = gravatar.url(teacher.email, {s: '320', r: 'x', d: 'retro'});
+      // creating gravatar url
+      this.gravatarUrl = gravatar.url(teacher.email, {
+        s: '320',
+        r: 'x',
+        d: 'retro'
+      });
 
-      // get courses
+      // setting current user
+      this.teacher = teacher;
+
+      // get courses the teacher owns from server and add them to the local array
       this.UserServ.getUsersCourses(teacher._id).then(response => {
         this.courses = [];
         response.data.forEach(aCourse => {
@@ -40,6 +50,7 @@ export class TeacherController {
     });
   }
 
+  // open modal
   createModal() {
     this.$uibModal.open({
       template: require('../../components/courseCreationModal/courseCreationModal.html'),
@@ -49,7 +60,7 @@ export class TeacherController {
 }
 
 export default angular
-  .module('webProjectsApp.teacher', [ngRoute])
+  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user])
   .config(routing)
   .component('teacher', {
     template: require('./teacher.html'),
