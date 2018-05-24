@@ -32,8 +32,7 @@ var SubmissionSchema = new Schema(
 
     problemId: {
       type: Schema.Types.ObjectId,
-      ref: 'Problem',
-      required: true
+      ref: 'Problem'
     },
 
     assignmentId: {

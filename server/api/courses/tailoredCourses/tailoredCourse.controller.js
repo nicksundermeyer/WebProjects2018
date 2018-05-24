@@ -66,7 +66,10 @@ export function submitSolution(req, res) {
                 .equal;
 
               // Save the attempt to our database. Once for the problem and again for our statistics table
-              problem.attempts.push({ attempt: String(req.body.latexSol) });
+              problem.attempts.push({
+                attempt: String(req.body.latexSol),
+                correct: correct
+              });
 
               var submission = new Submission({
                 problemId: req.params.problemId,
