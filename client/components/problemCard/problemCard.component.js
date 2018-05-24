@@ -213,27 +213,3 @@ export default angular
       ischanged: '='
     }
   }).name;
-
-//Mathquill integration
-let MQ = MathQuill.getInterface(2); //loading Mathquill interface
-let answerSpan = document.getElementById('answer'); //get element by id
-let answerMathField = MQ.MathField(answerSpan, {
-  //configration settings
-  spaceBehavesLikeTab: true,
-  leftRightIntoCmdGoes: 'up',
-  restrictMismatchedBrackets: true,
-  sumStartsWithNEquals: true,
-  supSubsRequireOperand: true,
-  charsThatBreakOutOfSupSub: '+-=<>',
-  autoSubscriptNumerals: true,
-  autoCommands: 'pi theta sqrt sum',
-  autoOperatorNames: 'sin cos',
-  handlers: {
-    edit: function() {
-      let enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
-      checkAnswer(enteredMath);
-      answerMathField.typedText(); //identical to what would happen if a user were typing the text in.
-      answerMathField.focus(); //focus on the editable field.
-    }
-  }
-});

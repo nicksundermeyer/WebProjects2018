@@ -8,9 +8,30 @@
   <div class="description-problem-problem">
     <span id="problemDisplay-problem"></span>
   </div>
-  
+
   <div class="submit-button-problem">
-<input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">
+    <!--<input class="text-box-problem" id="text-box-problem" ng-model="problemCardController.userInput" ng-change="problemCardController.updateDisplay()" type="text">-->
+
+    <div id="example">
+      <p>Type math here: <span id="math-field"></span></p>
+      <p>LaTeX of what you typed: <code id="latex"></code></p>
+
+      <!--MathQuill code-->
+      <script>
+        var MQ = MathQuill.getInterface(2); // for backcompat
+        mathFieldSpan = document.getElementById('math-field');
+        var latexSpan = document.getElementById('latex');
+
+        var mathField = MQ.MathField(mathFieldSpan, {
+          spaceBehavesLikeTab: true, // configurable
+          handlers: {
+            edit: function() { // useful event handlers
+              latexSpan.textContent = mathField.latex(); // simple API
+            }
+          }
+        });
+      </script>
+    </div>
     <button ng-click="problemCardController.submitSolution(); problemCardController.attemptInfo();" type="button" class="btn btn-primary" ng-disabled="problemCardController.remainingAttempts == 0">SUBMIT</button>
     <div uib-alert ng-repeat="alert in problemCardController.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="problemCardController.closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
   </div>
