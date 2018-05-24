@@ -27,6 +27,7 @@ import assignmentCard from '../components/assignmentCard/assignmentCard.componen
 import courseCard from '../components/courseCard/courseCard.component';
 import problemCard from '../components/problemCard/problemCard.component';
 import problemConfirmationModal from '../components/problemConfirmationModal/problemConfirmationModal.controller';
+import courseCreationModal from '../components/courseCreationModal/courseCreationModal.controller';
 import typeahead from '../components/typeahead/typeahead.component';
 import main from './main/main.component';
 import student from './student/student.component';
@@ -63,6 +64,7 @@ angular
     assignmentCard,
     problemCard,
     problemConfirmationModal,
+    courseCreationModal,
     courseDiscovery,
     typeahead,
     main,
