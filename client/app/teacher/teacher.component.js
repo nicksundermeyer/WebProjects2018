@@ -1,6 +1,7 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
 import routing from './teacher.routes';
+import gravatar from 'gravatar';
 
 export class TeacherController {
   courses = [];
@@ -19,6 +20,16 @@ export class TeacherController {
   $onInit() {
     // get teacher's courses
     this.Auth.getCurrentUser().then(teacher => {
+      // creating gravatar url
+      this.gravatarUrl = gravatar.url(teacher.email, {
+        s: '320',
+        r: 'x',
+        d: 'retro'
+      });
+
+      // setting current user
+      this.teacher = teacher;
+
       // get courses the teacher owns from server and add them to the local array
       this.UserServ.getUsersCourses(teacher._id).then(response => {
         this.courses = [];
