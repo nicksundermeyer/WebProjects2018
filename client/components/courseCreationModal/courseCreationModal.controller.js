@@ -32,21 +32,21 @@ export class CourseCreationModalController {
   }
 
   $onInit() {
-    // getting subjects and categories for selections
+    // getting subjects and categories to populate selection on modal
     this.subjects = shared.allSubjects;
     this.categories = shared.allCategories;
     this.title = 'Create Course';
   }
 
+  // close modal
   close() {
     this.$uibModalInstance.dismiss('close');
   }
 
   submit() {
-    // submit the course to be created
+    // submit the course to be created/updated
     this.Course.createCourse(this.course)
       .then(result => {
-        console.log(result);
         this.title =
           'Abstract Course (id=' + result.data._id + ') successfully created!';
       })
@@ -55,6 +55,7 @@ export class CourseCreationModalController {
       });
   }
 
+  // add an assignment to the course being created/updated
   addAssignment() {
     this.course.assignments.push({
       title: '',
@@ -66,6 +67,7 @@ export class CourseCreationModalController {
     });
   }
 
+  // remove an assignment from the assignment array for the current course
   removeAssignment(index) {
     this.course.assignments.splice(index, 1);
   }
