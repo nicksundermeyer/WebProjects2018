@@ -1,7 +1,10 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
+const uiBootstrap = require('angular-ui-bootstrap');
 import routing from './teacher.routes';
 import gravatar from 'gravatar';
+import auth from '../../services/auth/auth.module';
+import user from '../../services/user/user.module';
 
 export class TeacherController {
   courses = [];
@@ -9,10 +12,9 @@ export class TeacherController {
   gravatarUrl;
 
   /*@ngInject*/
-  constructor($http, $uibModal, Course, Auth, UserServ) {
+  constructor($http, $uibModal, Auth, UserServ) {
     this.$http = $http;
     this.$uibModal = $uibModal;
-    this.Course = Course;
     this.Auth = Auth;
     this.UserServ = UserServ;
   }
@@ -58,7 +60,7 @@ export class TeacherController {
 }
 
 export default angular
-  .module('webProjectsApp.teacher', [ngRoute])
+  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user])
   .config(routing)
   .component('teacher', {
     template: require('./teacher.html'),
