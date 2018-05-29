@@ -184,8 +184,7 @@ function createMockSubmissions() {
           'A course with known distributions for calculating statistics',
         subjects: 'algebra',
         categories: 'addition',
-        teacherID: teacher._id,
-        statsCourse: true
+        teacherID: teacher._id
       });
 
       // Create one assignment with 10 problems.
