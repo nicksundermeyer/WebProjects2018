@@ -1,4 +1,3 @@
-
 export function UserService($http) {
   'ngInject';
   //get current user
@@ -28,6 +27,10 @@ export function UserService($http) {
     //get users course id
     getUsersCourses(id) {
       return $http.get('/api/users/' + id + '/courses');
+    },
+
+    getMyCourses() {
+      return $http.get('/api/courses/mine');
     }
   };
   return UserServ;
