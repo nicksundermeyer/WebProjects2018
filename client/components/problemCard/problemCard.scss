@@ -23,14 +23,17 @@
   background: white;
   border-color: $blue;
   color: white;
+  width: 100%;
   padding: 0px;
-  height: 100%;
+  padding-top: 5%;
 }
 
 .description-problem-problem{
+  padding-top: 15px;
   background-color: $lightest-grey;
   color: black;
   height: 50px;
+  border-radius: 5px;
 }
 
 #problem-input {
@@ -61,6 +64,7 @@
 .operators-container{
   text-align: center;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .constants-container{
