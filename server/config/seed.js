@@ -173,6 +173,12 @@ function createTailoredCourse(abstractCourse) {
 
 // A function to create some submissions to use to calculate statistics
 function createMockSubmissions() {
+  // Delete Submissions First
+  Submission.remove({}, function(err) {
+    if (err) {
+      console.log("Couldn't remove submissions...");
+    }
+  });
   // Create a new teacher to create the course under. Unfortunately can't use the e
   User.findOne({ role: 'teacher', email: 'teacher@example.com' })
     .exec()
