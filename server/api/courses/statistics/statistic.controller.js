@@ -1,27 +1,29 @@
 'use strict';
 
 import AbstractCourse from '../abstractCourses/abstractCourse.model';
+import failingStudentsCalculator from './statistics.failingStudents';
+console.log('statistic controller');
+import mongoose, { Schema } from 'mongoose';
 
 export function myCourses(req, res) {
-  var id = req.params.id;
-  return res
-    .json({
-      teacherId: id,
-      courses: [
-        {
-          courseId: 12345,
-          name: 'test course 1'
-        },
-        {
-          courseId: 67890,
-          name: 'test course 2'
-        }
-      ]
-    })
-    .status(200);
+  return AbstractCourse.find({
+    teacherID: mongoose.Types.ObjectId(req.user.id)
+  })
+    .exec()
+    .then(function(results) {
+      return res.status(200).json(results);
+    });
 }
 
 export function getStats(req, res) {
+  console.log(failingStudentsCalculator);
+
+  return failingStudentsCalculator(req, res).then(function(result) {
+    return res.json({
+      test: 'this is test',
+      result: result
+    });
+  });
   return res
     .json({
       courseId: 12345,
@@ -35,8 +37,7 @@ export function getStats(req, res) {
         stdDev: 2
       },
       failingStudents: {
-        average: 3,
-        stdDev: 3
+        number: failingStudentsCalculator(req, res)
       },
       overachievingStudents: {
         average: 4,
