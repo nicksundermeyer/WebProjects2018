@@ -1,33 +1,20 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
+const uiBootstrap = require('angular-ui-bootstrap');
 import routing from './teacher.routes';
+import gravatar from 'gravatar';
+import auth from '../../services/auth/auth.module';
+import user from '../../services/user/user.module';
 
 export class TeacherController {
-  course = {
-    name: '',
-    description: '',
-    subjects: '',
-    categories: [],
-    assignments: [
-      {
-        title: '',
-        description: '',
-        minNumProblems: '',
-        maxNumProblems: '',
-        newProblemPercentage: '',
-        numberOfPossibleAttempts: ''
-      }
-    ]
-  };
   courses = [];
   teacher;
   gravatarUrl;
-  submitted = false;
 
   /*@ngInject*/
-  constructor($http, Course, Auth, UserServ) {
+  constructor($http, $uibModal, Auth, UserServ) {
     this.$http = $http;
-    this.Course = Course;
+    this.$uibModal = $uibModal;
     this.Auth = Auth;
     this.UserServ = UserServ;
   }
@@ -35,20 +22,27 @@ export class TeacherController {
   $onInit() {
     // get teacher's courses
     this.Auth.getCurrentUser().then(teacher => {
-      //the gravatar implementation should build a url from the email given from the student size 320 px
-      // this.gravatarUrl = gravatar.url(teacher.email, {s: '320', r: 'x', d: 'retro'});
+      // creating gravatar url
+      this.gravatarUrl = gravatar.url(teacher.email, {
+        s: '320',
+        r: 'x',
+        d: 'retro'
+      });
 
-      // get courses
-      this.UserServ.getUsersCourses(teacher._id).then(response => {
+      // setting current user
+      this.teacher = teacher;
+
+      // get courses the teacher owns from server and add them to the local array
+      this.UserServ.getMyCourses().then(response => {
         this.courses = [];
-        response.data.forEach(aCourse => {
-          console.log(aCourse);
+        response.data.courses.forEach(aCourse => {
+          // console.log(aCourse);
           var tempCourse = {
-            name: aCourse.abstractCourseID.name,
-            description: aCourse.abstractCourseID.description,
+            name: aCourse.name,
+            description: aCourse.description,
             categories: aCourse.categories,
             subjects: aCourse.subjects,
-            _id: aCourse.abstractCourseID._id
+            _id: aCourse.courseId
           };
           this.courses.push(tempCourse);
         });
@@ -56,25 +50,17 @@ export class TeacherController {
     });
   }
 
-  submit() {
-    this.submitted = true;
-
-    // submit the course to be created
-    this.Course.createCourse(this.course)
-      .then(result => {
-        this.formInfo =
-          'Abstract Course (id=' + result._id + ') successfully created!';
-      })
-      .catch(err => {
-        console.error(err);
-      });
+  // open modal
+  createModal() {
+    this.$uibModal.open({
+      template: require('../../components/courseCreationModal/courseCreationModal.html'),
+      controller: 'courseCreationModal as courseCreationModal'
+    });
   }
-
-  getCourses() {}
 }
 
 export default angular
-  .module('webProjectsApp.teacher', [ngRoute])
+  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user])
   .config(routing)
   .component('teacher', {
     template: require('./teacher.html'),
