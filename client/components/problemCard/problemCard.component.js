@@ -35,6 +35,7 @@ export class ProblemCardComponent {
     this.$routeParams = $routeParams;
     this.attIsCorrect = false;
     this.alerts = [];
+    this.mathQuill('');
 
     /*$watch is checking if newVal is true then load virtual machine */
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
@@ -145,24 +146,36 @@ export class ProblemCardComponent {
   }
 
   mappings = {
-    sqrt: ['*sqrt(x)', 'sqrt(x)'],
-    plus: ['x+y'],
-    mult: ['*x'],
-    div: ['/x'],
-    equals: ['= x'],
-    greater: ['> x'],
-    less: ['< x'],
-    pi: ['pi'],
-    e: ['e'],
-    infinity: ['infinity'],
-    i: ['i'],
-    zeta: ['#Z'],
-    tau: ['#tau'],
-    rightarrow: ['-> x'],
-    leftarrow: ['<- x'],
-    forall: ['forall x -> x'],
-    exists: ['exists x : x']
+    sqrt: ['\\sqrt'],
+    plus: ['+'],
+    mult: ['*'],
+    div: ['/'],
+    equals: ['='],
+    greater: ['>'],
+    less: ['<'],
+    pi: ['\\pi'],
+    e: ['\\e'],
+    infinity: ['\\infinity'],
+    i: ['\\imaginary'],
+    zeta: ['\\zeta'],
+    tau: ['\\tau'],
+    rightarrow: ['\\rightarrow'],
+    leftarrow: ['\\leftarrow'],
+    forall: ['\\forall'],
+    exists: ['\\exists']
   };
+
+  mathQuill(htmlVal) {
+    var MQ = MathQuill.getInterface(2); // for backcompat
+    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
+
+    if (htmlVal == '') {
+      MQ.MathField(mathFieldSpan).write('x = '); //Initially sets mathfield to contain 'x = '
+    } else {
+      MQ.MathField(mathFieldSpan).typedText(this.mappings[htmlVal].toString()); //Updates the mathfield with the corresponding button clicked
+      MQ.MathField(mathFieldSpan).keystroke('Enter'); //Needed for button clicking
+    }
+  }
 
   append(htmlVal) {
     if (htmlVal) {

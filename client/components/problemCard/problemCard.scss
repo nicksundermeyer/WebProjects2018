@@ -10,7 +10,7 @@
 
 .card-header-problem{
   height: 50px;
-  background-color: lightblue;
+  background-color: $blue;
   margin-bottom: 10px;
 }
 
@@ -29,7 +29,7 @@
 
 #problem-input {
   background-color: white;
-  border-color: #4393B9;
+  border-color: $blue;
   height:150px;
   line-height: 150px;
   color: black;
