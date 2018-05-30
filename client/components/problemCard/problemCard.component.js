@@ -69,13 +69,17 @@ export class ProblemCardComponent {
       this.myproblemspecific.description.math,
       'latex'
     );
+    console.log('description latex: ' + this.descriptionLatex);
     katex.render(
       this.descriptionLatex,
       document.getElementById('problemDisplay-problem')
     );
-    this.remainingAttempts =
-      this.myproblemgeneral.numberOfAllowedAttempts -
-      this.myproblemgeneral.attempts.length;
+    console.log('remaining: ' + this.remainingAttempts);
+    console.log('allowed: ' + this.myproblemgeneral.numberOfAllowedAttempts);
+    console.log('length: ' + this.myproblemgeneral.attempts.length);
+    this.remainingAttempts = 3;
+    /*this.myproblemgeneral.numberOfAllowedAttempts -
+      this.myproblemgeneral.attempts.length;*/
   }
 
   /*Try and Catch to see if parsing and rendering works ok*/
@@ -85,58 +89,31 @@ export class ProblemCardComponent {
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString(); //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
-      document.getElementById('text-box-problem').style.color = 'black';
-    } catch (e) {
-      document.getElementById('text-box-problem').style.color = 'blue';
-    }
+    } catch (e) {}
   }
 
   submitSolution() {
-    if (
-      document.getElementById('text-box-problem').style.color == 'blue' ||
-      document.getElementById('text-box-problem').style.length === 0
-    ) {
-      this.$uibModal
-        .open({
-          template: require('../problemConfirmationModal/problemConfirmationModal.html'),
-          controller:
-            'problemConfirmationModalController as problemConfirmationModalController'
-        })
-        .result.then(
-          () => {
-            this.Assignment.submitSolution(
-              this.$routeParams.courseId,
-              this.myuserid,
-              this.$routeParams.assignmentId,
-              this.myproblemid,
-              this.latex
-            );
-          },
-          () => {
-            console.log('Cancelled');
-          }
-        );
-    } else {
-      this.Assignment.submitSolution(
-        this.$routeParams.courseId,
-        this.myuserid,
-        this.$routeParams.assignmentId,
-        this.myproblemid,
-        this.latex
-      )
-        .async()
-        .then(res => {
-          if (res.data.result === 'success') {
-            document.getElementById('text-box-problem').style.color = 'green';
-            this.addAlert('success', 'Correct!');
-          } else {
-            document.getElementById('text-box-problem').style.color = 'red';
-            this.addAlert('danger', 'Incorrect!');
-          }
-          this.remainingAttempts =
-            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
-        });
-    }
+    this.Assignment.submitSolution(
+      this.$routeParams.courseId,
+      this.myuserid,
+      this.$routeParams.assignmentId,
+      this.myproblemid,
+      this.latex
+    )
+      .async()
+      .then(res => {
+        console.log('res: ' + res);
+        console.log('data: ' + res.data.result);
+        if (res.data.result === 'success') {
+          document.getElementById('text-box-problem').style.color = 'green';
+          this.addAlert('success', 'Correct!');
+        } else {
+          document.getElementById('text-box-problem').style.color = 'red';
+          this.addAlert('danger', 'Incorrect!');
+        }
+        this.remainingAttempts =
+          res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
+      });
   }
 
   attemptInfo() {

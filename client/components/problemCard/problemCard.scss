@@ -1,30 +1,36 @@
 @import '~mathquill/build/mathquill.css';
 
+/*.container {
+  padding: 0px;
+  margin: 0px;
+}*/
 .problem-card {
   text-align:center;
-  margin: 10px;
   border-radius: 20px;
   width: 100%;
   position: relative;
+  padding: 10px;
+  background-color: $blue;
 }
 
 .card-header-problem{
   height: 50px;
   background-color: $blue;
-  margin-bottom: 10px;
 }
 
 .problem-container {
   border-radius: 10px;
-  background: #EEEEEE;
-  border-color: #EEEEEE;
-  color: #4b5257;
+  background: white;
+  border-color: $blue;
+  color: white;
+  padding: 0px;
+  height: 100%;
 }
 
 .description-problem-problem{
-  background-color: lightcyan;
+  background-color: $lightest-grey;
   color: black;
-  margin-bottom: 10px;
+  height: 50px;
 }
 
 #problem-input {
@@ -49,7 +55,7 @@
 }
 
 .submit-button-problem {
-  margin-top: 20px;
+  //margin-top: 10px;
 }
 
 .operators-container{
@@ -79,7 +85,5 @@
   font-size: 24px;
 }
 
-textarea {
-  background-color: lightgray;
-  color: yellow;
-}
+
+
