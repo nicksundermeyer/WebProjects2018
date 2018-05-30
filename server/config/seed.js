@@ -204,6 +204,10 @@ function createMockSubmissions() {
 
       //Save the course and assignment and then create submissions
       statsCourse.save().then(function(course) {
+        console.log(
+          'AbstractCourse id to use to test statistics calculations: ' +
+            course._id
+        );
         assignment.save().then(function(assignment) {
           // Create students to submit problems for the assignment.
           for (var i = 0; i < NUM_STUDENTS; i++) {
@@ -214,9 +218,6 @@ function createMockSubmissions() {
             });
 
             student.save().then(function(student) {
-              /* TODO: Here we need to introduce some variance in the way these submissions are created.
-            *  - Some students should not submit for certain problems (percentage complete being known)
-            *  - Some students should get some questions wrong (percentage wrong being known) */
               // enroll students in tailored courses
               var tailoredCourse = new TailoredCourse({
                 abstractCourseID: course,
@@ -229,17 +230,20 @@ function createMockSubmissions() {
                 const PERCENTAGE_ATTEMPTED = 0.3;
                 const PERCENTAGE_CORRECT = 0.8;
 
-                for (var prob = 0; prob < NUM_PROBLEMS; prob++) {
-                  var submission = new Submission({
-                    studentId: student._id,
-                    problemId: null, // We can use no problem ID here to just roll up by course
-                    assignmentId: assignment._id,
-                    courseId: course._id,
-                    attemptNum: 1,
-                    correct: true
-                  });
-
-                  submission.save();
+                for (var i = 0; i < NUM_PROBLEMS; i++) {
+                  // Submit solutions with some randomness
+                  if (Math.random() < PERCENTAGE_ATTEMPTED) {
+                    var correct = Math.random() < PERCENTAGE_CORRECT; // calculate correctness with randomness
+                    var submission = new Submission({
+                      studentId: student._id,
+                      problemId: null, // We can use no problem ID here to just roll up by course
+                      assignmentId: assignment._id,
+                      courseId: course._id,
+                      attemptNum: 1,
+                      correct: correct
+                    });
+                    submission.save();
+                  }
                 }
               });
             });
