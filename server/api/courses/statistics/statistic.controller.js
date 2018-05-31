@@ -4,6 +4,7 @@ import AbstractCourse from '../abstractCourses/abstractCourse.model';
 import failingStudentsCalculator from './statistics.failingStudents';
 console.log('statistic controller');
 import mongoose, { Schema } from 'mongoose';
+let logger = require('./../../../config/bunyan');
 
 export function myCourses(req, res) {
   return AbstractCourse.find({
@@ -16,47 +17,50 @@ export function myCourses(req, res) {
 }
 
 export function getStats(req, res) {
-  console.log(failingStudentsCalculator);
-
-  return failingStudentsCalculator(req, res).then(function(result) {
-    return res.json({
-      test: 'this is test',
-      result: result
-    });
-  });
-  return res
-    .json({
-      courseId: 12345,
-      courseName: 'test course 1',
-      courseCompletionPercentage: {
-        average: 1,
-        stdDev: 1
-      },
-      studentDistribution: {
-        average: 2,
-        stdDev: 2
-      },
-      failingStudents: {
-        number: failingStudentsCalculator(req, res)
-      },
-      overachievingStudents: {
-        average: 4,
-        stdDev: 4
-      },
-      problemSetMetrics: {
-        average: 5,
-        stdDev: 5
-      },
-      categoryMetrics: {
-        average: 6,
-        stdDev: 6
-      },
-      dataCorrelations: {
-        average: 7,
-        stdDev: 7
-      }
+  var calculations = [];
+  calculations.push(failingStudentsCalculator(req));
+  Promise.all(calculations)
+    .then(function(results) {
+      return res
+        .json({
+          courseId: 12345,
+          courseName: 'test course 1',
+          courseCompletionPercentage: {
+            average: 1,
+            stdDev: 1
+          },
+          studentDistribution: {
+            average: 2,
+            stdDev: 2
+          },
+          failingStudents: results[0],
+          overachievingStudents: {
+            average: 4,
+            stdDev: 4
+          },
+          problemSetMetrics: {
+            average: 5,
+            stdDev: 5
+          },
+          categoryMetrics: {
+            average: 6,
+            stdDev: 6
+          },
+          dataCorrelations: {
+            average: 7,
+            stdDev: 7
+          }
+        })
+        .status(200);
     })
-    .status(200);
+    .catch(err => {
+      //otherwise return a not found status
+      logger.error({ error: err });
+      return res
+        .status(400)
+        .send(err)
+        .end();
+    });
 }
 
 // Percentage of each course completed
@@ -76,16 +80,6 @@ export function studentDistribution(req, res) {
   return res
     .json({
       progress: 50
-    })
-    .status(200);
-}
-
-// Set of failing students who are performing below a certain threshold
-export function failingStudents(req, res) {
-  //calculate values
-  return res
-    .json({
-      students: [2, 9, 17]
     })
     .status(200);
 }

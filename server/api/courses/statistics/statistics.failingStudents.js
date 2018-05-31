@@ -5,7 +5,7 @@ import shared from './../../../config/environment/shared';
 import TailoredCourse from './../tailoredCourses/tailoredCourse.model';
 console.log('here in failing students');
 
-module.exports = function failingStudents(req, res) {
+module.exports = function failingStudents(req) {
   //
   //
   //map
@@ -32,19 +32,24 @@ module.exports = function failingStudents(req, res) {
     target: req.params.id
   };
   o.map = function() {
-    var numPass, numFail;
-    if (this.abstractCourseId.toString() == target) {
-      this.assignments.forEach(function(assignment) {
-        assignment.problems.forEach(function(problem) {
-          if (problem.attempts.length > 0) {
-            if (attempts[attempts.length - 1].correct) {
-              numPass++;
-            } else {
-              numFail++;
-            }
+    var numFail = 0;
+    var numPass = 0;
+    if (this.abstractCourseID.valueOf() == target) {
+      if (this.assignments) {
+        this.assignments.forEach(function(assignment) {
+          if (assignment.problems) {
+            assignment.problems.forEach(function(problem) {
+              if (problem.attempts && problem.attempts.length > 0) {
+                if (problem.attempts[problem.attempts.length - 1].correct) {
+                  numPass++;
+                } else {
+                  numFail++;
+                }
+              }
+            });
           }
         });
-      });
+      }
       emit(this.studentID, { numPass, numFail });
     }
   };
@@ -54,8 +59,9 @@ module.exports = function failingStudents(req, res) {
     var totalFail = 0;
     vals.forEach(function(val) {
       totalPass += val.numPass;
-      totalFail += val.numPass;
+      totalFail += val.numFail;
     });
+    // Calculate their overall grade
     var percentage = totalPass / (totalPass + totalFail);
     return {
       percentage: percentage,
@@ -64,13 +70,8 @@ module.exports = function failingStudents(req, res) {
     };
   };
 
-  return TailoredCourse.mapReduce(o, function(err, results) {
-    if (err) {
-      console.error(err);
-    }
-    console.log('47 of failingStudents');
+  return TailoredCourse.mapReduce(o).then(function(results) {
     console.log(results);
-
     return results;
   });
 };
