@@ -31,6 +31,8 @@ export class CourseCardComponent {
     this.$anchorScroll = $anchorScroll;
   }
 
+  $onInit() {}
+
   openStatistics(course) {
     this.hideStats = false;
     this.selectedCourse = course;
@@ -50,5 +52,8 @@ export default angular
   .component('teacherCourseCard', {
     template: require('./teacherCourseCard.html'),
     controller: CourseCardComponent,
-    controllerAs: 'teacherCourseCardController'
+    controllerAs: 'teacherCourseCardController',
+    bindings: {
+      courses: '='
+    }
   }).name;
