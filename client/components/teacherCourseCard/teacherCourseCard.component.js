@@ -3,24 +3,7 @@
 import angular from 'angular';
 
 export class CourseCardComponent {
-  courses = [
-    {
-      courseId: 12345,
-      name: 'test course 1'
-    },
-    {
-      courseId: 67890,
-      name: 'test course 2'
-    },
-    {
-      courseId: 50824,
-      name: 'test course 3'
-    },
-    {
-      courseId: 430820,
-      name: 'test course 4'
-    }
-  ];
+  courses = [];
   hideStats = true;
   selectedCourse;
 
@@ -33,12 +16,17 @@ export class CourseCardComponent {
 
   $onInit() {}
 
+  // open statistics div
   openStatistics(course) {
+    // set hidden to false and save the currently selected course
     this.hideStats = false;
     this.selectedCourse = course;
+
+    // add padding below course cards to allow scrolling while screen is covered by div
     document.getElementById('coursePadding').style.height = '50vh';
   }
 
+  // close stats div
   closeStatistics() {
     this.hideStats = true;
     this.selectedCourse = '';
