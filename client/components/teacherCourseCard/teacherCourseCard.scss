@@ -1,0 +1,31 @@
+.teacherCourseCard{
+  .infoButton {
+    align-self: center;
+    margin-bottom: 15px;
+    width: 25%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $orange;
+    color: $white !important;
+    border-width: 0;
+
+    &:hover{
+      background-color: $blue;
+    }
+
+  }
+
+  #courseStats{
+    width: 100vw;
+    height: 50vh;
+    background-color: $off-white;
+    position: fixed;
+    top: 50vh;
+    left: 0;
+    margin: 0;
+    z-index: 100;
+    overflow: auto;
+  }
+}
