@@ -1,12 +1,13 @@
 import angular from 'angular';
 const ngRoute = require('angular-route');
 const uiBootstrap = require('angular-ui-bootstrap');
-//const uiNvd3 = require('nvd3');
 import routing from './teacher.routes';
 import gravatar from 'gravatar';
 import auth from '../../services/auth/auth.module';
 import user from '../../services/user/user.module';
-import d3 from 'd3';
+//const uid3 = require ('d3')
+const uinvd3 = require('angular-nvd3');
+import d3 from 'angular-nvd3';
 
 export class TeacherController {
   courses = [];
@@ -111,7 +112,7 @@ export class TeacherController {
 }
 
 export default angular
-  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user])
+  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, uinvd3, auth, user])
   .config(routing)
   .component('teacher', {
     template: require('./teacher.html'),
