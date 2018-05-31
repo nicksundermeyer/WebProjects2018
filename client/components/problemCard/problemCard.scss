@@ -89,5 +89,8 @@
   font-size: 24px;
 }
 
-
-
+.mq-math-mode .mq-binary-operator {
+  padding: 0 1.2em;
+  display: -moz-inline-box;
+  display: inline-block;
+}

@@ -144,7 +144,7 @@ export class ProblemCardComponent {
 
   mathQuill(htmlVal) {
     var MQ = MathQuill.getInterface(2); // for backcompat
-    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
+    var mathFieldSpan = document.getElementById('text-box-problem'); //Mathfield textarea
 
     if (htmlVal == '') {
       MQ.MathField(mathFieldSpan).write('x = '); //Initially sets mathfield to contain 'x = '
