@@ -20,7 +20,10 @@
     <div class="col-xs-12">
       <div ng-repeat="assignment in courseCreationModal.course.assignments">
         <div ng-init="index = courseCreationModal.course.assignments.indexOf(assignment)"></div>
-        <div class="subtitle">Assignment {{index+1}}</div>
+        <div class="subtitle col-xs-6">Assignment {{index+1}}</div>
+        <button type="button" class="btn btn-danger" ng-click="courseCreationModal.removeAssignment(index)" style="float: right; margin: 10px;">
+          <i class="fa fa-times"></i>
+        </button>
         <input required="required" placeholder="Title" ng-model="courseCreationModal.course.assignments[index].title" class="form-control" />
         <input required="required" placeholder="Description" ng-model="courseCreationModal.course.assignments[index].description" class="form-control" />
         <input required="required" placeholder="Minimum Number of Problems" ng-model="courseCreationModal.course.assignments[index].minNumProblems" class="form-control" />

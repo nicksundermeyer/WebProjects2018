@@ -1,18 +1,19 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "32749afb-b08a-46d0-9716-544f960b2868",
 		"name": "Postman Testing",
+		"_postman_id": "abf469e5-0c3b-c988-64e2-d6985bd5557c",
 		"description": "API test for course, users, and problem",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Users(Log in Here) API",
-			"description": null,
+			"description": "",
 			"item": [
 				{
 					"name": "Different Login Roles",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Teacher Login",
@@ -30,6 +31,7 @@
 								}
 							],
 							"request": {
+								"url": "http://localhost:3000/auth/local",
 								"method": "POST",
 								"header": [
 									{
@@ -45,18 +47,7 @@
 									"mode": "raw",
 									"raw": "{\n  \"email\" : \"teacher@example.com\",\n  \"password\" : \"ps-teacher\"\n}"
 								},
-								"url": {
-									"raw": "http://localhost:3000/auth/local",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"auth",
-										"local"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -76,6 +67,7 @@
 								}
 							],
 							"request": {
+								"url": "http://localhost:3000/auth/local",
 								"method": "POST",
 								"header": [
 									{
@@ -91,18 +83,7 @@
 									"mode": "raw",
 									"raw": "{\n  \"email\" : \"student@example.com\",\n  \"password\" : \"ps-student\"\n}"
 								},
-								"url": {
-									"raw": "http://localhost:3000/auth/local",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"auth",
-										"local"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
@@ -122,6 +103,7 @@
 								}
 							],
 							"request": {
+								"url": "http://localhost:3000/auth/local",
 								"method": "POST",
 								"header": [
 									{
@@ -137,18 +119,7 @@
 									"mode": "raw",
 									"raw": "{\n  \"email\" : \"admin@example.com\",\n  \"password\" : \"ps-admin\"\n}"
 								},
-								"url": {
-									"raw": "http://localhost:3000/auth/local",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"auth",
-										"local"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
@@ -157,11 +128,12 @@
 				},
 				{
 					"name": "Creating Profiles to Test With",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Create Teacher to test Permission",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "POST",
 								"header": [
 									{
@@ -173,24 +145,14 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Teacher2\",\n  \"email\": \"teacher2@example.com\",\n  \"password\": \"ps-teacher2\",\n  \"role\" : \"teacher\"\n}"
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Create Admin to test Permissions",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "POST",
 								"header": [
 									{
@@ -202,24 +164,14 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Admin5\",\n  \"email\": \"Admin5@example.com\",\n  \"password\": \"ps-admin5\",\n  \"role\" : \"admin\"\n}"
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Create Student to test Permission",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "POST",
 								"header": [
 									{
@@ -231,24 +183,14 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Student5\",\n  \"email\": \"Student5@example.com\",\n  \"password\": \"ps-student5\",\n  \"role\" : \"student\"\n}"
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Create Researcher to test Permissions",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "POST",
 								"header": [
 									{
@@ -260,24 +202,14 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Researcher5\",\n  \"email\": \"Researcher5@example.com\",\n  \"password\": \"ps-researcher5\",\n  \"role\" : \"researcher\"\n}"
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Create a New User",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "POST",
 								"header": [
 									{
@@ -289,18 +221,7 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Teacher2\",\n  \"email\": \"teacher2@example.com\",\n  \"password\": \"ps-teacher2\",\n  \"role\" : \"teacher\"\n}"
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
@@ -309,11 +230,12 @@
 				},
 				{
 					"name": "Collecting User Info",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "List all users",
 							"request": {
+								"url": "localhost:3000/api/users",
 								"method": "GET",
 								"header": [
 									{
@@ -328,17 +250,6 @@
 								"body": {
 									"mode": "raw",
 									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:3000/api/users",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users"
-									]
 								},
 								"description": "List all users stored in the collection"
 							},
@@ -347,6 +258,7 @@
 						{
 							"name": "Get all User Info",
 							"request": {
+								"url": "localhost:3000/api/users/",
 								"method": "GET",
 								"header": [
 									{
@@ -362,24 +274,14 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Get Currently logged in User's Info",
 							"request": {
+								"url": "localhost:3000/api/users/me",
 								"method": "GET",
 								"header": [
 									{
@@ -395,18 +297,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/me",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										"me"
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
@@ -415,11 +306,31 @@
 				},
 				{
 					"name": "Making Changes to a User",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Change password using user's ID",
 							"request": {
+								"url": {
+									"raw": "localhost:3000/api/users/:id/password",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										":id",
+										"password"
+									],
+									"query": [],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [
 									{
@@ -435,8 +346,15 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User Using User ID",
+							"request": {
 								"url": {
-									"raw": "localhost:3000/api/users/:id/password",
+									"raw": "localhost:3000/api/users/:id",
 									"host": [
 										"localhost"
 									],
@@ -444,22 +362,16 @@
 									"path": [
 										"api",
 										"users",
-										":id",
-										"password"
+										":id"
 									],
+									"query": [],
 									"variable": [
 										{
 											"key": "id",
 											"value": ""
 										}
 									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete User Using User ID",
-							"request": {
+								},
 								"method": "DELETE",
 								"header": [
 									{
@@ -475,24 +387,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/users/:id",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
@@ -503,15 +398,16 @@
 		},
 		{
 			"name": "Course API",
-			"description": null,
+			"description": "",
 			"item": [
 				{
 					"name": "Abstract Courses CRUD",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Create Course",
 							"request": {
+								"url": "localhost:3000/api/courses/",
 								"method": "POST",
 								"header": [
 									{
@@ -527,8 +423,15 @@
 									"mode": "raw",
 									"raw": "{\n  \"name\": \"Computer Science 5\",\n  \"description\" : \"CS course 5\",\n  \"subjects\" : \"booleanLogic\",\n  \"categories\" : \"or\",\n  \"assignments\" : [{\n  \t\"title\" : \"assign 1\",\n  \t\"description\" : \"assign 1 descrip\",\n  \t\"minNumProblems\": 5,\n  \t\"maxNumProblems\" : 10,\n  \t\"newProblemPercentage\" : 17\n  }]\n}"
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Update Course",
+							"request": {
 								"url": {
-									"raw": "localhost:3000/api/courses/",
+									"raw": "localhost:3000/api/courses/:id",
 									"host": [
 										"localhost"
 									],
@@ -536,15 +439,16 @@
 									"path": [
 										"api",
 										"courses",
-										""
+										":id"
+									],
+									"query": [],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
 									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Course",
-							"request": {
+								},
 								"method": "PUT",
 								"header": [
 									{
@@ -560,6 +464,13 @@
 									"mode": "raw",
 									"raw": "{\n    \"name\": \"Chemistry1\",\n\t\"description\": \"Chemistry is the topic lab.\"\n}"
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Course",
+							"request": {
 								"url": {
 									"raw": "localhost:3000/api/courses/:id",
 									"host": [
@@ -571,19 +482,14 @@
 										"courses",
 										":id"
 									],
+									"query": [],
 									"variable": [
 										{
 											"key": "id",
 											"value": ""
 										}
 									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Course",
-							"request": {
+								},
 								"method": "DELETE",
 								"header": [
 									{
@@ -599,24 +505,7 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/courses/:id",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"courses",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						}
@@ -625,11 +514,12 @@
 				},
 				{
 					"name": "Course Info",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Get all courses Information",
 							"request": {
+								"url": "localhost:3000/api/courses/",
 								"method": "GET",
 								"header": [
 									{
@@ -641,30 +531,13 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/courses/",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"courses",
-										""
-									]
-								}
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Get Tailored Course by using ID",
 							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "localhost:3000/api/courses/:id",
 									"host": [
@@ -676,36 +549,29 @@
 										"courses",
 										":id"
 									],
+									"query": [],
 									"variable": [
 										{
 											"key": "id",
 											"value": ""
 										}
 									]
-								}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Get Tailored Courses With Abstract and User ID ( 404)",
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "bearer {{jwt_token}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "localhost:3000/api/courses/5a8b2d40f36cd41e58e482a4/students/5a8b2d3ef36cd41e58e48275",
+									"raw": "localhost:3000/api/courses/:courseID/students/:studentID",
 									"host": [
 										"localhost"
 									],
@@ -713,17 +579,66 @@
 									"path": [
 										"api",
 										"courses",
-										"5a8b2d40f36cd41e58e482a4",
+										":courseID",
 										"students",
-										"5a8b2d3ef36cd41e58e48275"
+										":studentID"
+									],
+									"query": [],
+									"variable": [
+										{
+											"key": "courseID",
+											"value": ""
+										},
+										{
+											"key": "studentID",
+											"value": ""
+										}
 									]
-								}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "bearer {{jwt_token}}",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						},
 						{
 							"name": "Add student to course",
 							"request": {
+								"url": {
+									"raw": "localhost:3000/api/courses/:id/students",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										":id",
+										"students"
+									],
+									"query": [],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -739,8 +654,37 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get all courses for a teacher",
+							"request": {
+								"url": "localhost:3000/api/courses/mine",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "bearer {{jwt_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get teacher stats for a specific course",
+							"request": {
 								"url": {
-									"raw": "localhost:3000/api/courses/:id/students",
+									"raw": "localhost:3000/api/courses/:abstractCourseID/stats",
 									"host": [
 										"localhost"
 									],
@@ -748,16 +692,32 @@
 									"path": [
 										"api",
 										"courses",
-										":id",
-										"students"
+										":abstractCourseID",
+										"stats"
 									],
+									"query": [],
 									"variable": [
 										{
-											"key": "id",
+											"key": "abstractCourseID",
 											"value": ""
 										}
 									]
-								}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									},
+									{
+										"key": "Authorization",
+										"value": "bearer {{jwt_token}}",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
 							},
 							"response": []
 						}
@@ -766,26 +726,11 @@
 				},
 				{
 					"name": "Assignment/Problems",
-					"description": null,
+					"description": "",
 					"item": [
 						{
 							"name": "Find Problems Using IDs",
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "bearer {{jwt_token}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "localhost:3000/api/courses/:courseid/students/:studentid/assignments/:assignmentid/problems/:problemid",
 									"host": [
@@ -803,6 +748,7 @@
 										"problems",
 										":problemid"
 									],
+									"query": [],
 									"variable": [
 										{
 											"key": "courseid",
@@ -821,52 +767,8 @@
 											"value": ""
 										}
 									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Assignment By ID",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
 								},
-								"url": {
-									"raw": "localhost:3000/api/courses//mycourses/assignments/:id",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"courses",
-										"",
-										"mycourses",
-										"assignments",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Submit solution",
-							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -881,6 +783,53 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Assignment By ID",
+							"request": {
+								"url": {
+									"raw": "localhost:3000/api/courses//mycourses/assignments/:id",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"",
+										"mycourses",
+										"assignments",
+										":id"
+									],
+									"query": [],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Submit solution",
+							"request": {
 								"url": {
 									"raw": "localhost:3000/api/courses/:course/assignments/:assignment/problems/:problem",
 									"host": [
@@ -896,6 +845,7 @@
 										"problems",
 										":problem"
 									],
+									"query": [],
 									"variable": [
 										{
 											"key": "course",
@@ -910,7 +860,23 @@
 											"value": ""
 										}
 									]
-								}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "bearer {{jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}

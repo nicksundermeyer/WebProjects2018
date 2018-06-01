@@ -173,6 +173,12 @@ function createTailoredCourse(abstractCourse) {
 
 // A function to create some submissions to use to calculate statistics
 function createMockSubmissions() {
+  // Delete Submissions First
+  Submission.remove({}, function(err) {
+    if (err) {
+      console.log("Couldn't remove submissions...");
+    }
+  });
   // Create a new teacher to create the course under. Unfortunately can't use the e
   User.findOne({ role: 'teacher', email: 'teacher@example.com' })
     .exec()
@@ -204,10 +210,6 @@ function createMockSubmissions() {
 
       //Save the course and assignment and then create submissions
       statsCourse.save().then(function(course) {
-        console.log(
-          'AbstractCourse id to use to test statistics calculations: ' +
-            course._id
-        );
         assignment.save().then(function(assignment) {
           // Create students to submit problems for the assignment.
           for (var i = 0; i < NUM_STUDENTS; i++) {
@@ -215,6 +217,32 @@ function createMockSubmissions() {
               role: 'student',
               email: 'test_student_' + i + '@example.com',
               password: 'ps-student'
+            });
+
+            var problems = [];
+            for (var j = 0; j < NUM_PROBLEMS; j++) {
+              var prob = Problem.create({
+                protocol: 'dpg',
+                version: '0.1',
+                instructions: 'do the problem',
+                problem: {
+                  problemId: 'test problem',
+                  description: 'Some problem',
+                  solution: 'this the solution',
+                  subject: course.subjects,
+                  category: course.categories,
+                  depth: 1
+                }
+              });
+              problems.push(prob);
+            }
+
+            Promise.all(problems).then(function(problems) {
+              var tailoredAssignment = new TailoredAssignment({
+                AbstractAssignmentId: assignment._id,
+                problems: problems
+              });
+              tailoredAssignment.save();
             });
 
             student.save().then(function(student) {
@@ -230,7 +258,7 @@ function createMockSubmissions() {
                 const PERCENTAGE_ATTEMPTED = 0.3;
                 const PERCENTAGE_CORRECT = 0.8;
 
-                for (var i = 0; i < NUM_PROBLEMS; i++) {
+                for (var k = 0; k < NUM_PROBLEMS; k++) {
                   // Submit solutions with some randomness
                   if (Math.random() < PERCENTAGE_ATTEMPTED) {
                     var correct = Math.random() < PERCENTAGE_CORRECT; // calculate correctness with randomness
