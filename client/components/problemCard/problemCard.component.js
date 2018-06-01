@@ -93,6 +93,9 @@ export class ProblemCardComponent {
   }
 
   submitSolution() {
+    var MQ = MathQuill.getInterface(2); // for backcompat
+    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
+    this.latex = MQ.MathField(mathFieldSpan).latex();
     this.Assignment.submitSolution(
       this.$routeParams.courseId,
       this.myuserid,
