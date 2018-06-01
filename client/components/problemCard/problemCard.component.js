@@ -105,10 +105,10 @@ export class ProblemCardComponent {
         console.log('res: ' + res);
         console.log('data: ' + res.data.result);
         if (res.data.result === 'success') {
-          document.getElementById('text-box-problem').style.color = 'green';
+          document.getElementById('math-field').style.color = 'green';
           this.addAlert('success', 'Correct!');
         } else {
-          document.getElementById('text-box-problem').style.color = 'red';
+          document.getElementById('math-field').style.color = 'red';
           this.addAlert('danger', 'Incorrect!');
         }
         this.remainingAttempts =
@@ -144,7 +144,7 @@ export class ProblemCardComponent {
 
   mathQuill(htmlVal) {
     var MQ = MathQuill.getInterface(2); // for backcompat
-    var mathFieldSpan = document.getElementById('text-box-problem'); //Mathfield textarea
+    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
 
     if (htmlVal == '') {
       MQ.MathField(mathFieldSpan).write('x = '); //Initially sets mathfield to contain 'x = '
