@@ -1,13 +1,15 @@
 import angular from 'angular';
-const ngRoute = require('angular-route');
-const uiBootstrap = require('angular-ui-bootstrap');
 import routing from './teacher.routes';
 import gravatar from 'gravatar';
 import auth from '../../services/auth/auth.module';
 import user from '../../services/user/user.module';
-//const uid3 = require ('d3')
+
+const ngRoute = require('angular-route');
+const uiBootstrap = require('angular-ui-bootstrap');
+
+const d3 = require('d3');
+const nvd3 = require('nvd3');
 const uinvd3 = require('angular-nvd3');
-import d3 from 'angular-nvd3';
 
 export class TeacherController {
   courses = [];
@@ -54,56 +56,53 @@ export class TeacherController {
       });
     });
 
-    this.options = JSON.parse(
-      JSON.stringify({
-        chart: {
-          type: 'discreteBarChart',
-          height: 450,
-          margin: {
-            top: 20,
-            right: 20,
-            bottom: 60,
-            left: 55
-          },
-          x: function(d) {
-            return d.label;
-          },
-          y: function(d) {
-            return d.value;
-          },
-          showValues: true,
-          valueFormat: function(d) {
-            return d3.format(',.4f')(d);
-          },
-          transitionDuration: 500,
-          xAxis: {
-            axisLabel: 'X Axis'
-          },
-          yAxis: {
-            axisLabel: 'Y Axis',
-            axisLabelDistance: 30
-          }
+    this.options = {
+      chart: {
+        type: 'discreteBarChart',
+        height: 450,
+        margin: {
+          top: 20,
+          right: 20,
+          bottom: 60,
+          left: 55
+        },
+        x: function(d) {
+          return d.label;
+        },
+        y: function(d) {
+          return d.value;
+        },
+        showValues: true,
+        valueFormat: function(d) {
+          console.log(d);
+          return d3.format(',.4f')(d);
+        },
+        transitionDuration: 500,
+        xAxis: {
+          axisLabel: 'X Axis'
+        },
+        yAxis: {
+          axisLabel: 'Y Axis',
+          axisLabelDistance: 30
         }
-      })
-    );
+      }
+    };
 
-    this.data = JSON.parse(
-      JSON.stringify([
-        {
-          key: 'Cumulative Return',
-          values: [
-            { label: 'A', value: -29.765957771107 },
-            { label: 'B', value: 0 },
-            { label: 'C', value: 32.807804682612 },
-            { label: 'D', value: 196.45946739256 },
-            { label: 'E', value: 0.19434030906893 },
-            { label: 'F', value: -98.079782601442 },
-            { label: 'G', value: -13.925743130903 },
-            { label: 'H', value: -5.1387322875705 }
-          ]
-        }
-      ])
-    );
+    this.data = [
+      {
+        key: 'Cumulative Return',
+        values: [
+          { label: 'A', value: -29.765957771107 },
+          { label: 'B', value: 0 },
+          { label: 'C', value: 32.807804682612 },
+          { label: 'D', value: 196.45946739256 },
+          { label: 'E', value: 0.19434030906893 },
+          { label: 'F', value: -98.079782601442 },
+          { label: 'G', value: -13.925743130903 },
+          { label: 'H', value: -5.1387322875705 }
+        ]
+      }
+    ];
   }
 
   // open modal
@@ -116,7 +115,7 @@ export class TeacherController {
 }
 
 export default angular
-  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user])
+  .module('webProjectsApp.teacher', [ngRoute, uiBootstrap, auth, user, uinvd3])
   .config(routing)
   .component('teacher', {
     template: require('./teacher.html'),
