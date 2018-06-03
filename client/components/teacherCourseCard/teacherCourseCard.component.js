@@ -39,6 +39,7 @@ export class CourseCardComponent {
       chart: {
         type: 'pieChart',
         height: 500,
+        width: window.innerWidth,
         x: function(d) {
           return d.key;
         },
@@ -94,6 +95,7 @@ export class CourseCardComponent {
     this.options2 = {
       chart: {
         type: 'bulletChart',
+        width: window.innerWidth,
         duration: 500
       }
     };
@@ -110,6 +112,7 @@ export class CourseCardComponent {
       chart: {
         type: 'discreteBarChart',
         height: 450,
+        width: window.innerWidth,
         margin: {
           top: 20,
           right: 20,
