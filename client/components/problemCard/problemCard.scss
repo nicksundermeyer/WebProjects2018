@@ -94,3 +94,21 @@
   display: -moz-inline-box;
   display: inline-block;
 }
+.mq-editable-field,
+.mq-math-mode .mq-editable-field {
+  background-color: white;
+  color: grey;
+  border-radius: 10px;
+  vertical-align: middle;
+  text-align: left;
+  padding-left: 5px;
+  width: 40%;
+  overflow: auto;
+}
+.mq-math-mode .mq-editable-field.mq-focused {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-color: white;
+  border-radius: 10px;
+}
