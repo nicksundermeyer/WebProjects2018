@@ -16,12 +16,45 @@ export class CourseCardComponent {
   data2;
   options3;
   data3;
+  currentCourseStats = {
+    categoryMetrics: {
+      average: '',
+      stdDev: ''
+    },
+    courseCompletionPercentage: {
+      average: '',
+      stdDev: ''
+    },
+    dataCorrelations: {
+      average: '',
+      stdDev: ''
+    },
+    failingStudents: [
+      {
+        average: '',
+        stdDev: ''
+      }
+    ],
+    overachievingStudents: {
+      average: '',
+      stdDev: ''
+    },
+    problemSetMetrics: {
+      average: '',
+      stdDev: ''
+    },
+    studentDistribution: {
+      description: '',
+      mean: '',
+      stdDev: ''
+    }
+  };
 
   /*@ngInject*/
-  constructor($location, $anchorScroll) {
+  constructor($location, Course) {
     'ngInject';
     this.$location = $location;
-    this.$anchorScroll = $anchorScroll;
+    this.Course = Course;
   }
 
   $onInit() {}
@@ -31,6 +64,22 @@ export class CourseCardComponent {
     // set hidden to false and save the currently selected course
     this.hideStats = false;
     this.selectedCourse = course;
+
+    // get the stats for the currently selected course
+    this.Course.getCourseStats(this.selectedCourse._id).then(response => {
+      this.currentCourseStats.categoryMetrics = response.data.categoryMetrics; // contains average and standard deviation (stdDev)
+      this.currentCourseStats.courseCompletionPercentage =
+        response.data.courseCompletionPercentage;
+      this.currentCourseStats.dataCorrelations = response.data.dataCorrelations; // contains average and standard deviation (stdDev)
+      this.currentCourseStats.failingStudents = response.data.failingStudents;
+      this.currentCourseStats.overachievingStudents =
+        response.data.overachievingStudents;
+      this.currentCourseStats.problemSetMetrics =
+        response.data.problemSetMetrics;
+      this.currentCourseStats.studentDistribution =
+        response.data.studentDistribution;
+    });
+    console.log(this.currentCourseStats);
 
     // add padding below course cards to allow scrolling while screen is covered by div
     document.getElementById('coursePadding').style.height = '50vh';
