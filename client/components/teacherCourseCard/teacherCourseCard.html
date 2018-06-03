@@ -24,7 +24,15 @@
   <div class="col-xs-12" id="courseStats" ng-hide="teacherCourseCardController.hideStats">
     <a ng-click="teacherCourseCardController.closeStatistics()" class="btn btn-primary infoButton">Close</a>
     <p>
-      Put statistics here. Currently selected course:
+    <div class="test-visualization1">
+      <nvd3 options="teacherCourseCardController.options1" data="teacherCourseCardController.data1"></nvd3>
+    </div>
+    <div class="test-visualization2">
+      <nvd3 options="teacherCourseCardController.options2" data="teacherCourseCardController.data2"></nvd3>
+    </div>
+    <div class="test-visualization3">
+      <nvd3 options="teacherCourseCardController.options3" data="teacherCourseCardController.data3"></nvd3>
+    </div>
     </p>
     <p>
       {{teacherCourseCardController.selectedCourse}}
