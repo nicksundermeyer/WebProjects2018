@@ -33,16 +33,19 @@ export class TeacherController {
       this.teacher = teacher;
 
       // get courses the teacher owns from server and add them to the local array
-      this.UserServ.getUsersCourses(teacher._id).then(response => {
+      this.UserServ.getMyCourses().then(response => {
         this.courses = [];
         response.data.forEach(aCourse => {
-          console.log(aCourse);
           var tempCourse = {
-            name: aCourse.abstractCourseID.name,
-            description: aCourse.abstractCourseID.description,
+            name: aCourse.name,
+            description: aCourse.description,
             categories: aCourse.categories,
             subjects: aCourse.subjects,
-            _id: aCourse.abstractCourseID._id
+            assignments: aCourse.assignments,
+            teacherID: aCourse.teacherID,
+            createdAt: aCourse.createdAt,
+            updatedAt: aCourse.updatedAt,
+            _id: aCourse._id
           };
           this.courses.push(tempCourse);
         });

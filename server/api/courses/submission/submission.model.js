@@ -7,7 +7,7 @@ import mongoose, { Schema } from 'mongoose';
 import Course from '../abstractCourses/abstractCourse.model';
 import User from '../../users/user.model';
 import Problem from '../problems/problem.model';
-import Assignment from '../abstractCourses/abstractAssignment.model';
+import Assignment from '../tailoredCourses/tailoredAssignment.model';
 
 /*
 The Schema for problem submissions.
@@ -32,8 +32,7 @@ var SubmissionSchema = new Schema(
 
     problemId: {
       type: Schema.Types.ObjectId,
-      ref: 'Problem',
-      required: true
+      ref: 'Problem'
     },
 
     assignmentId: {

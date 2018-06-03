@@ -25,6 +25,7 @@ import footer from '../components/footer/footer.component';
 import courseDiscovery from './student/studentCourseDiscovery/courseDiscovery.component';
 import assignmentCard from '../components/assignmentCard/assignmentCard.component';
 import courseCard from '../components/courseCard/courseCard.component';
+import teacherCourseCard from '../components/teacherCourseCard/teacherCourseCard.component';
 import problemCard from '../components/problemCard/problemCard.component';
 import problemConfirmationModal from '../components/problemConfirmationModal/problemConfirmationModal.controller';
 import courseCreationModal from '../components/courseCreationModal/courseCreationModal.controller';
@@ -61,6 +62,7 @@ angular
     assignment,
     course,
     courseCard,
+    teacherCourseCard,
     assignmentCard,
     problemCard,
     problemConfirmationModal,

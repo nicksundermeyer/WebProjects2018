@@ -40,8 +40,10 @@ export function show(req, res) {
     .catch(function(err) {
       //if course does not exists return a not found status
       logger.error({ error: err });
-      res.send(err);
-      return res.status(404).end();
+      return res
+        .status(404)
+        .send(err)
+        .end();
     });
 }
 

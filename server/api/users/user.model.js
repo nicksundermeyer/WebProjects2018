@@ -2,100 +2,97 @@
 /*eslint no-invalid-this:0*/
 import crypto from 'crypto';
 mongoose.Promise = require('bluebird');
-import mongoose, {Schema} from 'mongoose';
-import {registerEvents} from './user.events';
+import mongoose, { Schema } from 'mongoose';
+import { registerEvents } from './user.events';
 import shared from './../../config/environment/shared';
 //import TailoredCourse from '../course/tailoredCourse.model';
 
-var UserSchema = new Schema({
-  name: String,
-  email: {
-    type: String,
-    lowercase: true,
-    required: true
-  },
-  role: {
-    //Role hierarchy: guest < user < student < teacher < researcher < admin
-    type: String, enum: shared.userRoles,
-    default: 'student'
-  },
-  password: {
-    type: String,
-    required: true
-  },
+var UserSchema = new Schema(
+  {
+    name: String,
+    email: {
+      type: String,
+      lowercase: true,
+      required: true
+    },
+    role: {
+      //Role hierarchy: guest < user < student < teacher < researcher < admin
+      type: String,
+      enum: shared.userRoles,
+      default: 'student'
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    // preferences: {
+    //
+    // },
 
-
-  provider: String,
-  salt: String,
-
-}, {
-  usePushEach: true,
-  //timestamps in mongoose automatically adds
-  //createdAt and updatedAt fields with the type Date
-  //for audit purposed in our case
-  timestamps: true
-});
+    provider: String,
+    salt: String
+  },
+  {
+    usePushEach: true,
+    //timestamps in mongoose automatically adds
+    //createdAt and updatedAt fields with the type Date
+    //for audit purposed in our case
+    timestamps: true
+  }
+);
 
 /**
  * Virtuals
  */
 
 // Public profile information
-UserSchema
-  .virtual('profile')
-  .get(function() {
-    return {
-      name: this.name,
-      role: this.role
-    };
-  });
+UserSchema.virtual('profile').get(function() {
+  return {
+    name: this.name,
+    role: this.role
+  };
+});
 
 // Non-sensitive info we'll be putting in the token
-UserSchema
-  .virtual('token')
-  .get(function() {
-    return {
-      _id: this._id,
-      role: this.role
-    };
-  });
+UserSchema.virtual('token').get(function() {
+  return {
+    _id: this._id,
+    role: this.role
+  };
+});
 
 /**
  * Validations
  */
 
 // Validate empty email
-UserSchema
-  .path('email')
-  .validate(function(email) {
-    return email.length;
-  }, 'Email cannot be blank');
+UserSchema.path('email').validate(function(email) {
+  return email.length;
+}, 'Email cannot be blank');
 
 // Validate empty password
-UserSchema
-  .path('password')
-  .validate(function(password) {
-    return password.length;
-  }, 'Password cannot be blank');
+UserSchema.path('password').validate(function(password) {
+  return password.length;
+}, 'Password cannot be blank');
 
 // Validate email is not taken
-UserSchema
-  .path('email')
-  .validate(function(value) {
-    return this.constructor.findOne({ email: value }).exec()
-      .then(user => {
-        if(user) {
-          if(this.id === user.id) {
-            return true;
-          }
-          return false;
+UserSchema.path('email').validate(function(value) {
+  return this.constructor
+    .findOne({ email: value })
+    .exec()
+    .then(user => {
+      if (user) {
+        if (this.id === user.id) {
+          return true;
         }
-        return true;
-      })
-      .catch(function(err) {
-        throw err;
-      });
-  }, 'The specified email address is already in use.');
+        return false;
+      }
+      return true;
+    })
+    .catch(function(err) {
+      throw err;
+    });
+}, 'The specified email address is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -104,32 +101,31 @@ var validatePresenceOf = function(value) {
 /**
  * Pre-save hook
  */
-UserSchema
-  .pre('save', function(next) {
-    // Handle new/update passwords
-    if(!this.isModified('password')) {
-      return next();
-    }
+UserSchema.pre('save', function(next) {
+  // Handle new/update passwords
+  if (!this.isModified('password')) {
+    return next();
+  }
 
-    if(!validatePresenceOf(this.password)) {
-      return next(new Error('Invalid password'));
-    }
+  if (!validatePresenceOf(this.password)) {
+    return next(new Error('Invalid password'));
+  }
 
-    // Make salt with a callback
-    this.makeSalt((saltErr, salt) => {
-      if(saltErr) {
-        return next(saltErr);
+  // Make salt with a callback
+  this.makeSalt((saltErr, salt) => {
+    if (saltErr) {
+      return next(saltErr);
+    }
+    this.salt = salt;
+    this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
+      if (encryptErr) {
+        return next(encryptErr);
       }
-      this.salt = salt;
-      this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
-        if(encryptErr) {
-          return next(encryptErr);
-        }
-        this.password = hashedPassword;
-        return next();
-      });
+      this.password = hashedPassword;
+      return next();
     });
   });
+});
 
 /**
  * Methods
@@ -144,16 +140,16 @@ UserSchema.methods = {
    * @api public
    */
   authenticate(password, callback) {
-    if(!callback) {
+    if (!callback) {
       return this.password === this.encryptPassword(password);
     }
 
     this.encryptPassword(password, (err, pwdGen) => {
-      if(err) {
+      if (err) {
         return callback(err);
       }
 
-      if(this.password === pwdGen) {
+      if (this.password === pwdGen) {
         return callback(null, true);
       } else {
         return callback(null, false);
@@ -174,21 +170,21 @@ UserSchema.methods = {
     let callback;
     let defaultByteSize = 16;
 
-    if(typeof args[0] === 'function') {
+    if (typeof args[0] === 'function') {
       callback = args[0];
       byteSize = defaultByteSize;
-    } else if(typeof args[1] === 'function') {
+    } else if (typeof args[1] === 'function') {
       callback = args[1];
     } else {
       throw new Error('Missing Callback');
     }
 
-    if(!byteSize) {
+    if (!byteSize) {
       byteSize = defaultByteSize;
     }
 
     return crypto.randomBytes(byteSize, (err, salt) => {
-      if(err) {
+      if (err) {
         return callback(err);
       } else {
         return callback(null, salt.toString('base64'));
@@ -205,8 +201,8 @@ UserSchema.methods = {
    * @api public
    */
   encryptPassword(password, callback) {
-    if(!password || !this.salt) {
-      if(!callback) {
+    if (!password || !this.salt) {
+      if (!callback) {
         return null;
       } else {
         return callback('Missing password or salt');
@@ -217,21 +213,27 @@ UserSchema.methods = {
     var defaultKeyLength = 64;
     var salt = new Buffer(this.salt, 'base64');
 
-    if(!callback) {
+    if (!callback) {
       // eslint-disable-next-line no-sync
-      return crypto.pbkdf2Sync(password, salt, defaultIterations,
-          defaultKeyLength, 'sha1')
+      return crypto
+        .pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, 'sha1')
         .toString('base64');
     }
 
-    return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength,
-      'sha1', (err, key) => {
-        if(err) {
+    return crypto.pbkdf2(
+      password,
+      salt,
+      defaultIterations,
+      defaultKeyLength,
+      'sha1',
+      (err, key) => {
+        if (err) {
           return callback(err);
         } else {
           return callback(null, key.toString('base64'));
         }
-      });
+      }
+    );
   }
 };
 
