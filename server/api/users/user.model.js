@@ -25,9 +25,19 @@ var UserSchema = new Schema(
       type: String,
       required: true
     },
-    // preferences: {
-    //
-    // },
+    // every user has preferences, should change to only teachers in the future
+    preferences: {
+      // grade where students would be considered failing
+      failingThreshold: {
+        type: Number,
+        default: 50
+      },
+      // grade where students would be considered excelling
+      excellingThreshold: {
+        type: Number,
+        default: 90
+      }
+    },
 
     provider: String,
     salt: String
