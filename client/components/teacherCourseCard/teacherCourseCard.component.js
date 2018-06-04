@@ -79,7 +79,6 @@ export class CourseCardComponent {
       this.currentCourseStats.studentDistribution =
         response.data.studentDistribution;
     });
-    console.log(this.currentCourseStats);
 
     // add padding below course cards to allow scrolling while screen is covered by div
     document.getElementById('coursePadding').style.height = '50vh';
