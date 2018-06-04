@@ -49,6 +49,8 @@ export class CourseCreationModalController {
       .then(result => {
         this.title =
           'Abstract Course (id=' + result.data._id + ') successfully created!';
+        this.$uibModalInstance.dismiss('close');
+        location.reload();
       })
       .catch(err => {
         console.error(err);
