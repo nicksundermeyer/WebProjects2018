@@ -28,12 +28,9 @@ export function getStats(req, res) {
         .json({
           courseId: 12345,
           courseName: 'test course 1',
-          courseCompletionPercentage: {
-            average: 1,
-            stdDev: 1
-          },
-          studentDistribution: results[1],
-          failingStudents: results[0],
+          courseCompletionPercentage: results[0],
+          studentDistribution: results[2],
+          failingStudents: results[1],
           overachievingStudents: {
             average: 4,
             stdDev: 4
