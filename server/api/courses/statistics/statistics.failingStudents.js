@@ -13,6 +13,7 @@ module.exports = function failingStudents(req) {
   }).then(function(tailoredCourses) {
     var assignmentsPromise = [];
     var assignmentsOutput = {};
+
     tailoredCourses.forEach(function(course) {
       course.assignments.forEach(function(assignment) {
         assignmentsOutput[assignment.valueOf()] = {
