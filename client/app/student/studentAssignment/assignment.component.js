@@ -55,7 +55,6 @@ export class AssignmentController {
           if (!localStorage.getItem('ProblemNumber')) {
             this.selectedProblem = this.problemObjects[0];
             console.log('test');
-            //localStorage.setItem('ProblemNumber', 0);
           } else {
             console.log(Number(localStorage.getItem('ProblemNumber')));
             vm.changeProblem(Number(localStorage.getItem('ProblemNumber')));

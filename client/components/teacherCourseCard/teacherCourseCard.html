@@ -1,0 +1,41 @@
+<div class="teacherCourseCard">
+  <div id="courseCards">
+    <div ng-repeat="course in teacherCourseCardController.courses">
+      <div class="container col-md-4 col-lg-4 col-sm-12">
+        <div class="card" id="{{course.name}}">
+          <div class="card-header">
+            <h3 class="card-title">{{course.name}}</h3>
+          </div>
+          <div class="card-body">
+            <h5 class="card-text">{{course.description}}</h5>
+          </div>
+          <div class="card-content">
+            <p>
+              <strong>Subjects: </strong> {{course.subjects}}</p>
+            <p>
+              <strong>Categories: </strong> {{course.categories}}</p>
+          </div>
+          <a ng-click="teacherCourseCardController.openStatistics(course)" class="btn btn-primary infoButton">Statistics</a>
+        </div>
+      </div>
+    </div>
+    <div id="coursePadding" class="col-xs-12"></div>
+  </div>
+  <div class="col-xs-12" id="courseStats" ng-hide="teacherCourseCardController.hideStats">
+    <a ng-click="teacherCourseCardController.closeStatistics()" class="btn btn-primary infoButton">Close</a>
+    <p>
+    <div class="test-visualization1">
+      <nvd3 options="teacherCourseCardController.options1" data="teacherCourseCardController.data1"></nvd3>
+    </div>
+    <div class="test-visualization2">
+      <nvd3 options="teacherCourseCardController.options2" data="teacherCourseCardController.data2"></nvd3>
+    </div>
+    <div class="test-visualization3">
+      <nvd3 options="teacherCourseCardController.options3" data="teacherCourseCardController.data3"></nvd3>
+    </div>
+    </p>
+    <p>
+      {{teacherCourseCardController.selectedCourse}}
+    </p>
+  </div>
+</div>
