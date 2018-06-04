@@ -8,6 +8,7 @@ import TailoredAssignment from '../tailoredCourses/tailoredAssignment.model';
 import Submission from '../submission/submission.model';
 
 module.exports = function failingStudents(req) {
+  console.log(req.user);
   return TailoredCourse.find({
     abstractCourseID: mongoose.Types.ObjectId(req.params.id)
   }).then(function(tailoredCourses) {
@@ -27,7 +28,6 @@ module.exports = function failingStudents(req) {
     return Promise.all(assignmentsPromise).then(function(assignments) {
       assignments.forEach(function(assignment) {
         assignment[0].problems.forEach(function(problem) {
-          console.log(problem);
           if (problem.attempts.length > 0) {
             if (problem.attempts[problem.attempts.length - 1].correct) {
               assignmentsOutput[assignment[0]._id.valueOf()].totalPass++;
@@ -54,14 +54,19 @@ module.exports = function failingStudents(req) {
       }
 
       var output = [];
+
       for (var student in students) {
+        //prune array based on teacher's threshold
+
         var percent =
           students[student].totalPass /
           (students[student].totalPass + students[student].totalFail);
-        output.push({
-          studentId: student,
-          percentage: percent
-        });
+        if (percent * 100 <= req.user.preferences.failingThreshold) {
+          output.push({
+            studentId: student,
+            percentage: percent
+          });
+        }
       }
 
       return Promise.resolve({
