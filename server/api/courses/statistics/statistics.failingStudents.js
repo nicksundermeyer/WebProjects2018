@@ -8,7 +8,6 @@ import TailoredAssignment from '../tailoredCourses/tailoredAssignment.model';
 import Submission from '../submission/submission.model';
 
 module.exports = function failingStudents(req) {
-  console.log(req.user);
   return TailoredCourse.find({
     abstractCourseID: mongoose.Types.ObjectId(req.params.id)
   }).then(function(tailoredCourses) {
