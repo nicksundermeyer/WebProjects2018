@@ -132,3 +132,8 @@
     max-width: 100%;
   }
 }
+
+// created footer buffer around entire contents of site, with a minimum height set to the size of the page, so that the footer is below the bottom of the page no matter what
+.footer-buffer{
+  min-height: 100vh;
+}

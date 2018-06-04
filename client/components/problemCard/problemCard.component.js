@@ -35,6 +35,7 @@ export class ProblemCardComponent {
     this.$routeParams = $routeParams;
     this.attIsCorrect = false;
     this.alerts = [];
+    this.mathQuill('');
 
     /*$watch is checking if newVal is true then load virtual machine */
     $scope.$watch(() => this.myproblemgeneral, function(newVal) {
@@ -68,13 +69,17 @@ export class ProblemCardComponent {
       this.myproblemspecific.description.math,
       'latex'
     );
+    console.log('description latex: ' + this.descriptionLatex);
     katex.render(
       this.descriptionLatex,
       document.getElementById('problemDisplay-problem')
     );
-    this.remainingAttempts =
-      this.myproblemgeneral.numberOfAllowedAttempts -
-      this.myproblemgeneral.attempts.length;
+    console.log('remaining: ' + this.remainingAttempts);
+    console.log('allowed: ' + this.myproblemgeneral.numberOfAllowedAttempts);
+    console.log('length: ' + this.myproblemgeneral.attempts.length);
+    this.remainingAttempts = 3;
+    /*this.myproblemgeneral.numberOfAllowedAttempts -
+      this.myproblemgeneral.attempts.length;*/
   }
 
   /*Try and Catch to see if parsing and rendering works ok*/
@@ -84,58 +89,34 @@ export class ProblemCardComponent {
       this.latex = MathLex.render(this.ast, 'latex');
       var str_version = this.latex.toString(); //cast to string to ensure katex can parse it
       katex.render(str_version, document.getElementById('problem-input'));
-      document.getElementById('text-box-problem').style.color = 'black';
-    } catch (e) {
-      document.getElementById('text-box-problem').style.color = 'blue';
-    }
+    } catch (e) {}
   }
 
   submitSolution() {
-    if (
-      document.getElementById('text-box-problem').style.color == 'blue' ||
-      document.getElementById('text-box-problem').style.length === 0
-    ) {
-      this.$uibModal
-        .open({
-          template: require('../problemConfirmationModal/problemConfirmationModal.html'),
-          controller:
-            'problemConfirmationModalController as problemConfirmationModalController'
-        })
-        .result.then(
-          () => {
-            this.Assignment.submitSolution(
-              this.$routeParams.courseId,
-              this.myuserid,
-              this.$routeParams.assignmentId,
-              this.myproblemid,
-              this.latex
-            );
-          },
-          () => {
-            console.log('Cancelled');
-          }
-        );
-    } else {
-      this.Assignment.submitSolution(
-        this.$routeParams.courseId,
-        this.myuserid,
-        this.$routeParams.assignmentId,
-        this.myproblemid,
-        this.latex
-      )
-        .async()
-        .then(res => {
-          if (res.data.result === 'success') {
-            document.getElementById('text-box-problem').style.color = 'green';
-            this.addAlert('success', 'Correct!');
-          } else {
-            document.getElementById('text-box-problem').style.color = 'red';
-            this.addAlert('danger', 'Incorrect!');
-          }
-          this.remainingAttempts =
-            res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
-        });
-    }
+    var MQ = MathQuill.getInterface(2); // for backcompat
+    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
+    this.latex = MQ.MathField(mathFieldSpan).latex();
+    this.Assignment.submitSolution(
+      this.$routeParams.courseId,
+      this.myuserid,
+      this.$routeParams.assignmentId,
+      this.myproblemid,
+      this.latex
+    )
+      .async()
+      .then(res => {
+        console.log('res: ' + res);
+        console.log('data: ' + res.data.result);
+        if (res.data.result === 'success') {
+          document.getElementById('math-field').style.color = 'green';
+          this.addAlert('success', 'Correct!');
+        } else {
+          document.getElementById('math-field').style.color = 'red';
+          this.addAlert('danger', 'Incorrect!');
+        }
+        this.remainingAttempts =
+          res.data.numberOfAllowedAttempts - res.data.numberOfAttempts;
+      });
   }
 
   attemptInfo() {
@@ -145,24 +126,36 @@ export class ProblemCardComponent {
   }
 
   mappings = {
-    sqrt: ['*sqrt(x)', 'sqrt(x)'],
-    plus: ['x+y'],
-    mult: ['*x'],
-    div: ['/x'],
-    equals: ['= x'],
-    greater: ['> x'],
-    less: ['< x'],
-    pi: ['pi'],
-    e: ['e'],
-    infinity: ['infinity'],
-    i: ['i'],
-    zeta: ['#Z'],
-    tau: ['#tau'],
-    rightarrow: ['-> x'],
-    leftarrow: ['<- x'],
-    forall: ['forall x -> x'],
-    exists: ['exists x : x']
+    sqrt: ['\\sqrt'],
+    plus: ['+'],
+    mult: ['*'],
+    div: ['/'],
+    equals: ['='],
+    greater: ['>'],
+    less: ['<'],
+    pi: ['\\pi'],
+    e: ['\\e'],
+    infinity: ['\\infinity'],
+    i: ['\\imaginary'],
+    zeta: ['\\zeta'],
+    tau: ['\\tau'],
+    rightarrow: ['\\rightarrow'],
+    leftarrow: ['\\leftarrow'],
+    forall: ['\\forall'],
+    exists: ['\\exists']
   };
+
+  mathQuill(htmlVal) {
+    var MQ = MathQuill.getInterface(2); // for backcompat
+    var mathFieldSpan = document.getElementById('math-field'); //Mathfield textarea
+
+    if (htmlVal == '') {
+      MQ.MathField(mathFieldSpan).write('x = '); //Initially sets mathfield to contain 'x = '
+    } else {
+      MQ.MathField(mathFieldSpan).typedText(this.mappings[htmlVal].toString()); //Updates the mathfield with the corresponding button clicked
+      MQ.MathField(mathFieldSpan).keystroke('Enter'); //Needed for button clicking
+    }
+  }
 
   append(htmlVal) {
     if (htmlVal) {
@@ -213,27 +206,3 @@ export default angular
       ischanged: '='
     }
   }).name;
-
-//Mathquill integration
-let MQ = MathQuill.getInterface(2); //loading Mathquill interface
-let answerSpan = document.getElementById('answer'); //get element by id
-let answerMathField = MQ.MathField(answerSpan, {
-  //configration settings
-  spaceBehavesLikeTab: true,
-  leftRightIntoCmdGoes: 'up',
-  restrictMismatchedBrackets: true,
-  sumStartsWithNEquals: true,
-  supSubsRequireOperand: true,
-  charsThatBreakOutOfSupSub: '+-=<>',
-  autoSubscriptNumerals: true,
-  autoCommands: 'pi theta sqrt sum',
-  autoOperatorNames: 'sin cos',
-  handlers: {
-    edit: function() {
-      let enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
-      checkAnswer(enteredMath);
-      answerMathField.typedText(); //identical to what would happen if a user were typing the text in.
-      answerMathField.focus(); //focus on the editable field.
-    }
-  }
-});

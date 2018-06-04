@@ -4,10 +4,8 @@ export function CourseService($http) {
   var Course = {
     // create a new course
     createCourse(course) {
-      console.log($http.post('/api/courses/', course));
       return $http.post('/api/courses/', course);
     },
-
     getAllCourses() {
       return $http.get('/api/courses/');
     },
@@ -26,6 +24,10 @@ export function CourseService($http) {
     //get student info
     getStudentInfo() {
       return $http.get('/api/users/me');
+    },
+    //get stats for course
+    getCourseStats(id) {
+      return $http.get('/api/courses/' + id + '/stats/');
     }
   };
   return Course;

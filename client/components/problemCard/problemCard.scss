@@ -1,34 +1,44 @@
+@import '~mathquill/build/mathquill.css';
 
+/*.container {
+  padding: 0px;
+  margin: 0px;
+}*/
 .problem-card {
   text-align:center;
-  margin: 10px;
   border-radius: 20px;
   width: 100%;
   position: relative;
+  padding: 10px;
+  background-color: $blue;
 }
 
 .card-header-problem{
   height: 50px;
-  background-color: lightblue;
-  margin-bottom: 10px;
+  background-color: $blue;
 }
 
 .problem-container {
   border-radius: 10px;
-  background: #EEEEEE;
-  border-color: #EEEEEE;
-  color: #4b5257;
+  background: white;
+  border-color: $blue;
+  color: white;
+  width: 100%;
+  padding: 0px;
+  padding-top: 5%;
 }
 
 .description-problem-problem{
-  background-color: lightcyan;
+  padding-top: 15px;
+  background-color: white;
   color: black;
-  margin-bottom: 10px;
+  height: 50px;
+  border-radius: 5px;
 }
 
 #problem-input {
   background-color: white;
-  border-color: #4393B9;
+  border-color: $blue;
   height:150px;
   line-height: 150px;
   color: black;
@@ -48,12 +58,13 @@
 }
 
 .submit-button-problem {
-  margin-top: 20px;
+  //margin-top: 10px;
 }
 
 .operators-container{
   text-align: center;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .constants-container{
@@ -76,4 +87,28 @@
   width: 30%;
   z-index: 100;
   font-size: 24px;
+}
+
+.mq-math-mode .mq-binary-operator {
+  padding: 0 1.2em;
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-editable-field,
+.mq-math-mode .mq-editable-field {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  vertical-align: middle;
+  text-align: left;
+  padding-left: 5px;
+  width: 40%;
+  overflow: auto;
+}
+.mq-math-mode .mq-editable-field.mq-focused {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-color: white;
+  border-radius: 10px;
 }
