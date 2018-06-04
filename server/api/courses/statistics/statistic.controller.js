@@ -3,6 +3,7 @@
 import AbstractCourse from '../abstractCourses/abstractCourse.model';
 import failingStudentsCalculator from './statistics.failingStudents';
 import studentDistributionCalculator from './statistics.studentDistribution';
+import courseCompletionCalculator from './statistics.courseCompletion';
 import mongoose, { Schema } from 'mongoose';
 let logger = require('./../../../config/bunyan');
 
@@ -18,6 +19,7 @@ export function myCourses(req, res) {
 
 export function getStats(req, res) {
   var calculations = [];
+  calculations.push(courseCompletionCalculator(req));
   calculations.push(failingStudentsCalculator(req));
   calculations.push(studentDistributionCalculator(req));
   Promise.all(calculations)
