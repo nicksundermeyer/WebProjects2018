@@ -18,35 +18,51 @@ export class CourseCardComponent {
   data3;
   currentCourseStats = {
     categoryMetrics: {
-      average: '',
-      stdDev: ''
+      description: 'Which problem categories are giving students trouble',
+      threshold: 50
     },
-    courseCompletionPercentage: {
-      average: '',
-      stdDev: ''
-    },
-    dataCorrelations: {
-      average: '',
-      stdDev: ''
-    },
-    failingStudents: [
+
+    courseCompletionPercentage: [
       {
-        average: '',
-        stdDev: ''
+        _id: '5b157839d17bd61564d83593',
+        value: {
+          numCompleted: 2,
+          numNotCompleted: 3
+        }
       }
     ],
+
+    dataCorrelations: {
+      description:
+        'Returns connections between success on some problems and failure on others'
+    },
+
+    failingStudents: [
+      {
+        _id: null,
+        value: {
+          numPass: 5,
+          numFail: 2
+        }
+      }
+    ],
+
     overachievingStudents: {
-      average: '',
-      stdDev: ''
+      description:
+        'Returns a group of students with grades above some threshold',
+      threshold: 50
     },
+
     problemSetMetrics: {
-      average: '',
-      stdDev: ''
+      description: 'Returns which sets of problems are giving students trouble',
+      threshold: 50
     },
+
     studentDistribution: {
-      description: '',
-      mean: '',
-      stdDev: ''
+      description:
+        'returns the mean and standard deviation for completion of a course',
+      mean: 7,
+      stdDev: 1
     }
   };
 
@@ -79,8 +95,7 @@ export class CourseCardComponent {
       this.currentCourseStats.studentDistribution =
         response.data.studentDistribution;
     });
-    console.log(this.currentCourseStats);
-
+    console.log();
     // add padding below course cards to allow scrolling while screen is covered by div
     document.getElementById('coursePadding').style.height = '50vh';
 
@@ -112,50 +127,55 @@ export class CourseCardComponent {
 
     this.data1 = [
       {
-        key: 'One',
-        y: 5
+        key: 'Completed',
+        y: this.currentCourseStats.courseCompletionPercentage[0].value
+          .numCompleted
       },
       {
-        key: 'Two',
-        y: 2
-      },
-      {
-        key: 'Three',
-        y: 9
-      },
-      {
-        key: 'Four',
-        y: 7
-      },
-      {
-        key: 'Five',
-        y: 4
-      },
-      {
-        key: 'Six',
-        y: 3
-      },
-      {
-        key: 'Seven',
-        y: 0.5
+        key: 'Not Completed',
+        y: this.currentCourseStats.courseCompletionPercentage[0].value
+          .numNotCompleted
       }
     ];
 
     this.options2 = {
       chart: {
-        type: 'bulletChart',
+        type: 'boxPlotChart',
+        height: 450,
         width: window.innerWidth,
-        duration: 500
+        margin: {
+          top: 20,
+          right: 20,
+          bottom: 60,
+          left: 40
+        },
+        color: ['darkblue', 'darkorange', 'green', 'darkred', 'darkviolet'],
+        x: function(d) {
+          return d.label;
+        },
+        // y: function(d){return d.values.Q3;},
+        maxBoxWidth: 75,
+        yDomain: [0, 10]
       }
     };
 
-    this.data2 = {
-      title: 'Revenue',
-      subtitle: 'US$, in thousands',
-      ranges: [150, 225, 300],
-      measures: [220],
-      markers: [250]
-    };
+    this.data2 = [
+      {
+        label: 'Average Problems completed',
+        values: {
+          Q1: this.currentCourseStats.studentDistribution.mean - 0.1,
+          Q2: this.currentCourseStats.studentDistribution.mean,
+          Q3: this.currentCourseStats.studentDistribution.mean + 0.1,
+          whisker_low:
+            this.currentCourseStats.studentDistribution.mean -
+            this.currentCourseStats.studentDistribution.stdDev,
+          whisker_high:
+            this.currentCourseStats.studentDistribution.mean +
+            this.currentCourseStats.studentDistribution.stdDev
+          //outliers: [50, 100, 425]
+        }
+      }
+    ];
 
     this.options3 = {
       chart: {
@@ -194,36 +214,12 @@ export class CourseCardComponent {
         key: 'Cumulative Return',
         values: [
           {
-            label: 'A',
-            value: -29.765957771107
+            label: 'Passing',
+            value: this.currentCourseStats.failingStudents[0].value.numPass
           },
           {
-            label: 'B',
-            value: 0
-          },
-          {
-            label: 'C',
-            value: 32.807804682612
-          },
-          {
-            label: 'D',
-            value: 196.45946739256
-          },
-          {
-            label: 'E',
-            value: 0.19434030906893
-          },
-          {
-            label: 'F',
-            value: -98.079782601442
-          },
-          {
-            label: 'G',
-            value: -13.925743130903
-          },
-          {
-            label: 'H',
-            value: -5.1387322875705
+            label: 'Failing',
+            value: this.currentCourseStats.failingStudents[0].value.numFail
           }
         ]
       }
