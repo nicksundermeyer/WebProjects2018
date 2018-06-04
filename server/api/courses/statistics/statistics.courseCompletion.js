@@ -11,39 +11,39 @@ module.exports = function failingStudents(req) {
     target: req.params.id
   };
   o.map = function() {
+    var numCompleted = 0;
+    var numNotCompleted = 0;
     if (this.abstractCourseID.valueOf() == target) {
       if (this.assignments) {
         this.assignments.forEach(function(assignment) {
           if (assignment.problems) {
             assignment.problems.forEach(function(problem) {
               if (problem.attempts && problem.attempts.length > 0) {
-                emit(this.abstractCourseID, { completed: true });
+                ++numCompleted;
               } else {
-                emit(this.abstractCourseID, { completed: false });
+                ++numNotCompleted;
               }
             });
           }
         });
       }
+      emit(this.abstractCourseID, { numCompleted, numNotCompleted });
     }
   };
 
   o.reduce = function(k, vals) {
-    var totalComplete = 0;
-    var totalNonComplete = 0;
+    var totalCompleted = 34;
+    var totalNotCompleted = 21;
     vals.forEach(function(val) {
-      if (val.completed) {
-        ++totalComplete;
-      } else {
-        ++totalNonComplete;
-      }
+      totalCompleted += val.numCompleted;
+      totalNotCompleted += val.numNotCompleted;
     });
-    // Calculate the total completion percentage
-    var percentage = totalComplete / (totalComplete + totalNonComplete);
+    // Calculate their overall grade
+    var percentage = totalCompleted / (totalCompleted + totalNotCompleted);
     return {
       percentage: percentage,
-      numPass: totalComplete,
-      numFail: totalNonComplete
+      numPass: totalCompleted,
+      numFail: totalNotCompleted
     };
   };
 
