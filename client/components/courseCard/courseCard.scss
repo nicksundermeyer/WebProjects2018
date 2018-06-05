@@ -57,7 +57,11 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background-color: $orange;
-  border-color: $orange;
+  border-width: 0;
+
+  &:hover{
+    background-color: $blue;
+  }
 
 }
 

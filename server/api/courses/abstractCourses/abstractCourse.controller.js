@@ -40,19 +40,56 @@ export function show(req, res) {
     .catch(function(err) {
       //if course does not exists return a not found status
       logger.error({ error: err });
-      res.send(err);
-      return res.status(404).end();
+      return res
+        .status(404)
+        .send(err)
+        .end();
     });
 }
 
+/*
+ AbstractCourse.create({
+ name: subject.subject + '-about-' + category,
+ description: subject.subject + ' focusing on the ' + category + ' topic',
+ subjects: [subject.subject],
+ categories: [category],
+ teacherID: teacher._id
+
+ }).then(createdCourse =>
+ AbstractAssignment.create({
+ title: 'Assignment 1',
+ description: 'This focuses on ' + category + ' operations',
+ minNumProblems: 5,
+ maxNumProblems: 10,
+ newProblemPercentage: 15
+ }).then(newAssignment => {
+ createdCourse.assignments.push(newAssignment);
+ createdCourse.save();
+ return createTailoredCourse(createdCourse);
+ })
+ */
 export function create(req, res) {
-  //any role higher than teacher
-  //can attach a teacher to the course (Need logic to attach teacher to course if a higher role)
-  //so id should not be just grabber from the current user
-  var newCourse = new AbstractCourse(req.body);
+  // Only allow teachers to create courses
   if (req.user.role === 'teacher') {
-    //set teacher id if current user is actually a teacher
-    newCourse.teacherID = req.user._id;
+    // Note: any role higher than teacher can attach a teacher to the course so
+    // we eventually need logic to attach teacher to course if a higher role.
+    // (ID should not be just grabbed from the current user)
+    var newCourse = new AbstractCourse({
+      name: req.body.name,
+      description: req.body.description,
+      subjects: req.body.subjects,
+      categories: req.body.categories,
+      teacherID: req.user._id
+    });
+
+    var assignments = [];
+    for (var i in req.body.assignments) {
+      var assignment = new AbstractAssignment(req.body.assignments[i]);
+      assignment.save();
+      assignments.push(assignment);
+    }
+
+    newCourse.assignments = assignments;
     newCourse.save(function(err) {
       if (err) {
         logger.error("Couldn't create course: " + newCourse);
