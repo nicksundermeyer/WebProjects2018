@@ -1,0 +1,22 @@
+.studentBanner {
+  height: auto;
+
+  img{
+    display: inline-block;
+  }
+  h1{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 50px;
+  }
+}
+
+.student-discovery{
+  text-align: center;
+}
+
+.student-container{
+  background-color: $white;
+  width: 100%;
+  margin: 0;
+}

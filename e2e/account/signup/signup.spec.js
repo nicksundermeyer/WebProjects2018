@@ -1,13 +1,14 @@
 'use strict';
 
 var config = browser.params;
-var UserModel = require(config.serverConfig.root + '/server/api/user/user.model').default;
+var UserModel = require(config.serverConfig.root +
+  '/server/api/users/user.model').default;
 
 describe('Signup View', function() {
   var page;
 
   var loadPage = function() {
-    browser.manage().deleteAllCookies()
+    browser.manage().deleteAllCookies();
     let promise = browser.get(config.baseUrl + '/signup');
     page = require('./signup.po');
     return promise;
@@ -15,6 +16,7 @@ describe('Signup View', function() {
 
   var testUser = {
     name: 'Test',
+    role: 'student',
     email: 'test@example.com',
     password: 'test',
     confirmPassword: 'test'
@@ -33,19 +35,26 @@ describe('Signup View', function() {
     expect(page.form.name.getAttribute('name')).to.eventually.equal('name');
     expect(page.form.email.getAttribute('type')).to.eventually.equal('email');
     expect(page.form.email.getAttribute('name')).to.eventually.equal('email');
-    expect(page.form.password.getAttribute('type')).to.eventually.equal('password');
-    expect(page.form.password.getAttribute('name')).to.eventually.equal('password');
-    expect(page.form.confirmPassword.getAttribute('type')).to.eventually.equal('password');
-    expect(page.form.confirmPassword.getAttribute('name')).to.eventually.equal('confirmPassword');
+    expect(page.form.password.getAttribute('type')).to.eventually.equal(
+      'password'
+    );
+    expect(page.form.password.getAttribute('name')).to.eventually.equal(
+      'password'
+    );
+    expect(page.form.confirmPassword.getAttribute('type')).to.eventually.equal(
+      'password'
+    );
+    expect(page.form.confirmPassword.getAttribute('name')).to.eventually.equal(
+      'confirmPassword'
+    );
     expect(page.form.submit.getAttribute('type')).to.eventually.equal('submit');
     expect(page.form.submit.getText()).to.eventually.equal('Sign up');
   });
 
   describe('with local auth', function() {
-
     before(function() {
       return UserModel.remove();
-    })
+    });
 
     it('should signup a new user, log them in, and redirecting to "/"', function() {
       page.signup(testUser);
@@ -53,7 +62,9 @@ describe('Signup View', function() {
       var navbar = require('../../components/navbar/navbar.po');
 
       expect(browser.getCurrentUrl()).to.eventually.equal(config.baseUrl + '/');
-      expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal('Hello ' + testUser.name);
+      expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal(
+        'Hello ' + testUser.name
+      );
     });
 
     describe('and invalid credentials', function() {
@@ -64,14 +75,20 @@ describe('Signup View', function() {
       it('should indicate signup failures', function() {
         page.signup(testUser);
 
-        expect(browser.getCurrentUrl()).to.eventually.equal(config.baseUrl + '/signup');
-        expect(page.form.email.getAttribute('class')).to.eventually.contain('ng-invalid-mongoose');
+        expect(browser.getCurrentUrl()).to.eventually.equal(
+          config.baseUrl + '/signup'
+        );
+        expect(page.form.email.getAttribute('class')).to.eventually.contain(
+          'ng-invalid-mongoose'
+        );
 
-        var helpBlock = page.form.element(by.css('.form-group.has-error .help-block.ng-binding'));
-        expect(helpBlock.getText()).to.eventually.equal('The specified email address is already in use.');
+        var helpBlock = page.form.element(
+          by.css('.form-group.has-error .help-block.ng-binding')
+        );
+        expect(helpBlock.getText()).to.eventually.equal(
+          'The specified email address is already in use.'
+        );
       });
-
     });
-
   });
 });

@@ -24,6 +24,7 @@ var config;
 
 const clientPath = 'client';
 const serverPath = 'server';
+
 const paths = {
     client: {
         assets: `${clientPath}/assets/**/*`,
